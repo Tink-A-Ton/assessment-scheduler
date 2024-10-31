@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}Modify Assessment{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="../static/css/modifyAssessment.css">
+{% endblock %}
+
+{% block content %}
+<div class="formContainer">
+    <form id="modifyAssessmentForm" action="/modifyAssessment/{{ca.id}}" method="POST">
+        <div class="formTitle">
+            <h2>Modify Assessment</h2>
+        </div>
+        <div class="formSection1">
+            <div class="formInputContainer">
+                <!-- be a lil div to show the current course being altered -->
+                <label for="myCourses">Course</label>
+                <input type="text" value="{{ca.courseCode}}" readonly>
+            </div>
+            <div class="formInputContainer">
+                <label for="AssessmentType">Assessment Type</label>
+                <select id="dropdownAssessments" name="AssessmentType">
+                    {% for each in assessments %}
+                    <option value="{{each.a_ID}}"  {% if ca.a_ID == each.a_ID %}selected{% endif %}>{{each.category.value}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="bottomForm">
+            <div class="formSection2">
+                <div class="formInputContainer">
+                    <label for="startDate">Assessment Start Date</label>
+                    <input type="date" id="startDate" name="startDate" value="{{ca.startDate}}">
+                </div>
+                <div class="formInputContainer">
+                    <label for="startTime">Assessment Start Time</label>
+                    <input type="time" id="startTime" name="startTime" value="{{ca.startTime}}">
+                </div>
+                
+            </div>
+
+    
+            <div class="formSection3" id="sectionToHide">
+                <div class="formInputContainer">
+                    <label for="endDate">Assessment End Date</label>
+                    <input type="date" id="endDate" name="endDate" value="{{ca.endDate}}">
+                </div>
+                <div class="formInputContainer">
+                    <label for="endTime">Assessment End Time</label>
+                    <input type="time" id="endTime" name="endTime" value="{{ca.endTime}}">
+                </div>
+                
+
+            </div>
+        </div>
+        <button id="modifyAssessmentBtn" type="submit">Save</button>
+    </form>
+</div>
+
+{% endblock %}

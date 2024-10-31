@@ -1,0 +1,36 @@
+{% extends "adminLayout.html" %}
+
+{% block title %}Upload Files{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="../static/css/uploadFiles.css">
+{% endblock %}
+
+{% block content %}
+    <!-- form body -->
+    <div class="formContainer">
+        <form enctype="multipart/form-data" id="uploadForm" action="/uploadcourse" method="POST" >
+            <div class="uploadFormSection" id="uploadCourseSection">
+                <h1>Upload Courses</h1>
+                <input type="file" name="file" id="fileCourseInput">
+                <button class="submitButton" type="submit">Upload</button>
+                <!-- <input type="file" name="courses_file" id="fileCourseInput"> -->
+                <!-- <input class="submitButton" type="submit" name="uploadCoursesBtn" value="Upload" onclick="submitForm('uploadCoursesBtn')" > -->
+            </div>
+        </form>
+        {% if message %}
+            <p id="message">{{ message | safe }}</p>
+        {% endif %}
+    </div>
+    {% endblock %}
+
+
+<!-- <body>
+    <h1>Upload a file</h1>
+    <form enctype="multipart/form-data" id="uploadForm" action="/uploadcourse" method="POST">
+        <input type="file" name="file" id="fileInput">
+        <button type="submit">Upload</button>
+    </form>
+    {% if message %}
+        <p id="message">{{ message | safe }}</p>
+    {% endif %}
+</body> -->

@@ -1,7 +1,21 @@
-# Assessment Scheduler App
+# Assessment Scheduler App #
 
-## How To Run
+### Collaborators: ###
+* Ashley Jacob
+* Vanessa Aubin
+* Victor Solano
+* Luc-Aidan Roberts
+
+### Dependencies & Tools: ###
+* pip3
+* FullCalendar
+* Full List of packages are in requirements.txt file.
+
+### To install Dependencies: ###
+pip install -r requirements.txt
+
+### How To Run: ###
 Run by executing
-```
-npm run start
-```
+1. flask init 
+2. flask asm
+3. flask run

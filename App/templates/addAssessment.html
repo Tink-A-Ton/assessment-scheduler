@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block title %}Add Assessment{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="../static/css/addAssessment.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="formContainer">
+    <form id="addAssessmentForm" action="/addAssessment" method="POST">
+        <div class="formTitle">
+            <h2>Add Assessment</h2>
+        </div>
+        <div class="formSection1">
+            <div class="formInputContainer">
+                <label for="myCourses">My Courses</label>
+                <select id="dropdownCourses" name="myCourses">
+                    {% for course in courses %}
+                    <option value="{{course}}">{{course}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="formInputContainer">
+                <label for="AssessmentType">Assessment Type</label>
+                <select id="dropdownAssessments" name="AssessmentType">
+                    {% for each in assessments %}
+                    <option value="{{each.a_ID}}">{{each.category.value}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="bottomForm">
+            <div class="formSection2">
+                <div class="formInputContainer">
+                    <label for="">Assessment Start Date</label>
+                    <input type="date" id="startDate" name="startDate">
+                </div>
+                <div class="formInputContainer">
+                    <label for="">Assessment Start Time</label>
+                    <input type="time" id="startTime" name="startTime">
+                </div>
+                
+            </div>
+
+    
+            <div class="formSection3" id="sectionToHide">
+                <div class="formInputContainer">
+                    <label for="">Assessment End Date</label>
+                    <input type="date" id="endDate" name="endDate">
+                </div>
+                <div class="formInputContainer">
+                    <label for="">Assessment End Time</label>
+                    <input type="time" id="endTime" name="endTime">
+                </div>
+                
+
+            </div>
+        </div>
+        <button id="addAssessmentBtn" type="submit">Save</button>
+    </form>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block head %}
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../static/css/main.css">
+<link rel="stylesheet" href="../static/css/settings.css">
+
+{% endblock %}
+
+{% block content %}
+<div class="mainSettingsContainer">
+    <form action="/settings" id="changePasswordForm" method="POST">
+        <h1>Settings</h1>
+
+        <label for="password">Change Password</label>
+        <input type="text" id="password" name="password">
+        <button id="resetPasswordBtn" type="submit">Reset</button>
+    </form>
+</div>
+{% endblock %}

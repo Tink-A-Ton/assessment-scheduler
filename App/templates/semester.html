@@ -1,0 +1,36 @@
+{% extends "adminLayout.html" %}
+
+{% block title %}Semester Details{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="../static/css/admin1.css">
+{% endblock %}
+
+{% block content %}
+<form id="semForm" action="/newSemester" method="POST">
+    <h2>Semester Details</h2>   
+    <div class="field_containers">
+        <label for="teachingBegins" class="input-label">Teaching Begins</label>
+        <input type="date" id="teachingBegins" name="teachingBegins">
+    </div>
+    <div class="field_containers">
+        <label for="teachingEnds" class="input-label">Teaching Ends</label>
+        <input type="date" id="teachingEnds" name="teachingEnds">
+    </div>
+    <div class="sem_container" >
+        <label for="semester" class="input-label">Semester</label><br>
+        <input type="radio" id="radio_btns" name="semester" value="1">
+        <label for="semester">1</label>
+        <input type="radio" id="radio_btns" name="semester" value="2">
+        <label for="semester">2</label>
+        <input type="radio" id="radio_btns" name="semester" value="3">
+        <label for="semester">3</label>
+    </div>
+    <div class="field_containers">
+        <label for="maxAssessments" class="input-label">Maximum Weekly Assessments Allowed per Level</label>
+        <input type="number" name="maxAssessments" id="maxAssessments">
+    </div>
+    <button id="save_btn" class="formBtn saveSemesterBtn" type="submit">Save</button>
+
+</form>
+{% endblock %}

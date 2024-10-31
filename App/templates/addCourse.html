@@ -1,0 +1,63 @@
+{% extends "adminLayout.html" %}
+
+{% block title %}Add Course{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="../static/css/addCourse.css">
+{% endblock %}
+
+{% block content %}
+<div class="formContainer">
+    <form action="/addNewCourse" id="addCourseForm" method="POST">
+        <h2>Add Course</h2>
+        <div class="formInputContainer normalLabel">
+            <label class="mainLabel" for="">Course Code</label>
+            <input type="text" name="course_code" id="course_code" required>
+        </div>
+
+        <div class="formInputContainer normalLabel">
+            <label class="mainLabel" for="">Title</label>
+            <input type="text" name="title" id="title" required>
+        </div>
+
+        <div class="formInputContainer normalLabel">
+            <label class="mainLabel" for="">Description</label>
+            <textarea name="description" id="description" cols="30" rows="10"></textarea>
+        </div>
+
+        <div class="formInputContainer levelContainer">
+            <label class="mainLabel" for=""level>Level</label>
+
+            <input type="radio" id="radio_btns" name="level" value="1">
+            <label class="smallLabel" for="level">1</label>
+            <input type="radio" id="radio_btns" name="level" value="2">
+            <label class="smallLabel" for="level">2</label>
+            <input type="radio" id="radio_btns" name="level" value="3">
+            <label class="smallLabel" for="level">3</label>
+        </div>
+
+        <div class="formInputContainer semesterContainer">
+            <label class="mainLabel" for="semester">Semester</label>
+
+            <input type="checkbox" name="semester" value="1">
+            <label class="smallLabel" for="semester">1</label>
+            <input type="checkbox" name="semester" value="2">
+            <label class="smallLabel" for="semester">2</label>
+            <input type="checkbox" name="semester" value="3">
+            <label class="smallLabel" for="semester">3</label>
+        </div>
+
+        <div class="formInputContainer normalLabel">
+            <label class="mainLabel" for="">Number of Assessments</label>
+            <input type="number" min="1" name="numAssessments" id="numAssessments" required>
+        </div>
+
+        <div class="formInputContainer normalLabel">
+            <label class="mainLabel" for="">Programmes</label>
+            <input type="text" name="programmes" id="programmes">
+        </div>
+
+        <input type="submit" value="Add Course" id="submitBtn">
+    </form>
+</div>
+{% endblock %}
