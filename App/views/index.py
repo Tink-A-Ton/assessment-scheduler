@@ -19,7 +19,7 @@ def init():
     db.session.add(bob)
 
     #create semester
-    sem = Semester(startDate='01-02-2024', endDate='01-05-2024', semNum=1, maxAssessments=3)
+    sem = Semester(startDate='2-09-2024', endDate='22-12-2024', semNum=1, maxAssessments=3)
     db.session.add(sem)
 
     #create courses
