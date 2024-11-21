@@ -2,16 +2,16 @@ from App.database import db
 
 class CourseProgramme(db.Model):
   __tablename__ = 'courseProgramme'
+  id: int = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
+  course_code: str = db.Column(db.String(9), db.ForeignKey('course.course_code'))
+  programme_id: int = db.Column(db.Integer, db.ForeignKey('programme.programme_id'))  
 
-  courseCode = db.Column(db.String(8), db.ForeignKey('course.courseCode'), primary_key=True, nullable = False)
-  p_ID = db.Column(db.Integer, db.ForeignKey('programme.p_ID'), primary_key=True, nullable = False)  
-
-  def __init__(self, id, courseCode, p_ID):
-    self.courseCode = courseCode
-    self.p_ID = p_ID
+  def __init__(self, course_code: str, programme_id: int):
+    self.course_code = course_code
+    self.programme_id = programme_id
     
-  def to_json(self):
+  def to_json(self) -> dict[str, str | int]:
     return {
-      "courseCode": self.courseCode,
-      "programmeID": self.p_ID
+      "course_code": self.course_code,
+      "programme_id": self.programme_id
     }  
