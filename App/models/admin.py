@@ -1,15 +1,6 @@
-from App.database import db
-from .user import User  
-from flask_login import UserMixin, login_user
-import flask_login
-from flask_login import UserMixin, login_user
-import flask_login
+from .user import User
 
-class Admin(User,UserMixin):
-  __tablename__ = 'admin'
 
-  def login(self):
-      return flask_login.login_user(self)
-  
-  def __init__(self, u_ID, password, email):
-    super().__init__(u_ID, password, email)
+class Admin(User):
+    def __init__(self, id, email, password) -> None:
+        super().__init__(id, email, password)
