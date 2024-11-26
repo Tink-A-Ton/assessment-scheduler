@@ -16,13 +16,13 @@
             <div class="formInputContainer">
                 <!-- be a lil div to show the current course being altered -->
                 <label for="myCourses">Course</label>
-                <input type="text" value="{{ca.courseCode}}" readonly>
+                <input type="text" value="{{ca.course_code}}" readonly>
             </div>
             <div class="formInputContainer">
                 <label for="AssessmentType">Assessment Type</label>
                 <select id="dropdownAssessments" name="AssessmentType">
-                    {% for each in assessments %}
-                    <option value="{{each.a_ID}}"  {% if ca.a_ID == each.a_ID %}selected{% endif %}>{{each.category.value}}</option>
+                    {% for type in assessment_types %}
+                    <option value="{{type.id}}"  {% if ca.a_ID == type.id %}selected{% endif %}>{{type.category.value}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -31,11 +31,11 @@
             <div class="formSection2">
                 <div class="formInputContainer">
                     <label for="startDate">Assessment Start Date</label>
-                    <input type="date" id="startDate" name="startDate" value="{{ca.startDate}}">
+                    <input type="date" id="startDate" name="startDate" value="{{ca.start_date}}">
                 </div>
                 <div class="formInputContainer">
                     <label for="startTime">Assessment Start Time</label>
-                    <input type="time" id="startTime" name="startTime" value="{{ca.startTime}}">
+                    <input type="time" id="startTime" name="startTime" value="{{ca.start_time}}">
                 </div>
                 
             </div>
@@ -44,11 +44,11 @@
             <div class="formSection3" id="sectionToHide">
                 <div class="formInputContainer">
                     <label for="endDate">Assessment End Date</label>
-                    <input type="date" id="endDate" name="endDate" value="{{ca.endDate}}">
+                    <input type="date" id="endDate" name="endDate" value="{{ca.end_date}}">
                 </div>
                 <div class="formInputContainer">
                     <label for="endTime">Assessment End Time</label>
-                    <input type="time" id="endTime" name="endTime" value="{{ca.endTime}}">
+                    <input type="time" id="endTime" name="endTime" value="{{ca.end_time}}">
                 </div>
                 
 

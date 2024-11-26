@@ -13,11 +13,12 @@ from flask_login import current_user
 from flask import current_app as app
 from flask_mail import Mail, Message
 from sqlalchemy import not_
+from werkzeug import Response
 from App.database import db
 import json
 from flask_jwt_extended import current_user as jwt_current_user, get_jwt_identity
 from flask_jwt_extended import jwt_required
-from datetime import date, timedelta
+from datetime import date, time, timedelta
 import time
 from App.models.assessmentType import AssessmentType
 from App.models.course import Course
@@ -91,11 +92,11 @@ def get_calendar_page():
 @staff_views.route("/calendar", methods=["POST"])
 @jwt_required()
 def update_calendar_page():
-    id = request.form.get("id")
-    startDate = parse_date(request.form.get("startDate"))
-    startTime = parse_time(request.form.get("startTime"))
-    endDate = parse_date(request.form.get("endDate"))
-    endTime = parse_time(request.form.get("endTime"))
+    id: str | None = request.form.get("id")
+    startDate: date = parse_date(request.form.get("startDate"))
+    startTime: time = parse_time(request.form.get("startTime"))
+    endDate: date = parse_date(request.form.get("endDate"))
+    endTime: time = parse_time(request.form.get("endTime"))
 
     assessment: CourseAssessment | None = get_assessment_by_id(id)
     if assessment:
@@ -180,12 +181,12 @@ def send_email():
 # Retrieves staff info and stores it in database ie. register new staff
 @staff_views.route("/register", methods=["POST"])
 def register_staff_action():
-    firstname = request.form.get("firstName")
-    lastname = request.form.get("lastName")
-    staff_id = request.form.get("staffID")
-    position = request.form.get("status")
-    email = request.form.get("email")
-    password = request.form.get("password")
+    firstname: str | None = request.form.get("firstName")
+    lastname: str | None = request.form.get("lastName")
+    staff_id: str | None = request.form.get("staffID")
+    position: str | None = request.form.get("status")
+    email: str | None = request.form.get("email")
+    password: str | None = request.form.get("password")
 
     create_staff(first_name=firstname, last_name=lastname, id=staff_id, position=position, email=email, password=password)
     return render_template("login.html")
@@ -260,8 +261,8 @@ def add_assessments_action():
     type: str | None = request.form.get("AssessmentType")
     startDate: date = parse_date(request.form.get("startDate"))
     endDate: date = parse_date(request.form.get("endDate"))
-    startTime = parse_time(request.form.get("startTime"))
-    endTime = parse_time(request.form.get("endTime"))
+    startTime: time = parse_time(request.form.get("startTime"))
+    endTime: time = parse_time(request.form.get("endTime"))
 
     if startDate == "" or endDate == "" or startTime == "" or endTime == "":
         startDate = None
@@ -292,20 +293,20 @@ def add_assessments_action():
 # Modify selected assessment
 @staff_views.route("/modifyAssessment/<string:id>", methods=["GET"])
 def get_modify_assessments_page(id):
-    allAsm: list[AssessmentType] = get_assessment_types()  # get assessment types
+    assessment_types: list[AssessmentType] = get_assessment_types()  # get assessment types
     assessment: CourseAssessment | None = get_assessment_by_id(id)  # get assessment details
-    return render_template("modifyAssessment.html", assessments=allAsm, ca=assessment)
+    return render_template("modifyAssessment.html", assessment_types=assessment_types, ca=assessment)
 
 
 # Gets Update assessment Page
 @staff_views.route("/modifyAssessment/<string:id>", methods=["POST"])
 def modify_assessment(id):
-    course = request.form.get("myCourses")
-    type = request.form.get("AssessmentType")
-    start_date = request.form.get("startDate")
-    end_date = request.form.get("endDate")
-    start_time = request.form.get("startTime")
-    end_time = request.form.get("endTime")
+    course: str | None = request.form.get("myCourses")
+    type: str | None = request.form.get("AssessmentType")
+    start_date: date = parse_date(request.form.get("startDate"))
+    end_date: date = parse_date(request.form.get("endDate"))
+    start_time: time = parse_time(request.form.get("startTime"))
+    end_time: time = parse_time(request.form.get("endTime"))
 
     assessment: CourseAssessment | None = get_assessment_by_id(id)
     if assessment:
@@ -315,9 +316,7 @@ def modify_assessment(id):
             assessment.end_date = end_date
             assessment.start_time = start_time
             assessment.end_time = end_time
-
         db.session.commit()
-
         clash = detect_clash(assessment.id)
         if clash:
             assessment.clash_detected = True
@@ -326,15 +325,16 @@ def modify_assessment(id):
                 "Clash detected! The maximum amount of assessments for this level has been exceeded."
             )
             time.sleep(1)
-
     return redirect(url_for("staff_views.get_assessments_page"))
 
 
 # Delete selected assessment
 @staff_views.route("/deleteAssessment/<int:assessment_id>", methods=["GET"])
-def delete_assessment(assessment_id):
-    delete_assessment_by_id(assessment_id=assessment_id)
-    print("Assessment ", assessment_id, " deleted")
+def delete_assessment(assessment_id) -> Response:
+    if delete_assessment_by_id(assessment_id=assessment_id):
+        print("Assessment ", assessment_id, " deleted")
+    else:
+        flash("Unable to delete Assessment ", assessment_id)
     return redirect(url_for("staff_views.get_assessments_page"))
 
 
@@ -349,27 +349,11 @@ def get_settings_page():
 @staff_views.route("/settings", methods=["POST"])
 @jwt_required()
 def changePassword():
-
-    if request.method == "POST":
-        # get new password
-        newPassword = request.form.get("password")
-        # print(newPassword)
-
-        # get email of current user
-        current_user_email = get_jwt_identity()
-        # print(current_user_email)
-
-        # find user by email
-        user = Staff.query.filter_by(email=current_user_email).first()
-        # print(user)
-
-        if user:
-            # update the password
-            user.set_password(newPassword)
-
-            # commit changes to DB
-            db.session.commit()
-
+    newPassword: str | None = request.form.get("password")
+    user: User = get_user_by_email(get_jwt_identity())
+    if user and newPassword:
+        user.set_password(newPassword)
+        db.session.commit()
     return render_template("settings.html")
 
 def format_assessment(assessment: CourseAssessment) -> dict:

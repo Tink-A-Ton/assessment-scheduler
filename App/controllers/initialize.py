@@ -206,4 +206,5 @@ def parse_date(date_str) -> date:
     return datetime.strptime(date_str, "%Y-%m-%d").date()
 
 def parse_time(time_str) -> time:
+    time_str = time_str[:5]
     return datetime.strptime(time_str, "%H:%M").time()
