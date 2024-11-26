@@ -52,62 +52,38 @@ def get_signup_page():
 @staff_views.route("/calendar", methods=["GET"])
 @jwt_required()
 def get_calendar_page():
-    id = get_user(get_jwt_identity())  # gets u_id from email token
-
-    # Get courses for filter
-    courses: list[Course] = []
+    id: User | None = get_user(get_jwt_identity())  # gets u_id from email token
+    
     all_courses: list[Course] = get_all_courses()
     staff_courses: list[Course] = get_registered_courses(id)
-    for course in all_courses:
-        if course not in staff_courses:
-            courses.append(course)
+    other_courses: list[Course] = [course for course in all_courses if course not in staff_courses]
 
-    # Get assessments for registered courses
-    all_assessments = []
-    for course in staff_courses:
-        all_assessments = all_assessments + get_assessments_by_course(course.course_code)
+    staff_assessments: list[dict] = [
+        format_assessment(assessment)
+        for course in staff_courses
+        for assessment in get_assessments_by_course(course.course_code)
+    ]
 
-    # Format assessments for calendar js - registered courses
-    staff_assessments = []
-    for assessment in all_assessments:
-        assessment_json = format_assessment(assessment=assessment)
-        staff_assessments.append(assessment_json)
+    other_assessments: list[dict] = [
+        format_assessment(assessment)
+        for course in other_courses
+        for assessment in get_assessments_by_course(course.course_code)
+        if not assessment.clash_detected
+    ]
 
-    # Get assessments for all other courses (for filters)
-    other_assessments: list[CourseAssessment] = []
-    for course in courses:
-        other_assessments = other_assessments + get_assessments_by_course(course.course_code)
-
-    # Format assessments for calendar js - filters
-    assessments = []
-    for assessment in other_assessments:
-        if not assessment.clash_detected:
-            assessment_json: dict = format_assessment(assessment=assessment)
-            assessments.append(assessment_json)
-    # Ensure courses, staff_courses, and assessments are not empty
-    if not courses:
-        courses = []
-    if not staff_courses:
-        staff_courses = []
-    if not staff_assessments:
-        staff_assessments = []
-    if not assessments:
-        assessments = []
-
-    sem: Semester = Semester.query.order_by(Semester.id.desc()).first()
-    semester = {"start": sem.start_date, "end": sem.end_date}
+    semester: Semester = Semester.query.order_by(Semester.id.desc()).first()
+    semester_details: dict[str, str] = {"start": semester.start_date, "end": semester.end_date}
 
     messages = []
-    message = session.pop("message", None)
-    if message:
-        messages.append(message)
+    if "message" in session:
+        messages.append(session.pop("message"))
     return render_template(
         "index.html",
-        courses=courses,
+        courses=other_courses,
         staff_courses=staff_courses,
         staff_assessments=staff_assessments,
-        semester=semester,
-        other_assessments=assessments,
+        semester=semester_details,
+        other_assessments=other_assessments,
         messages=messages,
     )
 
@@ -115,33 +91,29 @@ def get_calendar_page():
 @staff_views.route("/calendar", methods=["POST"])
 @jwt_required()
 def update_calendar_page():
-    # Retrieve data from page
     id = request.form.get("id")
     startDate = request.form.get("startDate")
     startTime = request.form.get("startTime")
     endDate = request.form.get("endDate")
     endTime = request.form.get("endTime")
 
-    # Get course assessment
-    assessment = get_assessment_by_id(id)
+    assessment: CourseAssessment | None = get_assessment_by_id(id)
     if assessment:
-        assessment.startDate = startDate
-        assessment.endDate = endDate
-        assessment.startTime = startTime
-        assessment.endTime = endTime
-
+        assessment.start_date = startDate
+        assessment.end_date = endDate
+        assessment.start_time = startTime
+        assessment.end_time = endTime
         db.session.commit()
-
         clash = detect_clash(assessment.id)
         if clash:
-            assessment.clashDetected = True
+            assessment.clash_detected = True
             db.session.commit()
             session["message"] = (
                 assessment.courseCode
                 + " - Clash detected! The maximum amount of assessments for this level has been exceeded."
             )
         else:
-            session["message"] = "AssessmentType modified"
+            session["message"] = "Assessment modified"
     return session["message"]
 
 
@@ -254,11 +226,11 @@ def get_selected_courses():
 def get_assessments_page():
     user: User | None = get_user_by_email(get_jwt_identity())
     registered_courses: list[Course] = get_registered_courses(user.id)
-    assessments = []
-    for course in registered_courses:
-        for assessment in get_assessments_by_course(course.course_code):
-            assessment_json = format_assessment(assessment=assessment)
-            assessments.append(assessment_json)
+    assessments: list[dict] = [
+        format_assessment(assessment)
+        for course in registered_courses
+        for assessment in get_assessments_by_course(course.course_code)
+    ]
     registered_course_codes: list[Course] = [course.course_code for course in registered_courses]
     print(assessments)
     return render_template(
