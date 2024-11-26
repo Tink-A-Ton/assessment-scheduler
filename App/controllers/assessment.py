@@ -26,9 +26,9 @@ def add_assessment(course_code: str, start_date: date, end_date: date,
 def get_assessment_types() -> list[AssessmentType]:
     return AssessmentType.query.all()
 
-def get_assessment_type_by_id(id: int) -> str | None:
+def get_assessment_type_by_id(id: int) -> AssessmentType | None:
     assessment = AssessmentType.query.get(id)
-    return assessment.category.name
+    return assessment
 
 def get_assessment_type_by_name(type: str) -> AssessmentType | None:
     assessment: AssessmentType = AssessmentType.query.filter_by(category=type).first()

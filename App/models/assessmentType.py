@@ -23,4 +23,4 @@ class AssessmentType(db.Model):
         self.category = Category(category)
 
     def to_json(self) -> dict[str, int | Category]:
-        return {"id": self.id, "category": self.category}
+        return {"id": self.id, "category": self.category.name}

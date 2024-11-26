@@ -24,14 +24,14 @@ assessments.forEach(assessment => {
     courseCodeLabel.textContent = 'Course Code';
     const courseCode = document.createElement('p');
     courseCode.classList.add('course-code');
-    courseCode.textContent = assessment.courseCode;
+    courseCode.textContent = assessment.course_code;
 
     const courseAssessmentLabel = document.createElement('p');
     courseAssessmentLabel.classList.add('card-label');
     courseAssessmentLabel.textContent = 'Assessment Type';
     const assessmentType = document.createElement('p');
     assessmentType.classList.add('assessment-type');
-    assessmentType.textContent = assessment.assessment_type;
+    assessmentType.textContent = assessment.assessment_type.category;
 
     const caNumLabel = document.createElement('p');
     caNumLabel.classList.add('card-label');

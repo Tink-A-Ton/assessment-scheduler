@@ -34,7 +34,7 @@ from App.controllers.assessment import (
     get_assessments_by_course, get_assessment_types, 
     get_assessment_by_id, get_assessment_types, 
     get_assessments_by_level, get_course,
-    add_assessment
+    add_assessment, get_assessment_type_by_id
 )
 from App.controllers.initialize import parse_date, parse_time
 from App.models.user import User
@@ -70,7 +70,7 @@ def get_calendar_page():
     # Format assessments for calendar js - registered courses
     staff_assessments = []
     for assessment in all_assessments:
-        assessment_json = assessment.to_json()
+        assessment_json = format_assessment(assessment=assessment)
         staff_assessments.append(assessment_json)
 
     # Get assessments for all other courses (for filters)
@@ -82,7 +82,7 @@ def get_calendar_page():
     assessments = []
     for assessment in other_assessments:
         if not assessment.clash_detected:
-            assessment_json: dict = assessment.to_json()
+            assessment_json: dict = format_assessment(assessment=assessment)
             assessments.append(assessment_json)
     # Ensure courses, staff_courses, and assessments are not empty
     if not courses:
@@ -257,7 +257,7 @@ def get_assessments_page():
     assessments = []
     for course in registered_courses:
         for assessment in get_assessments_by_course(course.course_code):
-            assessment_json = assessment.to_json()
+            assessment_json = format_assessment(assessment=assessment)
             assessments.append(assessment_json)
     registered_course_codes: list[Course] = [course.course_code for course in registered_courses]
     print(assessments)
@@ -400,3 +400,10 @@ def changePassword():
             db.session.commit()
 
     return render_template("settings.html")
+
+def format_assessment(assessment: CourseAssessment) -> dict:
+    assessment_type: AssessmentType | None = get_assessment_type_by_id(assessment.assessment_type)
+    assessment_json: dict = assessment.to_json()
+    if assessment_type:
+        assessment_json["assessment_type"] = assessment_type.to_json()
+    return assessment_json
