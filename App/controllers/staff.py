@@ -1,4 +1,4 @@
-from App.models import Staff
+from App.models import Staff, Course
 from App.database import db
 from sqlalchemy.exc import SQLAlchemyError
 from App.models.courseInstructor import CourseInstructor
@@ -28,6 +28,9 @@ def add_course_instructor(staff_id, course_code) -> CourseInstructor:
     return instructor
 
 
-def get_registered_courses(staff_id):
-    course_listing = CourseInstructor.query.filter_by(staff_id=staff_id).all()
-    return course_listing
+def get_registered_courses(staff_id) -> list[Course]:
+    course_listing: list[CourseInstructor] = CourseInstructor.query.filter_by(staff_id=staff_id).all()
+    instructor_courses: list[Course] = []
+    for listing in course_listing:
+        instructor_courses.append(Course.query.get(listing.course_code))
+    return instructor_courses
