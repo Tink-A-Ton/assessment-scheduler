@@ -1,10 +1,7 @@
 # Assessment Scheduler App #
 
 ### Collaborators: ###
-* Ashley Jacob
-* Vanessa Aubin
-* Victor Solano
-* Luc-Aidan Roberts
+* TINK-A-TON
 
 ### Dependencies & Tools: ###
 * pip3
