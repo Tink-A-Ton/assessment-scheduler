@@ -1,4 +1,4 @@
 from .staff import *
 from .course import *
-from .courseAssessment import *
+from .Assessment import *
 from .semester import *
