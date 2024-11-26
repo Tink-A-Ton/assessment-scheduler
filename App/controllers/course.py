@@ -22,7 +22,6 @@ def edit_course(course_code: str, semester_id: int, course_title: str, level: in
         existing_course.semester_id = semester_id
         existing_course.course_title = course_title
         existing_course.level = level
-        db.session.add(existing_course)
         db.session.commit()
         return existing_course
     return None    

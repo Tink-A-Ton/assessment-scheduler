@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 import os, csv
 from datetime import datetime
 from App.models.course import Course
-from App.controllers.course import add_course, get_all_courses, get_course, delete_course
+from App.controllers.course import add_course, get_all_courses, get_course, delete_course, edit_course
 from App.controllers.semester import add_sem
 from App.controllers.assessment import get_assessment_by_id
 from flask_jwt_extended import get_jwt_identity
@@ -118,7 +118,7 @@ def add_course_action():
         numAssessments = request.form.get("numAssessments")
 
         course = add_course(
-            course_code, title, description, level, semester, numAssessments
+            course_code=course_code, course_title=title, level=level, semester=semester
         )
 
         # Redirect to view course listings!
@@ -138,16 +138,16 @@ def get_update_course(course_code):
 @jwt_required(Admin)
 def update_course():
     if request.method == "POST":
-        course_code = request.form.get("code")
-        title = request.form.get("title")
-        description = request.form.get("description")
-        level = request.form.get("level")
-        semester = request.form.get("semester")
-        num_assessments = request.form.get("assessment")
+        course_code: str | None = request.form.get("code")
+        title: str | None = request.form.get("title")
+        description: str | None = request.form.get("description")
+        level: str | None = request.form.get("level")
+        semester: str | None = request.form.get("semester")
+        num_assessments: str | None = request.form.get("assessment")
         # programme = request.form.get('programme')
 
         delete_course(course_code=course_code)
-        add_course(course_code=course_code,title=title, level=level, semester=semester)
+        edit_course(course_code=course_code, course_title=title, level=level, semester_id=semester)
         flash("Course Updated Successfully!")
 
     # Redirect to view course listings!
