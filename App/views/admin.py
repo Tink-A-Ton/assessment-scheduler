@@ -7,7 +7,7 @@ import os, csv
 from datetime import datetime
 from App.models.course import Course
 from App.controllers.course import add_course, get_all_courses, get_course, delete_course, edit_course
-from App.controllers.semester import add_sem
+from App.controllers.semester import add_semester
 from App.controllers.assessment import get_assessment_by_id
 from flask_jwt_extended import get_jwt_identity
 
@@ -40,52 +40,40 @@ def index():
 @admin_views.route("/newSemester", methods=["POST"])
 @jwt_required(Admin)
 def new_semester_action():
-    if request.method == "POST":
-        semBegins = request.form.get("teachingBegins")
-        semEnds = request.form.get("teachingEnds")
-        semChoice = request.form.get("semester")
-        maxAssessments = request.form.get(
-            "maxAssessments"
-        )  # used for class detection feature
-        add_sem(semBegins, semEnds, semChoice, maxAssessments)
-
-        # Return course upload page to upload cvs file for courses offered that semester
-        return render_template("uploadFiles.html")
+    semBegins = request.form.get("teachingBegins")
+    semEnds = request.form.get("teachingEnds")
+    semChoice = request.form.get("semester")
+    maxAssessments = request.form.get(
+        "maxAssessments"
+    )
+    add_semester(semBegins, semEnds, semChoice, maxAssessments)
+    return render_template("uploadFiles.html")
 
 
 # Gets csv file with course listings, parses it to store course data and stores it in application
 @admin_views.route("/uploadcourse", methods=["POST"])
 @jwt_required(Admin)
 def upload_course_file():
-    if request.method == "POST":
-        file = request.files["file"]
+    file = request.files["file"]
 
-        # Check if file is present
-        if file.filename == "":
-            message = "No file selected!"
-            return render_template("uploadFiles.html", message=message)
-        else:
-            # Secure filename
-            filename = secure_filename(file.filename)
-
-            # Save file to uploads folder
-            file.save(os.path.join("App/uploads", filename))
-
-            # Retrieves course details from file and stores it in database ie. store course info
-            fpath = "App/uploads/" + filename
-            with open(fpath, "r") as file:
-                reader = csv.DictReader(file)
-                for row in reader:
-                    # create object
-                    course: Course = add_course(
-                        course_code=row["Course Code"],
-                        course_title=row["Course Title"],
-                        level=int(row["Level"]),
-                        semester=int(row["Semester"]),
-                    )
-
-            # Redirect to view course listings!
-            return redirect(url_for("admin_views.get_courses"))
+    # Check if file is present
+    if file.filename == "":
+        message = "No file selected!"
+        return render_template("uploadFiles.html", message=message)
+    else:
+        filename = secure_filename(file.filename)
+        file.save(os.path.join("App/uploads", filename))
+        fpath = "App/uploads/" + filename
+        with open(fpath, "r") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                add_course(
+                    course_code=row["Course Code"],
+                    course_title=row["Course Title"],
+                    level=int(row["Level"]),
+                    semester=int(row["Semester"]),
+                )
+    return redirect(url_for("admin_views.get_courses"))
 
 
 # Pull course list from database
@@ -108,21 +96,20 @@ def get_new_course():
 @admin_views.route("/addNewCourse", methods=["POST"])
 @jwt_required(Admin)
 def add_course_action():
-    if request.method == "POST":
-        course_code = request.form.get("course_code")
-        title = request.form.get("title")
-        description = request.form.get("description")
-        data = request.form
-        level = request.form.get("level")
-        semester = request.form.get("semester")
-        numAssessments = request.form.get("numAssessments")
+    course_code = request.form.get("course_code")
+    title = request.form.get("title")
+    description = request.form.get("description")
+    data = request.form
+    level = request.form.get("level")
+    semester = request.form.get("semester")
+    numAssessments = request.form.get("numAssessments")
 
-        course = add_course(
-            course_code=course_code, course_title=title, level=level, semester=semester
-        )
+    course = add_course(
+        course_code=course_code, course_title=title, level=level, semester=semester
+    )
 
-        # Redirect to view course listings!
-        return redirect(url_for("admin_views.get_courses"))
+    # Redirect to view course listings!
+    return redirect(url_for("admin_views.get_courses"))
 
 
 # Gets Update Course Page
@@ -137,18 +124,17 @@ def get_update_course(course_code):
 @admin_views.route("/updateCourse", methods=["POST"])
 @jwt_required(Admin)
 def update_course():
-    if request.method == "POST":
-        course_code: str | None = request.form.get("code")
-        title: str | None = request.form.get("title")
-        description: str | None = request.form.get("description")
-        level: str | None = request.form.get("level")
-        semester: str | None = request.form.get("semester")
-        num_assessments: str | None = request.form.get("assessment")
-        # programme = request.form.get('programme')
+    course_code: str | None = request.form.get("code")
+    title: str | None = request.form.get("title")
+    description: str | None = request.form.get("description")
+    level: str | None = request.form.get("level")
+    semester: str | None = request.form.get("semester")
+    num_assessments: str | None = request.form.get("assessment")
+    # programme = request.form.get('programme')
 
-        delete_course(course_code=course_code)
-        edit_course(course_code=course_code, course_title=title, level=level, semester_id=semester)
-        flash("Course Updated Successfully!")
+    delete_course(course_code=course_code)
+    edit_course(course_code=course_code, course_title=title, level=level, semester_id=semester)
+    flash("Course Updated Successfully!")
 
     # Redirect to view course listings!
     return redirect(url_for("admin_views.get_courses"))
