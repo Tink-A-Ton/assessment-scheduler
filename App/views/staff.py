@@ -19,7 +19,7 @@ from flask_jwt_extended import current_user as jwt_current_user, get_jwt_identit
 from flask_jwt_extended import jwt_required
 from datetime import date, timedelta
 import time
-from App.models.assessment import Assessment
+from App.models.assessmentType import AssessmentType
 from App.models.course import Course
 from App.models.courseAssessment import CourseAssessment
 from App.models.staff import Staff
@@ -141,11 +141,11 @@ def update_calendar_page():
                 + " - Clash detected! The maximum amount of assessments for this level has been exceeded."
             )
         else:
-            session["message"] = "Assessment modified"
+            session["message"] = "AssessmentType modified"
     return session["message"]
 
 
-def detect_clash(id):
+def detect_clash(id) -> bool:
 #     clash = 0
 #     sem = Semester.query.order_by(
 #         Semester.id.desc()
@@ -153,8 +153,8 @@ def detect_clash(id):
 #     max = sem.maxAssessments
 #     new_assessment = get_assessment_by_id(id)  # get current assessment info
 #     compare_code = new_assessment.courseCode.replace(" ", "")
-#     all_assessments = Assessment.query.filter(
-#         not_(Assessment.a_ID.in_([2, 4, 8]))
+#     all_assessments = AssessmentType.query.filter(
+#         not_(AssessmentType.a_ID.in_([2, 4, 8]))
 #     ).all()
 #     if not new_assessment.endDate:  # dates not set yet
 #         return False
@@ -273,7 +273,7 @@ def get_add_assessments_page():
     user: User | None = get_user_by_email(get_jwt_identity())
     registered_courses: list[Course] = get_registered_courses(user.id)
     registered_course_codes: list[Course] = [course.course_code for course in registered_courses]
-    assessment_types: list[Assessment] = get_assessment_types()
+    assessment_types: list[AssessmentType] = get_assessment_types()
     print("ASSESSMENT TYPES: ", assessment_types)
     return render_template(
         "addAssessment.html", courses=registered_course_codes, assessment_types=assessment_types
@@ -285,7 +285,7 @@ def get_add_assessments_page():
 @jwt_required()
 def add_assessments_action():
     course: str | None = request.form.get("myCourses")
-    asmType: str | None = request.form.get("AssessmentType")
+    type: str | None = request.form.get("AssessmentType")
     startDate: date = parse_date(request.form.get("startDate"))
     endDate: date = parse_date(request.form.get("endDate"))
     startTime = parse_time(request.form.get("startTime"))
@@ -298,12 +298,12 @@ def add_assessments_action():
         endTime = None
     print(course)
     if add_assessment(
-        course_code=course, category=asmType, 
+        course_code=course, category=type, 
         start_date=startDate, end_date=endDate, 
         start_time=startTime, end_time=endTime,
         clash_detected=False
     ):
-        flash("Assessment created !")
+        flash("AssessmentType created !")
     # if newAsm.startDate:
     #     clash = detect_clash(newAsm.id)
     #     if clash:
@@ -320,7 +320,7 @@ def add_assessments_action():
 # Modify selected assessment
 @staff_views.route("/modifyAssessment/<string:id>", methods=["GET"])
 def get_modify_assessments_page(id):
-    allAsm: list[Assessment] = get_assessment_types()  # get assessment types
+    allAsm: list[AssessmentType] = get_assessment_types()  # get assessment types
     assessment: CourseAssessment | None = get_assessment_by_id(id)  # get assessment details
     return render_template("modifyAssessment.html", assessments=allAsm, ca=assessment)
 
@@ -328,35 +328,32 @@ def get_modify_assessments_page(id):
 # Gets Update assessment Page
 @staff_views.route("/modifyAssessment/<string:id>", methods=["POST"])
 def modify_assessment(id):
-    if request.method == "POST":
-        # get form details
-        course = request.form.get("staff_courses")
-        asmType = request.form.get("AssessmentType")
-        startDate = request.form.get("startDate")
-        endDate = request.form.get("endDate")
-        startTime = request.form.get("startTime")
-        endTime = request.form.get("endTime")
+    course = request.form.get("myCourses")
+    type = request.form.get("AssessmentType")
+    start_date = request.form.get("startDate")
+    end_date = request.form.get("endDate")
+    start_time = request.form.get("startTime")
+    end_time = request.form.get("endTime")
 
-        # update record
-        assessment = get_assessment_by_id(id)
-        if assessment:
-            assessment.a_ID = asmType
-            if startDate != "" and endDate != "" and startTime != "" and endTime != "":
-                assessment.startDate = startDate
-                assessment.endDate = endDate
-                assessment.startTime = startTime
-                assessment.endTime = endTime
+    assessment: CourseAssessment | None = get_assessment_by_id(id)
+    if assessment:
+        assessment.assessment_type = type
+        if start_date != "" and end_date != "" and start_time != "" and end_time != "":
+            assessment.start_date = start_date
+            assessment.end_date = end_date
+            assessment.start_time = start_time
+            assessment.end_time = end_time
 
+        db.session.commit()
+
+        clash = detect_clash(assessment.id)
+        if clash:
+            assessment.clash_detected = True
             db.session.commit()
-
-            clash = detect_clash(assessment.id)
-            if clash:
-                assessment.clashDetected = True
-                db.session.commit()
-                flash(
-                    "Clash detected! The maximum amount of assessments for this level has been exceeded."
-                )
-                time.sleep(1)
+            flash(
+                "Clash detected! The maximum amount of assessments for this level has been exceeded."
+            )
+            time.sleep(1)
 
     return redirect(url_for("staff_views.get_assessments_page"))
 

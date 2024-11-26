@@ -2,11 +2,11 @@ from App.database import db
 from App.models import (
     Course,
     Staff,
-    Assessment,
+    AssessmentType,
     Admin,
     Semester,
     CourseInstructor,
-    Assessment,
+    AssessmentType,
 )
 from App.models.courseAssessment import CourseAssessment
 from datetime import datetime, date, time
@@ -100,21 +100,21 @@ def initialize() -> None:
     db.session.add(cs3)
 
     # create assessments
-    asm1 = Assessment(category="Exam")
+    asm1 = AssessmentType(category="Exam")
     db.session.add(asm1)
-    asm2 = Assessment(category="Assignment")
+    asm2 = AssessmentType(category="Assignment")
     db.session.add(asm2)
-    asm3 = Assessment(category="Quiz")
+    asm3 = AssessmentType(category="Quiz")
     db.session.add(asm3)
-    asm4 = Assessment(category="Project")
+    asm4 = AssessmentType(category="Project")
     db.session.add(asm4)
-    asm5 = Assessment(category="Debate")
+    asm5 = AssessmentType(category="Debate")
     db.session.add(asm5)
-    asm6 = Assessment(category="Presentation")
+    asm6 = AssessmentType(category="Presentation")
     db.session.add(asm6)
-    asm7 = Assessment(category="Oral Exam")
+    asm7 = AssessmentType(category="Oral Exam")
     db.session.add(asm7)
-    asm8 = Assessment(category="Participation")
+    asm8 = AssessmentType(category="Participation")
     db.session.add(asm8)
 
     # create course assessments

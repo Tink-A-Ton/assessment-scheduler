@@ -8,7 +8,7 @@ class CourseAssessment(db.Model):
         db.String(9), db.ForeignKey("course.course_code"), nullable=False
     )
     assessment_type: int = db.Column(
-        db.Integer, db.ForeignKey("assessment.id"), nullable=False
+        db.Integer, db.ForeignKey("assessment_type.id"), nullable=False
     )
     start_date: date = db.Column(db.Date, nullable=True)
     end_date: date = db.Column(db.Date, nullable=True)

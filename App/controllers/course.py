@@ -1,5 +1,4 @@
 from App.models import Course
-from App.models import Assessment
 from App.database import db
 
 def add_course(course_code: str, course_title: str, level: int, semester: int) -> bool:

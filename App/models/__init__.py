@@ -3,7 +3,7 @@ from .admin import Admin
 from .staff import Staff
 from .course import Course
 from .programme import Programme
-from .assessment import Assessment
+from .assessmentType import AssessmentType
 from .courseInstructor import CourseInstructor
 from .courseProgramme import CourseProgramme
 from .semester import Semester

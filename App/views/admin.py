@@ -11,6 +11,8 @@ from App.controllers.semester import add_sem
 from App.controllers.assessment import get_assessment_by_id
 from flask_jwt_extended import get_jwt_identity
 
+from App.models.courseAssessment import CourseAssessment
+
 admin_views = Blueprint("admin_views", __name__, template_folder="../templates")
 
 
@@ -141,11 +143,11 @@ def update_course():
         description = request.form.get("description")
         level = request.form.get("level")
         semester = request.form.get("semester")
-        numAssessments = request.form.get("assessment")
+        num_assessments = request.form.get("assessment")
         # programme = request.form.get('programme')
 
         delete_course(course_code=course_code)
-        add_course(course_code, title, description, level, semester, numAssessments)
+        add_course(course_code=course_code,title=title, level=level, semester=semester)
         flash("Course Updated Successfully!")
 
     # Redirect to view course listings!
@@ -191,9 +193,9 @@ def delete_course_action(course_code):
 @admin_views.route("/acceptOverride/<int:assessment_id>", methods=["POST"])
 @jwt_required(Admin)
 def accept_override(assessment_id):
-    assessment = get_assessment_by_id(assessment_id)
+    assessment: CourseAssessment | None = get_assessment_by_id(assessment_id)
     if assessment:
-        assessment.clashDetected = False
+        assessment.clash_detected = False
         db.session.commit()
         print("Accepted override.")
     return redirect(url_for("admin_views.get_clashes_page"))
@@ -202,13 +204,13 @@ def accept_override(assessment_id):
 @admin_views.route("/rejectOverride/<int:assessment_id>", methods=["POST"])
 @jwt_required(Admin)
 def reject_override(assessment_id):
-    assessment = get_assessment_by_id(assessment_id)
+    assessment: CourseAssessment | None = get_assessment_by_id(assessment_id)
     if assessment:
-        assessment.clashDetected = False
-        assessment.startDate = None
-        assessment.endDate = None
-        assessment.startTime = None
-        assessment.endTime = None
+        assessment.clash_detected = False
+        assessment.start_date = None
+        assessment.end_date = None
+        assessment.start_time = None
+        assessment.end_time = None
         db.session.commit()
         print("Rejected override.")
     return redirect(url_for("admin_views.get_clashes_page"))

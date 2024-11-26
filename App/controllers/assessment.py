@@ -1,4 +1,4 @@
-from App.models import CourseAssessment, Assessment
+from App.models import CourseAssessment, AssessmentType
 from App.models import Course
 from App.database import db
 from datetime import date, time
@@ -23,15 +23,15 @@ def add_assessment(course_code: str, start_date: date, end_date: date,
     db.session.commit()
     return True
 
-def get_assessment_types() -> list[Assessment]:
-    return Assessment.query.all()
+def get_assessment_types() -> list[AssessmentType]:
+    return AssessmentType.query.all()
 
 def get_assessment_type_by_id(id: int) -> str | None:
-    assessment = Assessment.query.get(id)
+    assessment = AssessmentType.query.get(id)
     return assessment.category.name
 
-def get_assessment_type_by_name(type: str) -> Assessment | None:
-    assessment: Assessment = Assessment.query.filter_by(category=type).first()
+def get_assessment_type_by_name(type: str) -> AssessmentType | None:
+    assessment: AssessmentType = AssessmentType.query.filter_by(category=type).first()
     return assessment
 
 def get_assessment_by_id(id: int) -> CourseAssessment | None:

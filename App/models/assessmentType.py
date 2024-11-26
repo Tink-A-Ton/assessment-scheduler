@@ -13,7 +13,7 @@ class Category(enum.Enum):
     PARTICIPATION = "Participation"
 
 
-class Assessment(db.Model):
+class AssessmentType(db.Model):
     id: int = db.Column(
         db.Integer, primary_key=True, nullable=False, autoincrement=True
     )
