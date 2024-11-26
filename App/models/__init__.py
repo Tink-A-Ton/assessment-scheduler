@@ -7,3 +7,4 @@ from .assessment import Assessment
 from .courseInstructor import CourseInstructor
 from .courseProgramme import CourseProgramme
 from .semester import Semester
+from .courseAssessment import CourseAssessment

@@ -39,9 +39,9 @@ class CourseAssessment(db.Model):
             "id": self.id,
             "course_code": self.course_code,
             "assessment_id": self.assessment_id,
-            "start_date": self.start_date,
-            "end_date": self.end_date,
-            "start_time": self.start_time,
-            "end_time": self.end_time,
+            "start_date": self.start_date.isoformat() if self.start_date else None,
+            "end_date": self.end_date.isoformat() if self.end_date else None,
+            "start_time": self.start_time.isoformat() if self.start_time else None,
+            "end_time": self.end_time.isoformat() if self.end_time else None,
             "clash_detected": self.clash_detected,
         }

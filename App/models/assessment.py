@@ -20,7 +20,7 @@ class Assessment(db.Model):
     category = db.Column(db.Enum(Category), nullable=False)
 
     def __init__(self, category) -> None:
-        self.category: Category = category
+        self.category = Category(category)
 
     def to_json(self) -> dict[str, int | Category]:
         return {"id": self.id, "category": self.category}
