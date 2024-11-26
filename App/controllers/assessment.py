@@ -18,6 +18,8 @@ def get_assessment_type(id: int) -> str | None:
     assessment = Assessment.query.filter_by(id=id).first()
     return assessment.category.name
 
+def get_assessment_by_id(id: int) -> Assessment | None:
+    return Assessment.query.get(id)
 
 def get_course(assessment_id: int) -> Course | None:
     assessment = Assessment.query.filter_by(id = id)
