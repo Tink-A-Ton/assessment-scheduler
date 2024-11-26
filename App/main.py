@@ -19,13 +19,13 @@ from App.controllers.auth import setup_flask_login, setup_jwt
 from App.database import init_db
 from App.config import config
 
-# from App.views import views
+from App.views import views
 
 
 def add_views(app):
     pass
-    # for view in views:
-    # app.register_blueprint(view)
+    for view in views:
+        app.register_blueprint(view)
 
 
 def configure_app(app, config, overrides):
