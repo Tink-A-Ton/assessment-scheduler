@@ -8,7 +8,7 @@ assessments.forEach(assessment => {
     // Create the card element
     const card = document.createElement('div');
     card.classList.add('card');
-    card.setAttribute('data-course-code', assessment.courseCode);
+    card.setAttribute('data-course-code', assessment.course_code);
     
     // Create elements for course details, assessment info, and actions
     const courseDetails = document.createElement('div');
@@ -31,7 +31,7 @@ assessments.forEach(assessment => {
     courseAssessmentLabel.textContent = 'Assessment Type';
     const assessmentType = document.createElement('p');
     assessmentType.classList.add('assessment-type');
-    assessmentType.textContent = assessment.a_ID;
+    assessmentType.textContent = assessment.assessment_type;
 
     const caNumLabel = document.createElement('p');
     caNumLabel.classList.add('card-label');
@@ -45,35 +45,35 @@ assessments.forEach(assessment => {
     startDateLabel.textContent = 'Start Date';
     const startDate = document.createElement('p');
     startDate.classList.add('start-date');
-    startDate.textContent = assessment.startDate;
+    startDate.textContent = assessment.start_date;
 
     const endDateLabel = document.createElement('p');
     endDateLabel.classList.add('card-label');
     endDateLabel.textContent = 'End Date';
     const endDate = document.createElement('p');
     endDate.classList.add('end-date');
-    endDate.textContent = assessment.endDate;
+    endDate.textContent = assessment.end_date;
     
     const startTimeLabel = document.createElement('p');
     startTimeLabel.classList.add('card-label');
     startTimeLabel.textContent = 'Start Time';
     const startTime = document.createElement('p');
     startTime.classList.add('start-time');
-    startTime.textContent = assessment.startTime;
+    startTime.textContent = assessment.start_time;
 
     const endTimeLabel = document.createElement('p');
     endTimeLabel.classList.add('card-label');
     endTimeLabel.textContent = 'End Time';
     const endTime = document.createElement('p');
     endDate.classList.add('end-time');
-    endTime.textContent = assessment.endTime;
+    endTime.textContent = assessment.end_time;
     
     const clashDetectedLabel = document.createElement('p');
     clashDetectedLabel.classList.add('card-label');
     clashDetectedLabel.textContent = 'Clash Detected';
     const clashDetected = document.createElement('p');
     clashDetected.classList.add('clash-detected');
-    clashDetected.textContent = `${assessment.clashDetected}`;
+    clashDetected.textContent = `${assessment.clash_detected}`;
 
 
     // Create action links (modify and delete can be replaced with actual functionality)

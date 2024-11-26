@@ -25,8 +25,8 @@
             <div class="formInputContainer">
                 <label for="AssessmentType">Assessment Type</label>
                 <select id="dropdownAssessments" name="AssessmentType">
-                    {% for each in assessments %}
-                    <option value="{{each.a_ID}}">{{each.category.value}}</option>
+                    {% for type in assessment_types %}
+                    <option value="{{type.id}}">{{type.category.value}}</option>
                     {% endfor %}
                 </select>
             </div>

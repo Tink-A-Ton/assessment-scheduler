@@ -20,7 +20,7 @@ function handleSearch(e) {
   tableRows.forEach((row) => {
     const courseCode = row.querySelector("td").textContent;
 
-    if (courseCode.includes(searchTerm)) {
+    if (courseCode.toLowerCase().includes(searchTerm)) {
         row.style.display = ""; // Show row if it matches search term
     } else {
         row.style.display = "none"; // Hide row if it doesn't match

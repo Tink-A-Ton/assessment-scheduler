@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
     levelEvents=[];
     const selectedValue = levelFilter.value;
     otherAssessments.forEach((item) => {
-      code=item.courseCode.replace(' ','');
+      code=item.course_code.replace(' ','');
       if (code[4]==selectedValue){
-        if (item.startDate && item.endDate){ //if start and end date exists, apply event to calendar
+        if (item.start_date && item.end_date){ //if start and end date exists, apply event to calendar
           const eventEl = document.createElement('div');
           eventEl.classList.add('fc-event', 'fc-h-event', 'fc-daygrid-event', 'fc-daygrid-block-event');
   
@@ -28,15 +28,15 @@ document.addEventListener('DOMContentLoaded', function() {
           eventEl.style.backgroundColor = '#800080';
           
           const eventObj={
-            id: item.caNum,
-            title: item.courseCode+'-'+item.a_ID,
+            id: item.id,
+            title: item.course_code+'-'+item.assessment_type,
             backgroundColor: '#800080',
             editable: false
           };
   
-          const isFullDay = item.startTime === '00:00:00' && (item.endTime === '23:59:00' || item.endTime === '00:00:00');
-          eventObj.start= item.startDate+'T'+item.startTime;
-          eventObj.end= item.endDate+'T'+item.endTime;
+          const isFullDay = item.start_time === '00:00:00' && (item.end_time === '23:59:00' || item.end_time === '00:00:00');
+          eventObj.start= item.start_date+'T'+item.start_time;
+          eventObj.end= item.end_date+'T'+item.end_time;
           eventObj.allDay= isFullDay;
           levelEvents.push(eventObj);
         }
@@ -53,8 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
     courseEvents=[];
     const selectedValue = courseFilter.value;
     otherAssessments.forEach((item) => {
-      if (item.courseCode==selectedValue){
-        if (item.startDate && item.endDate){ //if start and end date exists, apply event to calendar
+      if (item.course_code==selectedValue){
+        if (item.start_date && item.end_date){ //if start and end date exists, apply event to calendar
           const eventEl = document.createElement('div');
           eventEl.classList.add('fc-event', 'fc-h-event', 'fc-daygrid-event', 'fc-daygrid-block-event');
   
@@ -62,15 +62,15 @@ document.addEventListener('DOMContentLoaded', function() {
           eventEl.style.backgroundColor = '#800080';
           
           const eventObj={
-            id: item.caNum,
-            title: item.courseCode+'-'+item.a_ID,
+            id: item.id,
+            title: item.course_code+'-'+item.assessment_type,
             backgroundColor: '#800080',
             editable: false
           };
   
-          const isFullDay = item.startTime === '00:00:00' && (item.endTime === '23:59:00' || item.endTime === '00:00:00');
-          eventObj.start= item.startDate+'T'+item.startTime;
-          eventObj.end= item.endDate+'T'+item.endTime;
+          const isFullDay = item.start_time === '00:00:00' && (item.end_time === '23:59:00' || item.end_time === '00:00:00');
+          eventObj.start= item.start_date+'T'+item.start_time;
+          eventObj.end= item.end_date+'T'+item.end_time;
           eventObj.allDay= isFullDay;
           courseEvents.push(eventObj);
         }
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
     courseCard.classList.add('course-card'); // Add styling for the course card     
 
     const title = document.createElement('h3');
-    title.textContent = course;
+    title.textContent = course.course_code;
     courseCard.appendChild(title);
 
     // Create a container for events within this course
@@ -97,35 +97,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Loop through each assessment for the course and create an event element
     assessments.forEach((a) => {
-      if (a.courseCode==course){
+      if (a.course_code==course.course_code){
         const eventEl = document.createElement('div');
         eventEl.classList.add('fc-event', 'fc-h-event', 'fc-daygrid-event', 'fc-daygrid-block-event');
 
-        const typeOfAssessment = getTypeOfAssessment(a.a_ID);
+        const typeOfAssessment = getTypeOfAssessment(a.assessment_type);
         var color = colors[typeOfAssessment];
-        if(a.clashDetected){
+        if(a.clash_detected){
           color=colors['Pending'];
         }
         eventEl.dataset.color = color;
         eventEl.style.backgroundColor = color;
         
         const eventObj={
-          id: a.caNum,
-          title: course+'-'+a.a_ID,
+          id: a.id,
+          title: course+'-'+a.assessment_type,
           backgroundColor: color
         };
 
 
-        if (a.startDate && a.endDate){ //if start and end date exists, apply event to calendar
-          const isFullDay = a.startTime === '00:00:00' && (a.endTime === '23:59:00' || a.endTime === '00:00:00');
-          eventObj.start= a.startDate+'T'+a.startTime;
-          eventObj.end= a.endDate+'T'+a.endTime;
+        if (a.start_date && a.end_date){ //if start and end date exists, apply event to calendar
+          const isFullDay = a.start_time === '00:00:00' && (a.end_time === '23:59:00' || a.end_time === '00:00:00');
+          eventObj.start= a.start_date+'T'+a.start_time;
+          eventObj.end= a.end_date+'T'+a.end_time;
           eventObj.allDay= isFullDay;
           calendarEvents.push(eventObj);
         }
         else{
-          eventEl.setAttribute('data-event-id',a.caNum);
-          eventEl.innerHTML = '<div class="fc-event-main">' + course + '-' + a.a_ID + '</div>';
+          eventEl.setAttribute('data-event-id',a.id);
+          eventEl.innerHTML = '<div class="fc-event-main">' + course + '-' + a.assessment_type + '</div>';
           eventsContainer.appendChild(eventEl);
         }
 
@@ -207,10 +207,10 @@ function toEditItem(event){
       method:'POST',
       data:{
         id:id,
-        startDate:sDate,
-        endDate:eDate,
-        startTime:sTime,
-        endTime:eTime
+        start_date:sDate,
+        end_date:eDate,
+        start_time:sTime,
+        end_time:eTime
       },
       success: function(response) {
         location.reload(); // Reload the page
@@ -239,10 +239,10 @@ function newItem(event){
     method:'POST',
     data:{
       id:id,
-      startDate:sDate,
-      endDate:eDate,
-      startTime:sTime,
-      endTime:eTime
+      start_date:sDate,
+      end_date:eDate,
+      start_time:sTime,
+      end_time:eTime
     },
       success: function(response) {
         location.reload(); // Reload the page
