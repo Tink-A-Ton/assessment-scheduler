@@ -5,7 +5,6 @@ from App.database import db
 
 class User(db.Model):
     __abstract__ = True
-
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
     email: Mapped[str] = mapped_column(db.String(120), nullable=False, unique=True)
     password: Mapped[str] = mapped_column(db.String(120), nullable=False)

@@ -11,7 +11,15 @@ class Staff(User):
     position: Mapped[Position] = mapped_column(db.Enum(Position), nullable=False)
     courses = relationship("CourseInstructor", backref="staff", lazy="joined")
 
-    def __init__(self, id, email, password, first_name, last_name, position) -> None:
+    def __init__(
+        self,
+        id: int,
+        email: str,
+        password: str,
+        first_name: str,
+        last_name: str,
+        position,
+    ) -> None:
         super().__init__(id, email, password)
         self.first_name = first_name
         self.last_name = last_name
