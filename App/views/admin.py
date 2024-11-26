@@ -18,7 +18,7 @@ from App.controllers.semester import(
     add_sem
 )
 
-from App.controllers.courseAssessment import(
+from App.controllers.Assessment import(
     get_clashes,
     get_CourseAsm_id
 )
