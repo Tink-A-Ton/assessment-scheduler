@@ -6,7 +6,7 @@ from App.main import create_app
 from App.models import Staff, Course, Assessment, Programme, Admin
 from App.controllers import Course
 
-from App.controllers.course import add_Course
+from App.controllers.course import add_course
 
 # This commands file allow you to create convenient CLI commands for testing controllers!!
 app = create_app()
