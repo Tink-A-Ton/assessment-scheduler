@@ -19,8 +19,9 @@
       
       <select id="courses">
         <option value="My Courses">My Courses</option>
+        <option value="all">ALL</option>
         {% for course in courses %}
-          <option value="{{course}}">{{course.course_code}}</option>
+          <option value="{{course.course_code}}">{{course.course_code}}</option>
         {% endfor %}
         </select>
       
