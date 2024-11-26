@@ -90,6 +90,7 @@ def initialize() -> None:
         position="Part-Time Tutor",
         password="password",
     )
+    db.session.add(staff)
 
     # assign staff to courses
     cs1 = CourseInstructor(staff_id=11111111, course_code="COMP1700")
@@ -102,20 +103,6 @@ def initialize() -> None:
     # create assessments
     asm1 = AssessmentType(category="Exam")
     db.session.add(asm1)
-    asm2 = AssessmentType(category="Assignment")
-    db.session.add(asm2)
-    asm3 = AssessmentType(category="Quiz")
-    db.session.add(asm3)
-    asm4 = AssessmentType(category="Project")
-    db.session.add(asm4)
-    asm5 = AssessmentType(category="Debate")
-    db.session.add(asm5)
-    asm6 = AssessmentType(category="Presentation")
-    db.session.add(asm6)
-    asm7 = AssessmentType(category="Oral Exam")
-    db.session.add(asm7)
-    asm8 = AssessmentType(category="Participation")
-    db.session.add(asm8)
 
     # create course assessments
 
@@ -130,7 +117,7 @@ def initialize() -> None:
     )
     ca2 = CourseAssessment(
         course_code="COMP1700",
-        assessment_type=3,
+        assessment_type=1,
         start_date=parse_date("2024-11-09"),
         end_date=parse_date("2024-11-09"),
         start_time=parse_time("00:00"),
@@ -139,7 +126,7 @@ def initialize() -> None:
     )
     ca3 = CourseAssessment(
         course_code="COMP1700",
-        assessment_type=6,
+        assessment_type=1,
         start_date=parse_date("2024-11-10"),
         end_date=parse_date("2024-11-10"),
         start_time=parse_time("09:00"),
@@ -157,7 +144,7 @@ def initialize() -> None:
     )
     ca5 = CourseAssessment(
         course_code="COMP2700",
-        assessment_type=3,
+        assessment_type=1,
         start_date=parse_date("2024-11-16"),
         end_date=parse_date("2024-11-16"),
         start_time=parse_time("00:00"),
@@ -166,7 +153,7 @@ def initialize() -> None:
     )
     ca6 = CourseAssessment(
         course_code="COMP2700",
-        assessment_type=6,
+        assessment_type=1,
         start_date=parse_date("2024-11-17"),
         end_date=parse_date("2024-11-17"),
         start_time=parse_time("09:00"),
@@ -184,7 +171,7 @@ def initialize() -> None:
     )
     ca8 = CourseAssessment(
         course_code="COMP3700",
-        assessment_type=3,
+        assessment_type=1,
         start_date=parse_date("2024-11-23"),
         end_date=parse_date("2024-11-23"),
         start_time=parse_time("00:00"),
@@ -193,7 +180,7 @@ def initialize() -> None:
     )
     ca9 = CourseAssessment(
         course_code="COMP3700",
-        assessment_type=6,
+        assessment_type=1,
         start_date=parse_date("2024-11-24"),
         end_date=parse_date("2024-11-24"),
         start_time=parse_time("09:00"),

@@ -4,13 +4,13 @@ import enum
 
 class Category(enum.Enum):
     EXAM = "Exam"
-    ASSIGNMENT = "Assignment"
-    QUIZ = "Quiz"
-    PROJECT = "Project"
-    DEBATE = "Debate"
-    PRESENTATION = "Presentation"
-    ORALEXAM = "Oral Exam"
-    PARTICIPATION = "Participation"
+    # ASSIGNMENT = "Assignment"
+    # QUIZ = "Quiz"
+    # PROJECT = "Project"
+    # DEBATE = "Debate"
+    # PRESENTATION = "Presentation"
+    # ORALEXAM = "Oral Exam"
+    # PARTICIPATION = "Participation"
 
 
 class AssessmentType(db.Model):

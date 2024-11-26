@@ -188,17 +188,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function getAssessmentType(typeId) {
     switch (typeId) {
       case 1:
-        return "Assignment";
-      case 2:
         return "Exam";
-      case 3:
-        return "Quiz";
-      case 4:
-        return "Project";
-      case 5:
-        return "Presentation";
       default:
-        return "Other";
+        return "Exam";
     }
   }
 
