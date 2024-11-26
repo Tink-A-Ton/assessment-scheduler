@@ -5,12 +5,10 @@ $(document).ready(function(){
 const cardContainer = document.getElementById('card_container');
 
 assessments.forEach(assessment => {
-    // Create the card element
     const card = document.createElement('div');
     card.classList.add('card');
     card.setAttribute('data-course-code', assessment.course_code);
     
-    // Create elements for course details, assessment info, and actions
     const courseDetails = document.createElement('div');
     courseDetails.classList.add('course-details');
     const assessmentInfo = document.createElement('div');
@@ -18,7 +16,6 @@ assessments.forEach(assessment => {
     const actions = document.createElement('div');
     actions.classList.add('actions');
 
-    // Create content for course details
     const courseCodeLabel = document.createElement('p');
     courseCodeLabel.classList.add('card-label');
     courseCodeLabel.textContent = 'Course Code';
@@ -76,7 +73,6 @@ assessments.forEach(assessment => {
     clashDetected.textContent = `${assessment.clash_detected}`;
 
 
-    // Create action links (modify and delete can be replaced with actual functionality)
     const modifyLink = document.createElement('button');
     modifyLink.textContent = 'Modify';
     modifyLink.addEventListener('click', function() {
@@ -90,13 +86,10 @@ assessments.forEach(assessment => {
     });
  
 
-    // Append elements to their respective parents
     courseDetails.appendChild(courseCodeLabel);
     courseDetails.appendChild(courseCode);
     assessmentInfo.appendChild(courseAssessmentLabel);
     assessmentInfo.appendChild(assessmentType);
-    // assessmentInfo.appendChild(caNumLabel);
-    // assessmentInfo.appendChild(caNum);
     assessmentInfo.appendChild(startDateLabel);
     assessmentInfo.appendChild(startDate);
     assessmentInfo.appendChild(endDateLabel);
@@ -113,6 +106,5 @@ assessments.forEach(assessment => {
     card.appendChild(assessmentInfo);
     card.appendChild(actions);
     
-    // Append the card to the card container
     cardContainer.appendChild(card);
 });
