@@ -1,7 +1,7 @@
 from App.models import Staff
 from App.database import db
 from sqlalchemy.exc import SQLAlchemyError
-from models.courseInstructor import CourseInstructor
+from App.models.courseInstructor import CourseInstructor
 
 
 def create_staff(id, email, password, first_name, last_name, position) -> Staff | None:
