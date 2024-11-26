@@ -12,7 +12,7 @@ def add_assessment(course_code: str, start_date: date, end_date: date,
     if existing_assessment is not None: 
         return False
     new_assessment = CourseAssessment(
-        assessment_id=category, 
+        assessment_type=category, 
         course_code=course_code, 
         start_date=start_date,
         end_date=end_date,
@@ -37,7 +37,7 @@ def get_assessment_type_by_name(type: str) -> Assessment | None:
 def get_assessment_by_id(id: int) -> CourseAssessment | None:
     return CourseAssessment.query.get(id)
 
-def get_course(assessment_id: int) -> Course | None:
+def get_course(assessment_type: int) -> Course | None:
     assessment = CourseAssessment.query.get(id)
     if assessment:
         course: Course = Course.query.get(assessment.course_code)

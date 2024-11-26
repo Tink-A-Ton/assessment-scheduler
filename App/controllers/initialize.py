@@ -121,7 +121,7 @@ def initialize() -> None:
 
     ca1 = CourseAssessment(
         course_code="COMP1700",
-        assessment_id=1,
+        assessment_type=1,
         start_date=parse_date("2024-04-08"),
         end_date=parse_date("2024-04-08"),
         start_time=parse_time("08:00"),
@@ -130,7 +130,7 @@ def initialize() -> None:
     )
     ca2 = CourseAssessment(
         course_code="COMP1700",
-        assessment_id=3,
+        assessment_type=3,
         start_date=parse_date("2024-04-09"),
         end_date=parse_date("2024-04-09"),
         start_time=parse_time("00:00"),
@@ -139,7 +139,7 @@ def initialize() -> None:
     )
     ca3 = CourseAssessment(
         course_code="COMP1700",
-        assessment_id=6,
+        assessment_type=6,
         start_date=parse_date("2024-04-10"),
         end_date=parse_date("2024-04-10"),
         start_time=parse_time("09:00"),
@@ -148,7 +148,7 @@ def initialize() -> None:
     )
     ca4 = CourseAssessment(
         course_code="COMP2700",
-        assessment_id=1,
+        assessment_type=1,
         start_date=parse_date("2024-04-15"),
         end_date=parse_date("2024-04-15"),
         start_time=parse_time("08:00"),
@@ -157,7 +157,7 @@ def initialize() -> None:
     )
     ca5 = CourseAssessment(
         course_code="COMP2700",
-        assessment_id=3,
+        assessment_type=3,
         start_date=parse_date("2024-04-16"),
         end_date=parse_date("2024-04-16"),
         start_time=parse_time("00:00"),
@@ -166,7 +166,7 @@ def initialize() -> None:
     )
     ca6 = CourseAssessment(
         course_code="COMP2700",
-        assessment_id=6,
+        assessment_type=6,
         start_date=parse_date("2024-04-17"),
         end_date=parse_date("2024-04-17"),
         start_time=parse_time("09:00"),
@@ -175,7 +175,7 @@ def initialize() -> None:
     )
     ca7 = CourseAssessment(
         course_code="COMP3700",
-        assessment_id=1,
+        assessment_type=1,
         start_date=parse_date("2024-04-22"),
         end_date=parse_date("2024-04-22"),
         start_time=parse_time("08:00"),
@@ -184,7 +184,7 @@ def initialize() -> None:
     )
     ca8 = CourseAssessment(
         course_code="COMP3700",
-        assessment_id=3,
+        assessment_type=3,
         start_date=parse_date("2024-04-23"),
         end_date=parse_date("2024-04-23"),
         start_time=parse_time("00:00"),
@@ -193,7 +193,7 @@ def initialize() -> None:
     )
     ca9 = CourseAssessment(
         course_code="COMP3700",
-        assessment_id=6,
+        assessment_type=6,
         start_date=parse_date("2024-04-24"),
         end_date=parse_date("2024-04-24"),
         start_time=parse_time("09:00"),

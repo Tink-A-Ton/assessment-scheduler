@@ -39,7 +39,7 @@ def get_courses_by_level(level: int) -> list[Course] | None:
 
 
 def delete_course(course_code: str) -> bool:
-    course_to_delete = Course.query.filter_by(course_code=course_code).first()
+    course_to_delete = Course.query.get(course_code)
     if course_to_delete:
         db.session.delete(course_to_delete)
         db.session.commit()
