@@ -34,6 +34,9 @@ def get_assessment_type_by_name(type: str) -> AssessmentType | None:
     assessment: AssessmentType = AssessmentType.query.filter_by(category=type).first()
     return assessment
 
+def get_assessments() -> list[CourseAssessment]:
+    return CourseAssessment.query.all()
+
 def get_assessment_by_id(id: int) -> CourseAssessment | None:
     return CourseAssessment.query.get(id)
 
@@ -55,7 +58,7 @@ def get_assessments_by_level(level:int)->list[CourseAssessment]:
         assessments.extend(course.assessments)
     return assessments
 
-def delete_assessment(assessment_id: int) -> bool:
+def delete_assessment_by_id(assessment_id: int) -> bool:
     assessment: CourseAssessment | None = get_assessment_by_id(assessment_id)
     if assessment:
         db.session.delete(assessment)
