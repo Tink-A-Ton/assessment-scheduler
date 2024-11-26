@@ -34,7 +34,8 @@ from App.controllers.assessment import (
     get_assessments_by_course, get_assessment_types, 
     get_assessment_by_id, get_assessment_types, 
     get_assessments_by_level, get_course,
-    add_assessment, get_assessment_type_by_id
+    add_assessment, get_assessment_type_by_id,
+    delete_assessment_by_id, get_assessments
 )
 from App.controllers.initialize import parse_date, parse_time
 from App.models.user import User
@@ -52,31 +53,30 @@ def get_signup_page():
 @staff_views.route("/calendar", methods=["GET"])
 @jwt_required()
 def get_calendar_page():
-    id: User | None = get_user(get_jwt_identity())  # gets u_id from email token
+    user: User | None = get_user_by_email(get_jwt_identity())  # gets u_id from email token
     
     all_courses: list[Course] = get_all_courses()
-    staff_courses: list[Course] = get_registered_courses(id)
-    other_courses: list[Course] = [course for course in all_courses if course not in staff_courses]
-
+    registered_courses: list[Course] = get_registered_courses(user.id)
+    other_courses: list[Course] = [course for course in all_courses if course not in registered_courses]
+    staff_courses: list[dict] = [course.to_json() for course in registered_courses]
     staff_assessments: list[dict] = [
         format_assessment(assessment)
-        for course in staff_courses
+        for course in registered_courses
         for assessment in get_assessments_by_course(course.course_code)
     ]
 
     other_assessments: list[dict] = [
         format_assessment(assessment)
-        for course in other_courses
-        for assessment in get_assessments_by_course(course.course_code)
+        for assessment in get_assessments()
         if not assessment.clash_detected
     ]
-
     semester: Semester = Semester.query.order_by(Semester.id.desc()).first()
     semester_details: dict[str, str] = {"start": semester.start_date, "end": semester.end_date}
 
     messages = []
     if "message" in session:
         messages.append(session.pop("message"))
+
     return render_template(
         "index.html",
         courses=other_courses,
@@ -92,10 +92,10 @@ def get_calendar_page():
 @jwt_required()
 def update_calendar_page():
     id = request.form.get("id")
-    startDate = request.form.get("startDate")
-    startTime = request.form.get("startTime")
-    endDate = request.form.get("endDate")
-    endTime = request.form.get("endTime")
+    startDate = parse_date(request.form.get("startDate"))
+    startTime = parse_time(request.form.get("startTime"))
+    endDate = parse_date(request.form.get("endDate"))
+    endTime = parse_time(request.form.get("endTime"))
 
     assessment: CourseAssessment | None = get_assessment_by_id(id)
     if assessment:
@@ -331,11 +331,10 @@ def modify_assessment(id):
 
 
 # Delete selected assessment
-@staff_views.route("/deleteAssessment/<string:caNum>", methods=["GET"])
-def delete_assessment(caNum):
-    courseAsm = get_assessment_by_id(caNum)  # Gets selected assessment for course
-    delete_assessment(courseAsm)
-    print(caNum, " deleted")
+@staff_views.route("/deleteAssessment/<int:assessment_id>", methods=["GET"])
+def delete_assessment(assessment_id):
+    delete_assessment_by_id(assessment_id=assessment_id)
+    print("Assessment ", assessment_id, " deleted")
     return redirect(url_for("staff_views.get_assessments_page"))
 
 
