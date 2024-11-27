@@ -12,11 +12,11 @@
     <h2>Update Course</h2>   
     <div class="formInputContainer normalLabel">
         <label for="code" class="input-label">Course Code</label>
-        <input type="text" id="code" name="code" value="{{ course.courseCode }}" style="white-space: pre;" readonly>
+        <input type="text" id="code" name="code" value="{{ course.course_code }}" style="white-space: pre;" readonly>
     </div>
     <div class="formInputContainer normalLabel">
         <label for="title" class="input-label">Title</label>
-        <input type="text" id="title" name="title" value="{{ course.courseTitle }}" style="white-space: pre;" readonly>
+        <input type="text" id="title" name="title" value="{{ course.course_title }}" style="white-space: pre;" readonly>
     </div>
     <div class="formInputContainer normalLabel">
         <label class="mainLabel" for="description">Description</label>
@@ -28,7 +28,7 @@
     </div>
     <div class="formInputContainer normalLabel">
         <label for="semester" class="input-label">Semester</label>
-        <input type="text" name="semester" id="semester" value={{course.semester}} readonly>
+        <input type="text" name="semester" id="semester" value={{course.semester_id}} readonly>
     </div>
     <div class="formInputContainer normalLabel">
         <label for="assessment" class="input-label">Number of Assessments</label>

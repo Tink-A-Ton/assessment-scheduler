@@ -21,8 +21,8 @@
               <table id="courseTable">
                 <tbody id="courseTableBody">
                   {% for course in courses %}
-                  <tr class="course-row" data="{{ course.courseCode }}" >
-                    <td>{{course.courseCode }}</td> 
+                  <tr class="course-row" data="{{ course.course_code }}" >
+                    <td>{{course.course_code}}</td> 
                   </tr>
                   {% endfor %}
                 </tbody>
@@ -45,8 +45,7 @@
 
 </div>
 <script>
-  const myCourses = {{ registered|tojson }};
-  console.log(myCourses);
+  const myCourses={{ registered_courses | tojson }};
 </script>
 <script src="../static/js/account.js"></script>
 
