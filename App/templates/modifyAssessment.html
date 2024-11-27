@@ -18,14 +18,6 @@
                 <label for="myCourses">Course</label>
                 <input type="text" value="{{ca.course_code}}" readonly>
             </div>
-            <div class="formInputContainer">
-                <label for="AssessmentType">Assessment Type</label>
-                <select id="dropdownAssessments" name="AssessmentType">
-                    {% for type in assessment_types %}
-                    <option value="{{type.id}}"  {% if ca.a_ID == type.id %}selected{% endif %}>{{type.category.value}}</option>
-                    {% endfor %}
-                </select>
-            </div>
         </div>
         <div class="bottomForm">
             <div class="formSection2">

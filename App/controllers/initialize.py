@@ -2,11 +2,9 @@ from App.database import db
 from App.models import (
     Course,
     Staff,
-    AssessmentType,
     Admin,
     Semester,
     CourseInstructor,
-    AssessmentType,
 )
 from App.models.courseAssessment import CourseAssessment
 from datetime import datetime, date, time
@@ -100,15 +98,8 @@ def initialize() -> None:
     db.session.add(cs2)
     db.session.add(cs3)
 
-    # create assessments
-    asm1 = AssessmentType(category="Exam")
-    db.session.add(asm1)
-
-    # create course assessments
-
     ca1 = CourseAssessment(
         course_code="COMP1700",
-        assessment_type=1,
         start_date=parse_date("2024-11-08"),
         end_date=parse_date("2024-11-08"),
         start_time=parse_time("08:00"),
@@ -117,7 +108,6 @@ def initialize() -> None:
     )
     ca2 = CourseAssessment(
         course_code="COMP1700",
-        assessment_type=1,
         start_date=parse_date("2024-11-09"),
         end_date=parse_date("2024-11-09"),
         start_time=parse_time("00:00"),
@@ -126,7 +116,6 @@ def initialize() -> None:
     )
     ca3 = CourseAssessment(
         course_code="COMP1700",
-        assessment_type=1,
         start_date=parse_date("2024-11-10"),
         end_date=parse_date("2024-11-10"),
         start_time=parse_time("09:00"),
@@ -135,7 +124,6 @@ def initialize() -> None:
     )
     ca4 = CourseAssessment(
         course_code="COMP2700",
-        assessment_type=1,
         start_date=parse_date("2024-11-15"),
         end_date=parse_date("2024-11-15"),
         start_time=parse_time("08:00"),
@@ -144,7 +132,6 @@ def initialize() -> None:
     )
     ca5 = CourseAssessment(
         course_code="COMP2700",
-        assessment_type=1,
         start_date=parse_date("2024-11-16"),
         end_date=parse_date("2024-11-16"),
         start_time=parse_time("00:00"),
@@ -153,7 +140,6 @@ def initialize() -> None:
     )
     ca6 = CourseAssessment(
         course_code="COMP2700",
-        assessment_type=1,
         start_date=parse_date("2024-11-17"),
         end_date=parse_date("2024-11-17"),
         start_time=parse_time("09:00"),
@@ -162,7 +148,6 @@ def initialize() -> None:
     )
     ca7 = CourseAssessment(
         course_code="COMP3700",
-        assessment_type=1,
         start_date=parse_date("2024-11-22"),
         end_date=parse_date("2024-11-22"),
         start_time=parse_time("08:00"),
@@ -171,7 +156,6 @@ def initialize() -> None:
     )
     ca8 = CourseAssessment(
         course_code="COMP3700",
-        assessment_type=1,
         start_date=parse_date("2024-11-23"),
         end_date=parse_date("2024-11-23"),
         start_time=parse_time("00:00"),
@@ -180,7 +164,6 @@ def initialize() -> None:
     )
     ca9 = CourseAssessment(
         course_code="COMP3700",
-        assessment_type=1,
         start_date=parse_date("2024-11-24"),
         end_date=parse_date("2024-11-24"),
         start_time=parse_time("09:00"),
@@ -204,6 +187,7 @@ def initialize() -> None:
 # Helper function to parse date and time strings
 def parse_date(date_str) -> date:
     return datetime.strptime(date_str, "%Y-%m-%d").date()
+
 
 def parse_time(time_str) -> time:
     time_str = time_str[:5]

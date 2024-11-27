@@ -22,14 +22,6 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="formInputContainer">
-                <label for="AssessmentType">Assessment Type</label>
-                <select id="dropdownAssessments" name="AssessmentType">
-                    {% for type in assessment_types %}
-                    <option value="{{type.id}}">{{type.category.value}}</option>
-                    {% endfor %}
-                </select>
-            </div>
         </div>
         <div class="bottomForm">
             <div class="formSection2">

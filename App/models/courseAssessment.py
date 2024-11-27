@@ -7,9 +7,6 @@ class CourseAssessment(db.Model):
     course_code: str = db.Column(
         db.String(9), db.ForeignKey("course.course_code"), nullable=False
     )
-    assessment_type: int = db.Column(
-        db.Integer, db.ForeignKey("assessment_type.id"), nullable=False
-    )
     start_date: date = db.Column(db.Date, nullable=True)
     end_date: date = db.Column(db.Date, nullable=True)
     start_time: time = db.Column(db.Time, nullable=True)
@@ -19,7 +16,6 @@ class CourseAssessment(db.Model):
     def __init__(
         self,
         course_code: str,
-        assessment_type: int,
         start_date: date,
         end_date: date,
         start_time: time,
@@ -27,7 +23,6 @@ class CourseAssessment(db.Model):
         clash_detected: bool,
     ) -> None:
         self.course_code = course_code
-        self.assessment_type = assessment_type
         self.start_date = start_date
         self.end_date = end_date
         self.start_time = start_time
@@ -38,7 +33,6 @@ class CourseAssessment(db.Model):
         return {
             "id": self.id,
             "course_code": self.course_code,
-            "assessment_type": self.assessment_type,
             "start_date": self.start_date.isoformat() if self.start_date else None,
             "end_date": self.end_date.isoformat() if self.end_date else None,
             "start_time": self.start_time.isoformat() if self.start_time else None,

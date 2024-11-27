@@ -6,7 +6,13 @@ from werkzeug.utils import secure_filename
 import os, csv
 from datetime import datetime
 from App.models.course import Course
-from App.controllers.course import add_course, get_all_courses, get_course, delete_course, edit_course
+from App.controllers.course import (
+    add_course,
+    get_all_courses,
+    get_course,
+    delete_course,
+    edit_course,
+)
 from App.controllers.semester import add_semester
 from App.controllers.assessment import get_assessment_by_id
 from flask_jwt_extended import get_jwt_identity
@@ -43,9 +49,7 @@ def new_semester_action():
     semBegins = request.form.get("teachingBegins")
     semEnds = request.form.get("teachingEnds")
     semChoice = request.form.get("semester")
-    maxAssessments = request.form.get(
-        "maxAssessments"
-    )
+    maxAssessments = request.form.get("maxAssessments")
     add_semester(semBegins, semEnds, semChoice, maxAssessments)
     return render_template("uploadFiles.html")
 
@@ -133,7 +137,9 @@ def update_course():
     # programme = request.form.get('programme')
 
     delete_course(course_code=course_code)
-    edit_course(course_code=course_code, course_title=title, level=level, semester_id=semester)
+    edit_course(
+        course_code=course_code, course_title=title, level=level, semester_id=semester
+    )
     flash("Course Updated Successfully!")
 
     # Redirect to view course listings!

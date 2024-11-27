@@ -97,8 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function createEventElement(assessment, course_code, colors) {
-    const typeOfAssessment = getAssessmentType(assessment.assessment_type.id);
-    const color = assessment.clash_detected ? colors.Pending : colors[typeOfAssessment];
+    const color = assessment.clash_detected ? colors.Pending : colors[0];
 
     const eventEl = document.createElement("div");
     eventEl.classList.add(
@@ -110,20 +109,19 @@ document.addEventListener("DOMContentLoaded", function () {
     eventEl.dataset.color = color;
     eventEl.style.backgroundColor = color;
     eventEl.setAttribute("data-event-id", assessment.id);
-    eventEl.innerHTML = '<div class="fc-event-main">' + course_code + '-' + assessment.assessment_type.category + '</div>';
+    eventEl.innerHTML = '<div class="fc-event-main">' + course_code + '</div>';
     return eventEl;
   }
 
   function createEventObject(assessment, colors) {
-    const typeOfAssessment = getAssessmentType(assessment.assessment_type.id);
     const isFullDay =
       assessment.start_time === "00:00" &&
       (assessment.end_time === "23:59" || assessment.end_time === "00:00");
     
     return {
       id: assessment.id,
-      title: `${assessment.course_code}-${typeOfAssessment}`,
-      backgroundColor: colors[typeOfAssessment],
+      title: `${assessment.course_code}-Exam`,
+      backgroundColor: colors[0],
       start: `${assessment.start_date}T${assessment.start_time}`,
       end: `${assessment.end_date}T${assessment.end_time}`,
       allDay: isFullDay,

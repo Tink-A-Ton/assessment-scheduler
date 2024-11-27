@@ -20,23 +20,25 @@ from flask_jwt_extended import current_user as jwt_current_user, get_jwt_identit
 from flask_jwt_extended import jwt_required
 from datetime import date, time, timedelta
 import time
-from App.models.assessmentType import AssessmentType
 from App.models.course import Course
 from App.models.courseAssessment import CourseAssessment
 from App.models.staff import Staff
 from App.models.semester import Semester
 from App.controllers.staff import (
-    get_registered_courses, create_staff,
-    add_course_instructor
+    get_registered_courses,
+    create_staff,
+    add_course_instructor,
 )
 from App.controllers.course import get_all_courses, get_courses_by_level
 from App.controllers.user import get_user, get_user_by_email
 from App.controllers.assessment import (
-    get_assessments_by_course, get_assessment_types, 
-    get_assessment_by_id, get_assessment_types, 
-    get_assessments_by_level, get_course,
-    add_assessment, get_assessment_type_by_id,
-    delete_assessment_by_id, get_assessments
+    get_assessments_by_course,
+    get_assessment_by_id,
+    get_assessments_by_level,
+    get_course,
+    add_assessment,
+    delete_assessment_by_id,
+    get_assessments,
 )
 from App.controllers.initialize import parse_date, parse_time
 from App.models.user import User
@@ -54,11 +56,15 @@ def get_signup_page():
 @staff_views.route("/calendar", methods=["GET"])
 @jwt_required()
 def get_calendar_page():
-    user: User | None = get_user_by_email(get_jwt_identity())  # gets u_id from email token
-    
+    user: User | None = get_user_by_email(
+        get_jwt_identity()
+    )  # gets u_id from email token
+
     all_courses: list[Course] = get_all_courses()
     registered_courses: list[Course] = get_registered_courses(user.id)
-    other_courses: list[Course] = [course for course in all_courses if course not in registered_courses]
+    other_courses: list[Course] = [
+        course for course in all_courses if course not in registered_courses
+    ]
     staff_courses: list[dict] = [course.to_json() for course in registered_courses]
     staff_assessments: list[dict] = [
         format_assessment(assessment)
@@ -72,7 +78,10 @@ def get_calendar_page():
         if not assessment.clash_detected
     ]
     semester: Semester = Semester.query.order_by(Semester.id.desc()).first()
-    semester_details: dict[str, str] = {"start": semester.start_date, "end": semester.end_date}
+    semester_details: dict[str, str] = {
+        "start": semester.start_date,
+        "end": semester.end_date,
+    }
 
     messages = []
     if "message" in session:
@@ -119,48 +128,47 @@ def update_calendar_page():
 
 
 def detect_clash(id) -> bool:
-#     clash = 0
-#     sem = Semester.query.order_by(
-#         Semester.id.desc()
-#     ).first()  # get the weekly max num of assessments allowed per level
-#     max = sem.maxAssessments
-#     new_assessment = get_assessment_by_id(id)  # get current assessment info
-#     compare_code = new_assessment.courseCode.replace(" ", "")
-#     all_assessments = AssessmentType.query.filter(
-#         not_(AssessmentType.a_ID.in_([2, 4, 8]))
-#     ).all()
-#     if not new_assessment.endDate:  # dates not set yet
-#         return False
-#     relevant_assessments = []
-#     for a in all_assessments:
-#         code = a.courseCode.replace(" ", "")
-#         if (code[4] == compare_code[4]) and (
-#             a.id != new_assessment.id
-#         ):  # course are in the same level
-#             if a.startDate is not None:  # assessment has been scheduled
-#                 relevant_assessments.append(a)
+    #     clash = 0
+    #     sem = Semester.query.order_by(
+    #         Semester.id.desc()
+    #     ).first()  # get the weekly max num of assessments allowed per level
+    #     max = sem.maxAssessments
+    #     new_assessment = get_assessment_by_id(id)  # get current assessment info
+    #     compare_code = new_assessment.courseCode.replace(" ", "")
+    #     all_assessments = AssessmentType.query.filter(
+    #         not_(AssessmentType.a_ID.in_([2, 4, 8]))
+    #     ).all()
+    #     if not new_assessment.endDate:  # dates not set yet
+    #         return False
+    #     relevant_assessments = []
+    #     for a in all_assessments:
+    #         code = a.courseCode.replace(" ", "")
+    #         if (code[4] == compare_code[4]) and (
+    #             a.id != new_assessment.id
+    #         ):  # course are in the same level
+    #             if a.startDate is not None:  # assessment has been scheduled
+    #                 relevant_assessments.append(a)
 
-#     sunday, saturday = get_week_range(new_assessment.endDate.isoformat())
-#     for a in relevant_assessments:
-#         dueDate = a.endDate
-#         if sunday <= dueDate <= saturday:
-#             clash = clash + 1
+    #     sunday, saturday = get_week_range(new_assessment.endDate.isoformat())
+    #     for a in relevant_assessments:
+    #         dueDate = a.endDate
+    #         if sunday <= dueDate <= saturday:
+    #             clash = clash + 1
 
-#     return clash >= max
+    #     return clash >= max
 
+    # def get_week_range(iso_date_str):
+    #     date_obj = date.fromisoformat(iso_date_str)
+    #     day_of_week = date_obj.weekday()
 
-# def get_week_range(iso_date_str):
-#     date_obj = date.fromisoformat(iso_date_str)
-#     day_of_week = date_obj.weekday()
+    #     if day_of_week != 6:
+    #         days_to_subtract = (day_of_week + 1) % 7
+    #     else:
+    #         days_to_subtract = 0
 
-#     if day_of_week != 6:
-#         days_to_subtract = (day_of_week + 1) % 7
-#     else:
-#         days_to_subtract = 0
-
-#     sunday_date = date_obj - timedelta(days=days_to_subtract)  # get sunday's date
-#     saturday_date = sunday_date + timedelta(days=6)  # get saturday's date
-#     return sunday_date, saturday_date
+    #     sunday_date = date_obj - timedelta(days=days_to_subtract)  # get sunday's date
+    #     saturday_date = sunday_date + timedelta(days=6)  # get saturday's date
+    #     return sunday_date, saturday_date
     return False
 
 
@@ -188,7 +196,14 @@ def register_staff_action():
     email: str | None = request.form.get("email")
     password: str | None = request.form.get("password")
 
-    create_staff(first_name=firstname, last_name=lastname, id=staff_id, position=position, email=email, password=password)
+    create_staff(
+        first_name=firstname,
+        last_name=lastname,
+        id=staff_id,
+        position=position,
+        email=email,
+        password=password,
+    )
     return render_template("login.html")
     # return redirect(url_for('staff_views.send_email'))
 
@@ -200,7 +215,9 @@ def get_account_page():
     user: User = get_user_by_email(get_jwt_identity())
     courses: list[Course] = get_all_courses()
     registered_courses: list[Course] = get_registered_courses(user.id)
-    registered_course_codes: list[Course] = [course.course_code for course in registered_courses]
+    registered_course_codes: list[Course] = [
+        course.course_code for course in registered_courses
+    ]
     print(registered_courses)
     return render_template(
         "account.html", courses=courses, registered_courses=registered_course_codes
@@ -232,7 +249,9 @@ def get_assessments_page():
         for course in registered_courses
         for assessment in get_assessments_by_course(course.course_code)
     ]
-    registered_course_codes: list[Course] = [course.course_code for course in registered_courses]
+    registered_course_codes: list[Course] = [
+        course.course_code for course in registered_courses
+    ]
     print(assessments)
     return render_template(
         "assessments.html", courses=registered_course_codes, assessments=assessments
@@ -245,11 +264,12 @@ def get_assessments_page():
 def get_add_assessments_page():
     user: User | None = get_user_by_email(get_jwt_identity())
     registered_courses: list[Course] = get_registered_courses(user.id)
-    registered_course_codes: list[Course] = [course.course_code for course in registered_courses]
-    assessment_types: list[AssessmentType] = get_assessment_types()
-    print("ASSESSMENT TYPES: ", assessment_types)
+    registered_course_codes: list[Course] = [
+        course.course_code for course in registered_courses
+    ]
     return render_template(
-        "addAssessment.html", courses=registered_course_codes, assessment_types=assessment_types
+        "addAssessment.html",
+        courses=registered_course_codes,
     )
 
 
@@ -271,10 +291,13 @@ def add_assessments_action():
         endTime = None
     print(course)
     if add_assessment(
-        course_code=course, category=type, 
-        start_date=startDate, end_date=endDate, 
-        start_time=startTime, end_time=endTime,
-        clash_detected=False
+        course_code=course,
+        category=type,
+        start_date=startDate,
+        end_date=endDate,
+        start_time=startTime,
+        end_time=endTime,
+        clash_detected=False,
     ):
         flash("AssessmentType created !")
     # if newAsm.startDate:
@@ -293,9 +316,8 @@ def add_assessments_action():
 # Modify selected assessment
 @staff_views.route("/modifyAssessment/<string:id>", methods=["GET"])
 def get_modify_assessments_page(id):
-    assessment_types: list[AssessmentType] = get_assessment_types()  # get assessment types
-    assessment: CourseAssessment | None = get_assessment_by_id(id)  # get assessment details
-    return render_template("modifyAssessment.html", assessment_types=assessment_types, ca=assessment)
+    assessment: CourseAssessment | None = get_assessment_by_id(id)
+    return render_template("modifyAssessment.html", ca=assessment)
 
 
 # Gets Update assessment Page
@@ -310,7 +332,6 @@ def modify_assessment(id):
 
     assessment: CourseAssessment | None = get_assessment_by_id(id)
     if assessment:
-        assessment.assessment_type = type
         if start_date != "" and end_date != "" and start_time != "" and end_time != "":
             assessment.start_date = start_date
             assessment.end_date = end_date
@@ -356,9 +377,7 @@ def changePassword():
         db.session.commit()
     return render_template("settings.html")
 
+
 def format_assessment(assessment: CourseAssessment) -> dict:
-    assessment_type: AssessmentType | None = get_assessment_type_by_id(assessment.assessment_type)
     assessment_json: dict = assessment.to_json()
-    if assessment_type:
-        assessment_json["assessment_type"] = assessment_type.to_json()
     return assessment_json
