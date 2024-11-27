@@ -14,9 +14,9 @@
     <table id="courseTable">
       <tbody id="courseTableBody">
         {% for course in courses %}
-        <tr class="course-row" data="{{ course.courseCode }}">
-          <td>{{course.courseCode }}</td> 
-          <td>{{course.courseTitle }}</td> 
+        <tr class="course-row" data="{{ course.course_code }}">
+          <td>{{course.course_code}}</td> 
+          <td>{{course.course_title}}</td> 
         </tr>
         {% endfor %}
       </tbody>

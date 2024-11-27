@@ -5,12 +5,10 @@ $(document).ready(function(){
 const cardContainer = document.getElementById('card_container');
 
 assessments.forEach(assessment => {
-    // Create the card element
     const card = document.createElement('div');
     card.classList.add('card');
-    card.setAttribute('data-course-code', assessment.courseCode);
+    card.setAttribute('data-course-code', assessment.course_code);
     
-    // Create elements for course details, assessment info, and actions
     const courseDetails = document.createElement('div');
     courseDetails.classList.add('course-details');
     const assessmentInfo = document.createElement('div');
@@ -18,20 +16,16 @@ assessments.forEach(assessment => {
     const actions = document.createElement('div');
     actions.classList.add('actions');
 
-    // Create content for course details
     const courseCodeLabel = document.createElement('p');
     courseCodeLabel.classList.add('card-label');
     courseCodeLabel.textContent = 'Course Code';
     const courseCode = document.createElement('p');
     courseCode.classList.add('course-code');
-    courseCode.textContent = assessment.courseCode;
+    courseCode.textContent = assessment.course_code;
 
     const courseAssessmentLabel = document.createElement('p');
     courseAssessmentLabel.classList.add('card-label');
-    courseAssessmentLabel.textContent = 'Assessment Type';
     const assessmentType = document.createElement('p');
-    assessmentType.classList.add('assessment-type');
-    assessmentType.textContent = assessment.a_ID;
 
     const caNumLabel = document.createElement('p');
     caNumLabel.classList.add('card-label');
@@ -45,38 +39,37 @@ assessments.forEach(assessment => {
     startDateLabel.textContent = 'Start Date';
     const startDate = document.createElement('p');
     startDate.classList.add('start-date');
-    startDate.textContent = assessment.startDate;
+    startDate.textContent = assessment.start_date;
 
     const endDateLabel = document.createElement('p');
     endDateLabel.classList.add('card-label');
     endDateLabel.textContent = 'End Date';
     const endDate = document.createElement('p');
     endDate.classList.add('end-date');
-    endDate.textContent = assessment.endDate;
+    endDate.textContent = assessment.end_date;
     
     const startTimeLabel = document.createElement('p');
     startTimeLabel.classList.add('card-label');
     startTimeLabel.textContent = 'Start Time';
     const startTime = document.createElement('p');
     startTime.classList.add('start-time');
-    startTime.textContent = assessment.startTime;
+    startTime.textContent = assessment.start_time;
 
     const endTimeLabel = document.createElement('p');
     endTimeLabel.classList.add('card-label');
     endTimeLabel.textContent = 'End Time';
     const endTime = document.createElement('p');
     endDate.classList.add('end-time');
-    endTime.textContent = assessment.endTime;
+    endTime.textContent = assessment.end_time;
     
     const clashDetectedLabel = document.createElement('p');
     clashDetectedLabel.classList.add('card-label');
     clashDetectedLabel.textContent = 'Clash Detected';
     const clashDetected = document.createElement('p');
     clashDetected.classList.add('clash-detected');
-    clashDetected.textContent = `${assessment.clashDetected}`;
+    clashDetected.textContent = `${assessment.clash_detected}`;
 
 
-    // Create action links (modify and delete can be replaced with actual functionality)
     const modifyLink = document.createElement('button');
     modifyLink.textContent = 'Modify';
     modifyLink.addEventListener('click', function() {
@@ -90,13 +83,10 @@ assessments.forEach(assessment => {
     });
  
 
-    // Append elements to their respective parents
     courseDetails.appendChild(courseCodeLabel);
     courseDetails.appendChild(courseCode);
     assessmentInfo.appendChild(courseAssessmentLabel);
     assessmentInfo.appendChild(assessmentType);
-    // assessmentInfo.appendChild(caNumLabel);
-    // assessmentInfo.appendChild(caNum);
     assessmentInfo.appendChild(startDateLabel);
     assessmentInfo.appendChild(startDate);
     assessmentInfo.appendChild(endDateLabel);
@@ -113,6 +103,5 @@ assessments.forEach(assessment => {
     card.appendChild(assessmentInfo);
     card.appendChild(actions);
     
-    // Append the card to the card container
     cardContainer.appendChild(card);
 });
