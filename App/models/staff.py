@@ -3,8 +3,9 @@ from App.database import db
 from .position import Position
 from .user import User
 
+
 class Staff(User):
-    id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(db.ForeignKey("user.id"), primary_key=True)
     first_name: Mapped[str] = mapped_column(db.String(120), nullable=False)
     last_name: Mapped[str] = mapped_column(db.String(120), nullable=False)
     position: Mapped[Position] = mapped_column(db.Enum(Position), nullable=False)

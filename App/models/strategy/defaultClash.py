@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+from ...controllers.assessment import get_assessments
 from ..courseAssessment import CourseAssessment
 from ..semester import Semester
 from .clashDetection import ClashDetection
@@ -6,51 +7,28 @@ from .clashDetection import ClashDetection
 
 class DefaultClash(ClashDetection):
     def detect_clash(self, new_assessment: CourseAssessment) -> bool:
-        clash = 0
-        sem: Semester = Semester.query.order_by(Semester.id.desc()).first()
-        max_assessments: int = sem.max_assessments
-        print(max_assessments)
-
-        compare_code: str = new_assessment.course_code.replace(" ", "")
-        all_assessments: list[CourseAssessment] = CourseAssessment.query.all()
-
-        if not new_assessment.end_date:  # dates not set yet
+        if not new_assessment.end_date:
             return False
 
+        semester: Semester = Semester.query.order_by(Semester.id.desc()).first()
+        max_assessments: int = semester.max_assessments
+        course_prefix: str = new_assessment.course_code.replace(" ", "")[4]
+        sunday, saturday = self.get_week_range(new_assessment.end_date.isoformat())
+
         relevant_assessments: list[CourseAssessment] = [
-            a
-            for a in all_assessments
-            if a.course_code.replace(" ", "")[4] == compare_code[4]
-            and a.id != new_assessment.id
-            and a.start_date is not None
+            assessment
+            for assessment in get_assessments()
+            if assessment.course_code.replace(" ", "")[4] == course_prefix
+            and assessment.id != new_assessment.id
+            and assessment.start_date
         ]
 
-        sunday, saturday = get_week_range(new_assessment.end_date.isoformat())
-        for assessment in relevant_assessments:
-            due_date = assessment.end_date
-            if sunday <= due_date <= saturday:
-                clash += 1
+        clashes: int = sum(sunday <= a.end_date <= saturday for a in relevant_assessments)
+        return clashes >= max_assessments
 
-        return clash >= max_assessments
-
-
-def get_week_range(iso_date_str) -> tuple[date, date]:
-    date_obj: date = date.fromisoformat(iso_date_str)
-    day_of_week: int = date_obj.weekday()
-
-    if day_of_week != 6:
-        days_to_subtract: int = (day_of_week + 1) % 7
-    else:
-        days_to_subtract = 0
-
-    sunday_date: date = date_obj - timedelta(days=days_to_subtract)
-    saturday_date: date = sunday_date + timedelta(days=6)
-    return sunday_date, saturday_date
-
-
-class ProgrammeLevelClash(ClashDetection):
-    pass
-
-
-class LevelClash(ClashDetection):
-    pass
+    def get_week_range(self, date_str: str) -> tuple[date, date]:
+        """Sunday - Saturday Week"""
+        input_date: date = date.fromisoformat(date_str)
+        start_of_week: date = input_date - timedelta(days=(input_date.weekday() + 1) % 7)
+        end_of_week: date = start_of_week + timedelta(days=6)
+        return start_of_week, end_of_week
