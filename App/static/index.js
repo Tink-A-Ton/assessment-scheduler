@@ -10,12 +10,12 @@ document.addEventListener("DOMContentLoaded", function () {
     Other: "#C29203",
     Pending: "#999999",
   };
-  
+
   const calendarEvents = [];
   renderCourses(myCourses, assessments);
   const levelFilter = document.getElementById("level");
   const courseFilter = document.getElementById("courses");
-  
+
   const calendarEl = document.getElementById("calendar");
   const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: "dayGridMonth",
@@ -97,8 +97,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function createEventElement(assessment, course_code, colors) {
-    const color = assessment.clash_detected ? colors.Pending : colors[0];
-    console.log(color + " " + assessment.clash_detected); 
+    const color = assessment.clash_detected ? colors.Pending : colors.Assignment;
+    console.log(color + " " + assessment.clash_detected);
     const eventEl = document.createElement("div");
     eventEl.classList.add(
       "fc-event",
@@ -117,11 +117,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const isFullDay =
       assessment.start_time === "00:00" &&
       (assessment.end_time === "23:59" || assessment.end_time === "00:00");
-    
+    const color = assessment.clash_detected ? colors.Pending : colors.Assignment;
+
     return {
       id: assessment.id,
       title: `${assessment.course_code}-Exam`,
-      backgroundColor: colors[0],
+      backgroundColor: color,
       start: `${assessment.start_date}T${assessment.start_time}`,
       end: `${assessment.end_date}T${assessment.end_time}`,
       allDay: isFullDay,
