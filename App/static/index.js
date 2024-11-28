@@ -12,10 +12,10 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   const calendarEvents = [];
-  renderCourses(myCourses, otherAssessments);
+  renderCourses(myCourses, assessments);
   const levelFilter = document.getElementById("level");
   const courseFilter = document.getElementById("courses");
-  
+
   const calendarEl = document.getElementById("calendar");
   const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: "dayGridMonth",
@@ -47,13 +47,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   levelFilter.addEventListener("change", function () {
     const selectedLevel = levelFilter.value;
-    const filteredEvents = filterEventsByLevel(selectedLevel, otherAssessments);
+    const filteredEvents = filterEventsByLevel(selectedLevel);
     updateCalendarEvents(calendar, filteredEvents);
   });
 
   courseFilter.addEventListener("change", function () {
     const selectedCourse = courseFilter.value;
-    const filteredEvents = filterEventsByCourse(selectedCourse, otherAssessments);
+    const filteredEvents = filterEventsByCourse(selectedCourse);
     updateCalendarEvents(calendar, filteredEvents);
   });
 
@@ -97,8 +97,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function createEventElement(assessment, course_code, colors) {
-    const color = assessment.clash_detected ? colors.Pending : colors[0];
-
+    const color = assessment.clash_detected ? colors.Pending : colors.Assignment;
+    console.log(color + " " + assessment.clash_detected);
     const eventEl = document.createElement("div");
     eventEl.classList.add(
       "fc-event",
@@ -117,23 +117,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const isFullDay =
       assessment.start_time === "00:00" &&
       (assessment.end_time === "23:59" || assessment.end_time === "00:00");
-    
+    const color = assessment.clash_detected ? colors.Pending : colors.Assignment;
+
     return {
       id: assessment.id,
       title: `${assessment.course_code}-Exam`,
-      backgroundColor: colors[0],
+      backgroundColor: color,
       start: `${assessment.start_date}T${assessment.start_time}`,
       end: `${assessment.end_date}T${assessment.end_time}`,
       allDay: isFullDay,
     };
   }
 
-  function filterEventsByLevel(level, assessments) {
-    return level === "0" ? assessments : assessments.filter((item) => item.course_code[4] === level);
+  function filterEventsByLevel(level) {
+    return level === "0" ? assessments : otherAssessments.filter((item) => item.course_code[4] === level);
   }
 
-  function filterEventsByCourse(courseCode, assessments) {
-    return courseCode == "all" ? assessments : assessments.filter((item) => item.course_code === courseCode);
+  function filterEventsByCourse(courseCode) {
+    if (courseCode == "all")
+      return otherAssessments
+    if (courseCode == "My Courses")
+      return assessments
+    return otherAssessments.filter((item) => item.course_code === courseCode);
   }
 
   function updateCalendarEvents(calendar, newEvents) {
