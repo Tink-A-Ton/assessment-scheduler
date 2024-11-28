@@ -41,6 +41,7 @@ from App.controllers.assessment import (
 )
 from App.controllers.initialize import parse_date, parse_time
 from App.models.user import User
+from ..models.strategy import DefaultClashDetectionStrategy
 
 staff_views = Blueprint("staff_views", __name__, template_folder="../templates")
 
@@ -72,8 +73,7 @@ def get_calendar_page():
     ]
 
     other_assessments: list[dict] = [
-        format_assessment(assessment)
-        for assessment in get_assessments()
+        format_assessment(assessment) for assessment in get_assessments()
     ]
     semester: Semester = Semester.query.order_by(Semester.id.desc()).first()
     print("OTHER", len(other_assessments))
@@ -119,7 +119,8 @@ def update_calendar_page():
         assessment.start_time = startTime
         assessment.end_time = endTime
         db.session.commit()
-        clash = detect_clash(assessment)
+
+        clash = DefaultClashDetectionStrategy().detect_clash(assessment)
         if clash:
             assessment.clash_detected = True
             db.session.commit()
@@ -130,51 +131,6 @@ def update_calendar_page():
         else:
             session["message"] = "Assessment modified"
     return session["message"]
-
-
-def detect_clash(new_assessment: CourseAssessment) -> bool:
-    clash = 0
-    sem: Semester = Semester.query.order_by(
-        Semester.id.desc()
-    ).first()  # get the weekly max num of assessments allowed per level
-    max = sem.max_assessments
-    print(max)
-    compare_code = new_assessment.course_code.replace(" ", "")
-    all_assessments: list[CourseAssessment] = CourseAssessment.query.all()
-    if not new_assessment.end_date:  # dates not set yet
-        return False
-    relevant_assessments: list[CourseAssessment] = []
-    for a in all_assessments:
-        print(a)
-        code: str = a.course_code.replace(" ", "")
-        if (code[4] == compare_code[4]) and (
-            a.id != new_assessment.id
-        ):  # course are in the same level
-            if a.start_date is not None:  # assessment has been scheduled
-                relevant_assessments.append(a)
-
-    sunday, saturday = get_week_range(new_assessment.end_date.isoformat())
-    for a in relevant_assessments:
-        dueDate = a.end_date
-        if sunday <= dueDate <= saturday:
-            clash = clash + 1
-
-    return clash >= max
-
-
-def get_week_range(iso_date_str):
-    date_obj = date.fromisoformat(iso_date_str)
-    day_of_week = date_obj.weekday()
-
-    if day_of_week != 6:
-        days_to_subtract = (day_of_week + 1) % 7
-    else:
-        days_to_subtract = 0
-
-    sunday_date = date_obj - timedelta(days=days_to_subtract)  # get sunday's date
-    saturday_date = sunday_date + timedelta(days=6)  # get saturday's date
-    return sunday_date, saturday_date
-    return False
 
 
 # Sends confirmation email to staff upon registering
@@ -308,7 +264,7 @@ def add_assessments_action():
     if not startDate:
         return redirect(url_for("staff_views.get_assessments_page"))
 
-    clash: bool = detect_clash(assessment)
+    clash: bool = DefaultClashDetectionStrategy().detect_clash(assessment)
     if clash:
         assessment.clash_detected = True
         db.session.commit()
@@ -372,7 +328,7 @@ def modify_assessment(id):
             assessment.start_time = start_time
             assessment.end_time = end_time
         db.session.commit()
-        clash: bool = detect_clash(assessment)
+        clash: bool = DefaultClashDetectionStrategy().detect_clash(assessment)
         if clash:
             assessment.clash_detected = True
             db.session.commit()
