@@ -14,7 +14,7 @@
         </div>
         <div class="formSection1">
             <div class="formInputContainer">
-                <!-- be a lil div to show the current course being altered -->
+                <!-- Show current course being modified -->
                 <label for="myCourses">Course</label>
                 <input type="text" value="{{ca.course_code}}" readonly>
             </div>
@@ -29,10 +29,9 @@
                     <label for="startTime">Assessment Start Time</label>
                     <input type="time" id="startTime" name="startTime" value="{{ca.start_time}}">
                 </div>
-                
             </div>
 
-    
+
             <div class="formSection3" id="sectionToHide">
                 <div class="formInputContainer">
                     <label for="endDate">Assessment End Date</label>
@@ -42,12 +41,22 @@
                     <label for="endTime">Assessment End Time</label>
                     <input type="time" id="endTime" name="endTime" value="{{ca.end_time}}">
                 </div>
-                
-
             </div>
+
+            <!-- Rule 1 Toggle -->
+            <div class="formInputContainer">
+                <label for="rule1Toggle">Enable Rule 1</label>
+                <input type="checkbox" id="rule1Toggle" name="rule1" {% if ca.rule1 %}checked{% endif %}>
+            </div>
+
+            <!-- Rule 2 Toggle -->
+            <div class="formInputContainer">
+                <label for="rule2Toggle">Enable Rule 2</label>
+                <input type="checkbox" id="rule2Toggle" name="rule2" {% if ca.rule2 %}checked{% endif %}>
+            </div>
+
         </div>
         <button id="modifyAssessmentBtn" type="submit">Save</button>
     </form>
 </div>
-
 {% endblock %}
