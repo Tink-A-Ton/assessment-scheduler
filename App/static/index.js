@@ -10,9 +10,9 @@ document.addEventListener("DOMContentLoaded", function () {
     Other: "#C29203",
     Pending: "#999999",
   };
-
+  
   const calendarEvents = [];
-  renderCourses(myCourses, otherAssessments);
+  renderCourses(myCourses, assessments);
   const levelFilter = document.getElementById("level");
   const courseFilter = document.getElementById("courses");
   
@@ -47,13 +47,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   levelFilter.addEventListener("change", function () {
     const selectedLevel = levelFilter.value;
-    const filteredEvents = filterEventsByLevel(selectedLevel, otherAssessments);
+    const filteredEvents = filterEventsByLevel(selectedLevel);
     updateCalendarEvents(calendar, filteredEvents);
   });
 
   courseFilter.addEventListener("change", function () {
     const selectedCourse = courseFilter.value;
-    const filteredEvents = filterEventsByCourse(selectedCourse, otherAssessments);
+    const filteredEvents = filterEventsByCourse(selectedCourse);
     updateCalendarEvents(calendar, filteredEvents);
   });
 
@@ -128,12 +128,16 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 
-  function filterEventsByLevel(level, assessments) {
-    return level === "0" ? assessments : assessments.filter((item) => item.course_code[4] === level);
+  function filterEventsByLevel(level) {
+    return level === "0" ? assessments : otherAssessments.filter((item) => item.course_code[4] === level);
   }
 
-  function filterEventsByCourse(courseCode, assessments) {
-    return courseCode == "all" ? assessments : assessments.filter((item) => item.course_code === courseCode);
+  function filterEventsByCourse(courseCode) {
+    if (courseCode == "all")
+      return otherAssessments
+    if (courseCode == "My Courses")
+      return assessments
+    return otherAssessments.filter((item) => item.course_code === courseCode);
   }
 
   function updateCalendarEvents(calendar, newEvents) {

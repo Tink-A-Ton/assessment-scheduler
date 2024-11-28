@@ -74,10 +74,9 @@ def get_calendar_page():
     other_assessments: list[dict] = [
         format_assessment(assessment)
         for assessment in get_assessments()
-        if not assessment.clash_detected
     ]
     semester: Semester = Semester.query.order_by(Semester.id.desc()).first()
-
+    print("OTHER", len(other_assessments))
     semester_details: dict[str, str] = {
         "start": semester.start_date,
         "end": semester.end_date,
