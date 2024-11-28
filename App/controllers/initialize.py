@@ -5,6 +5,8 @@ from App.models import (
     Admin,
     Semester,
     CourseInstructor,
+    Programme,
+    CourseProgramme
 )
 from App.models.courseAssessment import CourseAssessment
 from datetime import datetime, date, time
@@ -170,6 +172,14 @@ def initialize() -> None:
         end_time=parse_time("12:00"),
         clash_detected=False,
     )
+    ca10 = CourseAssessment(
+        course_code="COMP1701",
+        start_date=parse_date("2024-11-25"),
+        end_date=parse_date("2024-11-25"),
+        start_time=parse_time("08:00"),
+        end_time=parse_time("09:00"),
+        clash_detected=False,
+    )
 
     db.session.add(ca1)
     db.session.add(ca2)
@@ -180,6 +190,28 @@ def initialize() -> None:
     db.session.add(ca7)
     db.session.add(ca8)
     db.session.add(ca9)
+    db.session.add(ca10)
+    
+    p1 = Programme(name="BSc. Computer Science (General)")
+    p2 = Programme(name="BSc. Computer Science (Special)")
+    p3 = Programme(name="BSc. Computer Science and Management")
+    p4 = Programme(name="BSc. Information Technology (General)")
+    p5 = Programme(name="BSc. Information Technology (Special)")
+    db.session.add_all([p1, p2, p3, p4, p5])
+    db.session.flush()
+
+    course_programmes = [
+        CourseProgramme(course_code="COMP1700", programme_id=p1.id),
+        CourseProgramme(course_code="COMP1700", programme_id=p2.id),
+        CourseProgramme(course_code="COMP1701", programme_id=p1.id),
+        CourseProgramme(course_code="COMP1701", programme_id=p4.id),
+        CourseProgramme(course_code="COMP2700", programme_id=p1.id),
+        CourseProgramme(course_code="COMP2700", programme_id=p3.id),
+        CourseProgramme(course_code="COMP2701", programme_id=p2.id),
+        CourseProgramme(course_code="COMP3700", programme_id=p5.id),
+        CourseProgramme(course_code="COMP3701", programme_id=p5.id),
+    ]
+    db.session.add_all(course_programmes)
 
     db.session.commit()
 
