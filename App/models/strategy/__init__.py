@@ -1,1 +1,1 @@
-from .defaultClashDetection import DefaultClashDetection
+from .clashContext import ClashContext
