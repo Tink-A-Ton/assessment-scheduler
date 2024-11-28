@@ -42,7 +42,7 @@ def login_action() -> Response | str:
 
 
 def login_user(email: str, password: str) -> str | None:
-    user = User.query.filter_by(email=email).first()
+    user: User = User.query.filter_by(email=email).first()
     if user and user.check_password(password):
         return create_access_token(identity=email)
     return None

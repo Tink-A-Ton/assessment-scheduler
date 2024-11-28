@@ -4,9 +4,7 @@ from datetime import datetime, date, time
 
 class CourseAssessment(db.Model):
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    course_code: str = db.Column(
-        db.String(9), db.ForeignKey("course.course_code"), nullable=False
-    )
+    course_code: str = db.Column(db.String(9), db.ForeignKey("course.course_code"))
     start_date: date = db.Column(db.Date, nullable=True)
     end_date: date = db.Column(db.Date, nullable=True)
     start_time: time = db.Column(db.Time, nullable=True)
