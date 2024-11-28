@@ -40,8 +40,7 @@ from App.controllers.assessment import (
     get_assessments,
 )
 from App.controllers.initialize import parse_date, parse_time
-from App.models.user import User
-from ..models.strategy import DefaultClashDetection
+from App.models import User, Staff, ClashContext
 
 staff_views = Blueprint("staff_views", __name__, template_folder="../templates")
 
@@ -120,7 +119,7 @@ def update_calendar_page():
         assessment.end_time = endTime
         db.session.commit()
 
-        clash = DefaultClashDetection().detect_clash(assessment)
+        clash: bool = ClashContext().detect_clash(assessment)
         if clash:
             assessment.clash_detected = True
             db.session.commit()
@@ -264,7 +263,7 @@ def add_assessments_action():
     if not startDate:
         return redirect(url_for("staff_views.get_assessments_page"))
 
-    clash: bool = DefaultClashDetection().detect_clash(assessment)
+    clash: bool = ClashContext().detect_clash(assessment)
     if clash:
         assessment.clash_detected = True
         db.session.commit()
@@ -328,7 +327,7 @@ def modify_assessment(id):
             assessment.start_time = start_time
             assessment.end_time = end_time
         db.session.commit()
-        clash: bool = DefaultClashDetection().detect_clash(assessment)
+        clash: bool = ClashContext().detect_clash(assessment)
         if clash:
             assessment.clash_detected = True
             db.session.commit()

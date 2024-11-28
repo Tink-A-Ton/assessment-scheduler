@@ -4,7 +4,7 @@ from ..semester import Semester
 from .clashDetection import ClashDetection
 
 
-class DefaultClashDetection(ClashDetection):
+class DefaultClash(ClashDetection):
     def detect_clash(self, new_assessment: CourseAssessment) -> bool:
         clash = 0
         sem: Semester = Semester.query.order_by(Semester.id.desc()).first()
@@ -46,3 +46,11 @@ def get_week_range(iso_date_str) -> tuple[date, date]:
     sunday_date: date = date_obj - timedelta(days=days_to_subtract)
     saturday_date: date = sunday_date + timedelta(days=6)
     return sunday_date, saturday_date
+
+
+class ProgrammeLevelClash(ClashDetection):
+    pass
+
+
+class LevelClash(ClashDetection):
+    pass
