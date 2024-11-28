@@ -252,6 +252,8 @@ def add_assessments_action():
     endDate: date = parse_date(request.form.get("endDate"))
     startTime = parse_time(request.form.get("startTime"))
     endTime = parse_time(request.form.get("endTime"))
+    startTime = parse_time(request.form.get("startTime"))
+    endTime = parse_time(request.form.get("endTime"))
 
     if course is None:
         return
