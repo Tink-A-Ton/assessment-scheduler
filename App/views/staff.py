@@ -31,8 +31,8 @@ from App.controllers.staff import (
 from App.controllers.course import get_all_courses, get_courses_by_level
 from App.controllers.user import get_user, get_user_by_email
 from App.controllers.assessment import (
+    get_assessment,
     get_assessments_by_course,
-    get_assessment_by_id,
     get_assessments_by_level,
     get_course,
     add_assessment,
@@ -110,7 +110,7 @@ def update_calendar_page():
     endDate: date = parse_date(request.form.get("endDate"))
     endTime = parse_time(request.form.get("endTime"))
 
-    assessment: CourseAssessment | None = get_assessment_by_id(int(id))
+    assessment: CourseAssessment | None = get_assessment(int(id))
     if assessment:
         assessment.start_date = startDate
         assessment.end_date = endDate
@@ -120,8 +120,6 @@ def update_calendar_page():
 
         clash: bool = ClashContext().detect_clash(assessment)
         if clash:
-            assessment.clash_detected = True
-            db.session.commit()
             session["message"] = (
                 assessment.course_code
                 + " - Clash detected! The maximum amount of assessments for this level has been exceeded."
@@ -250,6 +248,8 @@ def add_assessments_action():
     endTime = parse_time(request.form.get("endTime"))
     startTime = parse_time(request.form.get("startTime"))
     endTime = parse_time(request.form.get("endTime"))
+    rule1 = request.form.get("rule1")
+    rule2 = request.form.get("rule2")
 
     if course is None:
         return
@@ -261,10 +261,14 @@ def add_assessments_action():
     if not startDate:
         return redirect(url_for("staff_views.get_assessments_page"))
 
-    clash: bool = ClashContext().detect_clash(assessment)
+    context = ClashContext()
+    if rule1:
+        context.add_rule("rule1")
+    if rule2:
+        context.add_rule("rule2")
+
+    clash: bool = context.detect_clash(assessment)
     if clash:
-        assessment.clash_detected = True
-        db.session.commit()
         flash(
             "Clash detected! The maximum amount of assessments for this level has been exceeded."
         )
@@ -272,67 +276,40 @@ def add_assessments_action():
     return redirect(url_for("staff_views.get_assessments_page"))
 
 
-# @staff_views.route('/addAssessment', methods=['POST'])
-# @jwt_required()
-# def add_assessments_action():
-#     course = request.form.get('myCourses')
-#     asmType = request.form.get('AssessmentType')
-#     startDate = request.form.get('startDate')
-#     endDate = request.form.get('endDate')
-#     startTime = request.form.get('startTime')
-#     endTime = request.form.get('endTime')
-
-#     if startDate=='' or endDate=='' or startTime=='' or endTime=='':
-#         startDate=None
-#         endDate=None
-#         startTime=None
-#         endTime=None
-
-#     newAsm = add_CourseAsm(course, asmType, startDate, endDate, startTime, endTime, False)
-#     if newAsm.startDate:
-#         clash=detect_clash(newAsm.id)
-#         if clash:
-#             newAsm.clashDetected = True
-#             db.session.commit()
-#             flash("Clash detected! The maximum amount of assessments for this level has been exceeded.")
-#             time.sleep(1)
-
-#     return redirect(url_for('staff_views.get_assessments_page'))
-
-
 # Modify selected assessment
 @staff_views.route("/modifyAssessment/<string:id>", methods=["GET"])
 def get_modify_assessments_page(id):
-    assessment: CourseAssessment | None = get_assessment_by_id(id)
+    assessment: CourseAssessment | None = get_assessment(id)
     return render_template("modifyAssessment.html", ca=assessment)
 
 
-# Gets Update assessment Page
 @staff_views.route("/modifyAssessment/<string:id>", methods=["POST"])
 def modify_assessment(id):
-    course: str | None = request.form.get("myCourses")
-    type: str | None = request.form.get("AssessmentType")
     start_date: date = parse_date(request.form.get("startDate"))
     end_date: date = parse_date(request.form.get("endDate"))
     start_time = parse_time(request.form.get("startTime"))
     end_time = parse_time(request.form.get("endTime"))
+    rule1 = request.form.get("rule1")
+    rule2 = request.form.get("rule2")
+    assessment: CourseAssessment | None = get_assessment(id)
 
-    assessment: CourseAssessment | None = get_assessment_by_id(id)
     if assessment:
-        if start_date != "" and end_date != "" and start_time != "" and end_time != "":
-            assessment.start_date = start_date
-            assessment.end_date = end_date
-            assessment.start_time = start_time
-            assessment.end_time = end_time
+        assessment.start_date = start_date
+        assessment.end_date = end_date
+        assessment.start_time = start_time
+        assessment.end_time = end_time
         db.session.commit()
-        clash: bool = ClashContext().detect_clash(assessment)
+        context = ClashContext()
+        if rule1:
+            context.add_rule("rule1")
+        if rule2:
+            context.add_rule("rule2")
+        clash: bool = context.detect_clash(assessment)
+        print(clash)
         if clash:
-            assessment.clash_detected = True
-            db.session.commit()
             flash(
                 "Clash detected! The maximum amount of assessments for this level has been exceeded."
             )
-            time.sleep(1)
     return redirect(url_for("staff_views.get_assessments_page"))
 
 

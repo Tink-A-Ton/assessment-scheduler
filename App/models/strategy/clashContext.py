@@ -1,6 +1,7 @@
 from .utils import PREDEFINED_RULES
 from .clashDetection import ClashDetection
 from ..courseAssessment import CourseAssessment
+from App.database import db
 
 
 class ClashContext:
@@ -18,5 +19,9 @@ class ClashContext:
     def detect_clash(self, assessment: CourseAssessment) -> bool:
         for strategy in self.selected_strategies:
             if strategy.detect_clash(assessment):
+                assessment.clash_detected = True
+                db.session.commit()
                 return True
+        assessment.clash_detected = False
+        db.session.commit()
         return False

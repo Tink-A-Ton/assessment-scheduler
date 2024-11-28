@@ -15,7 +15,7 @@ from App.controllers.course import (
     edit_course,
 )
 from App.controllers.semester import add_semester
-from App.controllers.assessment import get_assessment_by_id, get_clashes
+from App.controllers.assessment import get_assessment, get_clashes
 from flask_jwt_extended import get_jwt_identity
 
 from App.models.courseAssessment import CourseAssessment
@@ -155,7 +155,6 @@ def delete_course_action(course_code):
     return redirect(url_for("admin_views.get_courses"))
 
 
-
 # @admin_views.route("/clashes", methods=["GET"])
 # @jwt_required(Admin)
 # def get_clashes_page():
@@ -199,15 +198,13 @@ def get_clashes_page():
                 searchResults.append(a)
     # for table
     assessments = get_clashes()
-    return render_template(
-        "clashes.html", assessments=assessments, results=searchResults
-    )
+    return render_template("clashes.html", assessments=assessments, results=searchResults)
 
 
 @admin_views.route("/acceptOverride/<int:assessment_id>", methods=["POST"])
 @jwt_required(Admin)
 def accept_override(assessment_id):
-    assessment: CourseAssessment | None = get_assessment_by_id(assessment_id)
+    assessment: CourseAssessment | None = get_assessment(assessment_id)
     if assessment:
         assessment.clash_detected = False
         db.session.commit()
@@ -218,7 +215,7 @@ def accept_override(assessment_id):
 @admin_views.route("/rejectOverride/<int:assessment_id>", methods=["POST"])
 @jwt_required(Admin)
 def reject_override(assessment_id):
-    assessment: CourseAssessment | None = get_assessment_by_id(assessment_id)
+    assessment: CourseAssessment | None = get_assessment(assessment_id)
     if assessment:
         assessment.clash_detected = False
         assessment.start_date = None

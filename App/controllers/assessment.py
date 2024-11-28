@@ -35,7 +35,7 @@ def get_assessments() -> list[CourseAssessment]:
     return CourseAssessment.query.all()
 
 
-def get_assessment_by_id(id: int) -> CourseAssessment | None:
+def get_assessment(id: int) -> CourseAssessment | None:
     return CourseAssessment.query.get(id)
 
 
@@ -61,7 +61,7 @@ def get_assessments_by_level(level: int) -> list[CourseAssessment]:
 
 
 def delete_assessment_by_id(assessment_id: int) -> bool:
-    assessment: CourseAssessment | None = get_assessment_by_id(assessment_id)
+    assessment: CourseAssessment | None = get_assessment(assessment_id)
     if assessment:
         db.session.delete(assessment)
         db.session.commit()
