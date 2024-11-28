@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function createEventElement(assessment, course_code, colors) {
     const color = assessment.clash_detected ? colors.Pending : colors[0];
-
+    console.log(color + " " + assessment.clash_detected); 
     const eventEl = document.createElement("div");
     eventEl.classList.add(
       "fc-event",
