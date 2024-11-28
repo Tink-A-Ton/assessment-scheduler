@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify, render_template, redirect, url_for, flash
 from flask_jwt_extended import jwt_required
+from werkzeug import Response
 from App.models import Admin
 from App.database import db
 from werkzeug.utils import secure_filename
@@ -14,7 +15,7 @@ from App.controllers.course import (
     edit_course,
 )
 from App.controllers.semester import add_semester
-from App.controllers.assessment import get_assessment_by_id
+from App.controllers.assessment import get_assessment_by_id, get_clashes
 from flask_jwt_extended import get_jwt_identity
 
 from App.models.courseAssessment import CourseAssessment
@@ -99,20 +100,16 @@ def get_new_course():
 # Retrieves course info and stores it in database ie. add new course
 @admin_views.route("/addNewCourse", methods=["POST"])
 @jwt_required(Admin)
-def add_course_action():
-    course_code = request.form.get("course_code")
-    title = request.form.get("title")
-    description = request.form.get("description")
-    data = request.form
-    level = request.form.get("level")
-    semester = request.form.get("semester")
-    numAssessments = request.form.get("numAssessments")
+def add_course_action() -> Response:
+    data: dict[str, str] = request.form
+    course_code = data.get("course_code")
+    title = data.get("title")
+    level = data.get("level")
+    semester = data.get("semester")
 
-    course = add_course(
-        course_code=course_code, course_title=title, level=level, semester=semester
-    )
-
-    # Redirect to view course listings!
+    if course_code is None or title is None or level is None or semester is None:
+        return redirect(url_for("admin_views.get_courses"))
+    course_added: bool = add_course(course_code, title, int(level), int(semester))
     return redirect(url_for("admin_views.get_courses"))
 
 
@@ -158,6 +155,7 @@ def delete_course_action(course_code):
     return redirect(url_for("admin_views.get_courses"))
 
 
+
 # @admin_views.route("/clashes", methods=["GET"])
 # @jwt_required(Admin)
 # def get_clashes_page():
@@ -180,6 +178,30 @@ def delete_course_action(course_code):
 #     return render_template(
 #         "clashes.html", assessments=assessments, results=searchResults
 #     )
+
+
+@admin_views.route("/acceptOverride/<int:assessment_id>", methods=["POST"])
+@jwt_required(Admin)
+def get_clashes_page():
+    # for search
+    all_assessments = CourseAssessment.query.all()
+    start_date = request.args.get("start_date")
+    end_date = request.args.get("end_date")
+    searchResults = []
+    if start_date and end_date:
+        start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+        end_date = datetime.strptime(end_date, "%Y-%m-%d").date()
+        for a in all_assessments:
+            if (
+                start_date <= a.startDate <= end_date
+                or start_date <= a.endDate <= end_date
+            ):
+                searchResults.append(a)
+    # for table
+    assessments = get_clashes()
+    return render_template(
+        "clashes.html", assessments=assessments, results=searchResults
+    )
 
 
 @admin_views.route("/acceptOverride/<int:assessment_id>", methods=["POST"])

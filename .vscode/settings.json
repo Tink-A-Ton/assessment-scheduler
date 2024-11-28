@@ -1,0 +1,35 @@
+{
+    "python.analysis.typeCheckingMode": "basic", // please do not turn off type checking
+    "python.analysis.autoImportCompletions": true,
+    "[python]": {
+        "editor.semanticHighlighting.enabled": true
+    },
+    "editor.semanticTokenColorCustomizations": {
+        "[Default Dark+]": {
+            "rules": {
+                "selfParameter": "#569CD6",
+                "clsParameter": "#569CD6",
+            },
+        }
+    },
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": [
+                    "meta.function-call.python",
+                    "meta.function-call.generic.python",
+                ],
+                "settings": {
+                    "foreground": "#DCDCAA"
+                }
+            }
+        ]
+    },
+    "python.analysis.extraPaths": [
+        "./App"
+    ],
+    "black-formatter.args": [
+        "--line-length",
+        "90"
+    ],
+}

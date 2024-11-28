@@ -1,3 +1,4 @@
+from typing import Any
 from App.models import CourseAssessment
 from App.models import Course
 from App.database import db
@@ -11,12 +12,12 @@ def add_assessment(
     start_time: time,
     end_time: time,
     clash_detected: bool,
-) -> bool:
-    existing_assessment = CourseAssessment.query.filter_by(
+) -> CourseAssessment:
+    existing_assessment: CourseAssessment = CourseAssessment.query.filter_by(
         course_code=course_code, start_date=start_date
     ).first()
     if existing_assessment is not None:
-        return False
+        return existing_assessment
     new_assessment = CourseAssessment(
         course_code=course_code,
         start_date=start_date,
@@ -27,7 +28,7 @@ def add_assessment(
     )
     db.session.add(new_assessment)
     db.session.commit()
-    return True
+    return new_assessment
 
 
 def get_assessments() -> list[CourseAssessment]:
@@ -38,7 +39,7 @@ def get_assessment_by_id(id: int) -> CourseAssessment | None:
     return CourseAssessment.query.get(id)
 
 
-def get_course(assessment_type: int) -> Course | None:
+def get_course(id: int) -> Course | None:
     assessment = CourseAssessment.query.get(id)
     if assessment:
         course: Course = Course.query.get(assessment.course_code)
@@ -66,6 +67,10 @@ def delete_assessment_by_id(assessment_id: int) -> bool:
         db.session.commit()
         return True
     return False
+
+
+def get_clashes():
+    return CourseAssessment.query.filter_by(clash_detected=True).all()
 
 
 # def get_clashes():

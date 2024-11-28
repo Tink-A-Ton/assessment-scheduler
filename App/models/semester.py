@@ -2,7 +2,7 @@ from App.database import db
 
 
 class Semester(db.Model):
-    id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     start_date: str = db.Column(db.String(100), nullable=False)
     end_date: str = db.Column(db.String(100), nullable=False)
     semester_number: int = db.Column(db.Integer, nullable=False)
@@ -10,7 +10,11 @@ class Semester(db.Model):
     coursesOffered = db.relationship("Course", backref="semester", lazy="joined")
 
     def __init__(
-        self, start_date: str, end_date: str, semester_number: int, max_assessments: int,
+        self,
+        start_date: str,
+        end_date: str,
+        semester_number: int,
+        max_assessments: int,
     ) -> None:
         self.start_date = start_date
         self.end_date = end_date
