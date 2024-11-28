@@ -75,7 +75,6 @@ def get_calendar_page():
         format_assessment(assessment) for assessment in get_assessments()
     ]
     semester: Semester = Semester.query.order_by(Semester.id.desc()).first()
-    print("OTHER", len(other_assessments))
     semester_details: dict[str, str] = {
         "start": semester.start_date,
         "end": semester.end_date,
@@ -180,7 +179,6 @@ def get_account_page():
     registered_course_codes: list[str] = [
         course.course_code for course in registered_courses
     ]
-    print(registered_courses)
     return render_template(
         "account.html", courses=courses, registered_courses=registered_course_codes
     )
@@ -193,7 +191,6 @@ def get_selected_courses():
     staff: User | None = get_user_by_email(get_jwt_identity())
     if staff is None:
         return redirect(url_for("staff_views.get_account_page"))
-    print(get_jwt_identity())
     course_codes_json: str | None = request.form.get("courseCodes")
     if course_codes_json:
         course_codes = json.loads(course_codes_json)
@@ -219,7 +216,6 @@ def get_assessments_page():
     registered_course_codes: list[str] = [
         course.course_code for course in registered_courses
     ]
-    # print(assessments)
     return render_template(
         "assessments.html", courses=registered_course_codes, assessments=assessments
     )
