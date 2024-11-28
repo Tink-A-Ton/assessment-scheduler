@@ -4,11 +4,11 @@ from App.models import (
     Staff,
     Admin,
     Semester,
-    CourseInstructor,
+    Instructor,
     Programme,
-    CourseProgramme
+    ProgrammeCourse,
+    Exam,
 )
-from App.models.courseAssessment import CourseAssessment
 from datetime import datetime, date, time
 
 
@@ -17,12 +17,7 @@ def initialize() -> None:
     db.create_all()
     bob = Admin(999, "bob@mail.com", "bobpass")
     db.session.add(bob)
-    sem = Semester(
-        start_date="01-02-2024",
-        end_date="01-05-2024",
-        semester_number=1,
-        max_assessments=3,
-    )
+    sem = Semester("01-02-2024", "01-05-2024", 1, 3)
     db.session.add(sem)
 
     # create courses
@@ -93,89 +88,79 @@ def initialize() -> None:
     db.session.add(staff)
 
     # assign staff to courses
-    cs1 = CourseInstructor(staff_id=11111111, course_code="COMP1700")
-    cs2 = CourseInstructor(staff_id=11111111, course_code="COMP2700")
-    cs3 = CourseInstructor(staff_id=11111111, course_code="COMP3700")
+    cs1 = Instructor(staff_id=11111111, course_code="COMP1700")
+    cs2 = Instructor(staff_id=11111111, course_code="COMP2700")
+    cs3 = Instructor(staff_id=11111111, course_code="COMP3700")
     db.session.add(cs1)
     db.session.add(cs2)
     db.session.add(cs3)
 
-    ca1 = CourseAssessment(
+    ca1 = Exam(
         course_code="COMP1700",
         start_date=parse_date("2024-11-08"),
-        end_date=parse_date("2024-11-08"),
         start_time=parse_time("08:00"),
         end_time=parse_time("10:00"),
         clash_detected=False,
     )
-    ca2 = CourseAssessment(
+    ca2 = Exam(
         course_code="COMP1700",
         start_date=parse_date("2024-11-09"),
-        end_date=parse_date("2024-11-09"),
         start_time=parse_time("00:00"),
         end_time=parse_time("23:59"),
         clash_detected=False,
     )
-    ca3 = CourseAssessment(
+    ca3 = Exam(
         course_code="COMP1700",
         start_date=parse_date("2024-11-10"),
-        end_date=parse_date("2024-11-10"),
         start_time=parse_time("09:00"),
         end_time=parse_time("12:00"),
         clash_detected=False,
     )
-    ca4 = CourseAssessment(
+    ca4 = Exam(
         course_code="COMP2700",
         start_date=parse_date("2024-11-15"),
-        end_date=parse_date("2024-11-15"),
         start_time=parse_time("08:00"),
         end_time=parse_time("10:00"),
         clash_detected=False,
     )
-    ca5 = CourseAssessment(
+    ca5 = Exam(
         course_code="COMP2700",
         start_date=parse_date("2024-11-16"),
-        end_date=parse_date("2024-11-16"),
         start_time=parse_time("00:00"),
         end_time=parse_time("23:59"),
         clash_detected=False,
     )
-    ca6 = CourseAssessment(
+    ca6 = Exam(
         course_code="COMP2700",
         start_date=parse_date("2024-11-17"),
-        end_date=parse_date("2024-11-17"),
         start_time=parse_time("09:00"),
         end_time=parse_time("12:00"),
         clash_detected=False,
     )
-    ca7 = CourseAssessment(
+    ca7 = Exam(
         course_code="COMP3700",
         start_date=parse_date("2024-11-22"),
-        end_date=parse_date("2024-11-22"),
         start_time=parse_time("08:00"),
         end_time=parse_time("10:00"),
         clash_detected=False,
     )
-    ca8 = CourseAssessment(
+    ca8 = Exam(
         course_code="COMP3700",
         start_date=parse_date("2024-11-23"),
-        end_date=parse_date("2024-11-23"),
         start_time=parse_time("00:00"),
         end_time=parse_time("23:59"),
         clash_detected=False,
     )
-    ca9 = CourseAssessment(
+    ca9 = Exam(
         course_code="COMP3700",
         start_date=parse_date("2024-11-24"),
-        end_date=parse_date("2024-11-24"),
         start_time=parse_time("09:00"),
         end_time=parse_time("12:00"),
         clash_detected=False,
     )
-    ca10 = CourseAssessment(
+    ca10 = Exam(
         course_code="COMP1701",
         start_date=parse_date("2024-11-25"),
-        end_date=parse_date("2024-11-25"),
         start_time=parse_time("08:00"),
         end_time=parse_time("09:00"),
         clash_detected=False,
@@ -191,7 +176,7 @@ def initialize() -> None:
     db.session.add(ca8)
     db.session.add(ca9)
     db.session.add(ca10)
-    
+
     p1 = Programme(name="BSc. Computer Science (General)")
     p2 = Programme(name="BSc. Computer Science (Special)")
     p3 = Programme(name="BSc. Computer Science and Management")
@@ -201,15 +186,15 @@ def initialize() -> None:
     db.session.flush()
 
     course_programmes = [
-        CourseProgramme(course_code="COMP1700", programme_id=p1.id),
-        CourseProgramme(course_code="COMP1700", programme_id=p2.id),
-        CourseProgramme(course_code="COMP1701", programme_id=p1.id),
-        CourseProgramme(course_code="COMP1701", programme_id=p4.id),
-        CourseProgramme(course_code="COMP2700", programme_id=p1.id),
-        CourseProgramme(course_code="COMP2700", programme_id=p3.id),
-        CourseProgramme(course_code="COMP2701", programme_id=p2.id),
-        CourseProgramme(course_code="COMP3700", programme_id=p5.id),
-        CourseProgramme(course_code="COMP3701", programme_id=p5.id),
+        ProgrammeCourse(course_code="COMP1700", programme_id=p1.id),
+        ProgrammeCourse(course_code="COMP1700", programme_id=p2.id),
+        ProgrammeCourse(course_code="COMP1701", programme_id=p1.id),
+        ProgrammeCourse(course_code="COMP1701", programme_id=p4.id),
+        ProgrammeCourse(course_code="COMP2700", programme_id=p1.id),
+        ProgrammeCourse(course_code="COMP2700", programme_id=p3.id),
+        ProgrammeCourse(course_code="COMP2701", programme_id=p2.id),
+        ProgrammeCourse(course_code="COMP3700", programme_id=p5.id),
+        ProgrammeCourse(course_code="COMP3701", programme_id=p5.id),
     ]
     db.session.add_all(course_programmes)
 

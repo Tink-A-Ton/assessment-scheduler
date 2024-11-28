@@ -1,7 +1,7 @@
 from App.models import Staff, Course
 from App.database import db
 from sqlalchemy.exc import SQLAlchemyError
-from App.models.courseInstructor import CourseInstructor
+from ..models import Instructor
 
 
 def create_staff(id, email, password, first_name, last_name, position) -> Staff | None:
@@ -16,20 +16,20 @@ def create_staff(id, email, password, first_name, last_name, position) -> Staff 
         return None
 
 
-def add_course_instructor(staff_id, course_code) -> CourseInstructor:
-    instructor: CourseInstructor | None = CourseInstructor.query.filter_by(
+def add_course_instructor(staff_id, course_code) -> Instructor:
+    instructor: Instructor | None = Instructor.query.filter_by(
         staff_id=staff_id, course_code=course_code
     ).first()
     if instructor is not None:
         return instructor
-    instructor = CourseInstructor(staff_id, course_code)
+    instructor = Instructor(staff_id, course_code)
     db.session.add(instructor)
     db.session.commit()
     return instructor
 
 
 def get_registered_courses(staff_id) -> list[Course]:
-    course_listing: list[CourseInstructor] = CourseInstructor.query.filter_by(staff_id=staff_id).all()
+    course_listing: list[Instructor] = Instructor.query.filter_by(staff_id=staff_id).all()
     instructor_courses: list[Course] = []
     for listing in course_listing:
         instructor_courses.append(Course.query.get(listing.course_code))

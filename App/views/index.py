@@ -1,7 +1,5 @@
 from flask import Blueprint, request, jsonify, render_template
-from App.database import db
 from App.controllers.initialize import initialize
-from App.models.courseAssessment import CourseAssessment
 
 index_views = Blueprint("index_views", __name__, template_folder="../templates")
 
