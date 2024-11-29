@@ -11,7 +11,6 @@ from flask import (
 )
 from flask import current_app as app
 from flask_mail import Mail, Message
-from sqlalchemy import not_
 from werkzeug import Response
 from App.database import db
 import json
@@ -23,10 +22,10 @@ from ..models import Course, Exam, Staff, Semester
 from App.controllers.staff import (
     get_registered_courses,
     create_staff,
-    add_course_instructor,
+    add_instructor,
+    get_staff,
 )
-from App.controllers.course import get_all_courses
-from App.controllers.user import get_user_by_email
+from App.controllers.course import get_all_courses, get_courses_by_level
 from App.controllers.exam import (
     get_exam,
     get_exams_by_course,
@@ -50,12 +49,10 @@ def get_signup_page():
 @staff_views.route("/calendar", methods=["GET"])
 @jwt_required()
 def get_calendar_page():
-    user: User | None = get_user_by_email(get_jwt_identity())
-    if user is None:
-        return render_template("login.html")
+    staff: Staff = get_staff(get_jwt_identity())
 
     all_courses: list[Course] = get_all_courses()
-    registered_courses: list[Course] = get_registered_courses(user.id)
+    registered_courses: list[Course] = get_registered_courses(staff.id)
     other_courses: list[Course] = [
         course for course in all_courses if course not in registered_courses
     ]
@@ -139,28 +136,29 @@ def send_email():
 
 # Retrieves staff info and stores it in database ie. register new staff
 @staff_views.route("/register", methods=["POST"])
-def register_staff_action():
-    firstname: str | None = request.form.get("firstName")
-    lastname: str | None = request.form.get("lastName")
-    staff_id: str | None = request.form.get("staffID")
-    position: str | None = request.form.get("status")
-    email: str | None = request.form.get("email")
-    password: str | None = request.form.get("password")
-
-    create_staff(staff_id, email, password, firstname, lastname, position)
+def register_staff_action() -> str:
+    data: dict[str, str] = request.form
+    staff_id: int = int(data["staffID"])
+    firstname: str = data["firstName"]
+    lastname: str = data["lastName"]
+    position: str = data["status"]
+    email: str = data["email"]
+    password: str = data["password"]
+    created: bool = create_staff(staff_id, email, password, firstname, lastname, position)
+    if not created:
+        return render_template("signup.html")
     return render_template("login.html")
-    # return redirect(url_for('staff_views.send_email'))
 
 
 # Gets account page
 @staff_views.route("/account", methods=["GET"])
 @jwt_required()
 def get_account_page():
-    user: User = get_user_by_email(get_jwt_identity())
-    if user is None:
+    staff: Staff | None = get_staff(get_jwt_identity())
+    if staff is None:
         return render_template("login.html")
     courses: list[Course] = get_all_courses()
-    registered_courses: list[Course] = get_registered_courses(user.id)
+    registered_courses: list[Course] = get_registered_courses(staff.id)
     registered_course_codes: list[str] = [
         course.course_code for course in registered_courses
     ]
@@ -173,14 +171,14 @@ def get_account_page():
 @staff_views.route("/account", methods=["POST"])
 @jwt_required()
 def get_selected_courses():
-    staff: User | None = get_user_by_email(get_jwt_identity())
+    staff: Staff | None = get_staff(get_jwt_identity())
     if staff is None:
         return redirect(url_for("staff_views.get_account_page"))
     course_codes_json: str | None = request.form.get("courseCodes")
     if course_codes_json:
         course_codes = json.loads(course_codes_json)
         for course_code in course_codes:
-            add_course_instructor(staff.id, course_code)
+            add_instructor(staff.id, course_code)
 
         return redirect(url_for("staff_views.get_account_page"))
 
@@ -189,10 +187,10 @@ def get_selected_courses():
 @staff_views.route("/assessments", methods=["GET"])
 @jwt_required()
 def get_exams_page():
-    user: User | None = get_user_by_email(get_jwt_identity())
-    if user is None:
+    staff: Staff | None = get_staff(get_jwt_identity())
+    if staff is None:
         return render_template("login.html")
-    registered_courses: list[Course] = get_registered_courses(user.id)
+    registered_courses: list[Course] = get_registered_courses(staff.id)
     exams: list[dict] = [
         format_assessment(assessment)
         for course in registered_courses
@@ -210,10 +208,10 @@ def get_exams_page():
 @staff_views.route("/addAssessment", methods=["GET"])
 @jwt_required()
 def get_add_exams_page():
-    user: User | None = get_user_by_email(get_jwt_identity())
-    if user is None:
+    staff: Staff | None = get_staff(get_jwt_identity())
+    if staff is None:
         return render_template("login.html")
-    registered_courses: list[Course] = get_registered_courses(user.id)
+    registered_courses: list[Course] = get_registered_courses(staff.id)
     registered_course_codes: list[str] = [
         course.course_code for course in registered_courses
     ]
@@ -318,11 +316,10 @@ def get_settings_page():
 @staff_views.route("/settings", methods=["POST"])
 @jwt_required()
 def changePassword():
-    newPassword: str | None = request.form.get("password")
-    user: User = get_user_by_email(get_jwt_identity())
-    if user and newPassword:
-        user.set_password(newPassword)
-        db.session.commit()
+    newPassword: str | None = request.form["password"]
+    staff: Staff | None = get_staff(get_jwt_identity())
+    staff.set_password(newPassword)
+    db.session.commit()
     return render_template("settings.html")
 
 
