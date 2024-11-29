@@ -49,3 +49,14 @@ def get_exams() -> list[Exam]:
 
 def get_exam(id: int) -> Exam | None:
     return Exam.query.get(id)
+
+
+def edit_exam(id: int, start_date, start_time, end_time) -> None | Exam:
+    exam: Exam | None = get_exam(id)
+    if exam is None:
+        return None
+    exam.start_date = start_date
+    exam.start_time = start_time
+    exam.end_time = end_time
+    db.session.commit()
+    return exam
