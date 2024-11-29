@@ -8,11 +8,11 @@ import os, csv
 from datetime import datetime
 from App.models import Course, Exam
 from App.controllers.course import (
-    add_course,
+    create_course,
     get_all_courses,
     get_course,
     delete_course,
-    edit_course,
+    update_course,
 )
 from App.controllers.semester import add_semester
 from ..controllers.exam import get_exam, get_clashes
@@ -71,7 +71,7 @@ def upload_course_file():
         with open(fpath, "r") as file:
             reader = csv.DictReader(file)
             for row in reader:
-                add_course(
+                create_course(
                     course_code=row["Course Code"],
                     course_title=row["Course Title"],
                     level=int(row["Level"]),
@@ -108,7 +108,7 @@ def add_course_action() -> Response:
 
     if course_code is None or title is None or level is None or semester is None:
         return redirect(url_for("admin_views.get_courses"))
-    course_added: bool = add_course(course_code, title, int(level), int(semester))
+    course_added: bool = create_course(course_code, title, int(level), int(semester))
     return redirect(url_for("admin_views.get_courses"))
 
 
@@ -133,7 +133,7 @@ def update_course():
     # programme = request.form.get('programme')
 
     delete_course(course_code=course_code)
-    edit_course(
+    update_course(
         course_code=course_code, course_title=title, level=level, semester_id=semester
     )
     flash("Course Updated Successfully!")

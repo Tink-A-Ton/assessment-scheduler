@@ -30,8 +30,8 @@ from App.controllers.user import get_user_by_email
 from App.controllers.exam import (
     get_exam,
     get_exams_by_course,
-    add_exam,
-    delete_exam_by_id,
+    create_exam,
+    delete_exam,
     get_exams,
 )
 from App.controllers.initialize import parse_date, parse_time
@@ -241,9 +241,7 @@ def add_exams_action():
     if course is None:
         return
 
-    assessment: Exam = add_exam(
-        course, startDate, startTime, endTime, clash_detected=False
-    )
+    assessment: Exam = create_exam(course, startDate, startTime, endTime, False)
     flash("AssessmentType created !")
     if not startDate:
         return redirect(url_for("staff_views.get_exams_page"))
@@ -302,7 +300,7 @@ def modify_assessment(id):
 # Delete selected assessment
 @staff_views.route("/deleteAssessment/<int:assessment_id>", methods=["GET"])
 def delete_assessment(assessment_id) -> Response:
-    if delete_exam_by_id(assessment_id):
+    if delete_exam(assessment_id):
         print("Assessment ", assessment_id, " deleted")
     else:
         flash("Unable to delete Assessment ", assessment_id)
