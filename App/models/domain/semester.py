@@ -7,7 +7,7 @@ class Semester(db.Model):
     end_date: str = db.Column(db.String(100), nullable=False)
     semester_number: int = db.Column(db.Integer, nullable=False)
     max_exams: int = db.Column(db.Integer, nullable=False)
-    coursesOffered = db.relationship("Course", backref="semester", lazy="joined")
+    courses_offered = db.relationship("Course", backref="semester", lazy="joined")
 
     def __init__(
         self,
