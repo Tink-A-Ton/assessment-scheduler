@@ -202,13 +202,13 @@ def initialize() -> None:
 
 
 # Helper function to parse date and time strings
-def parse_date(date_str):
+def parse_date(date_str) -> None | date:
     if date_str == "":
         return None
     return datetime.strptime(date_str, "%Y-%m-%d").date()
 
 
-def parse_time(time_str):
+def parse_time(time_str) -> None | time:
     if time_str == "":
         return None
     time_str = time_str[:5]

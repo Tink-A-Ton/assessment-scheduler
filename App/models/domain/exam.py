@@ -13,9 +13,9 @@ class Exam(db.Model):
     def __init__(
         self,
         course_code: str,
-        start_date: date,
-        start_time: time,
-        end_time: time,
+        start_date,
+        start_time,
+        end_time,
         clash_detected: bool,
     ) -> None:
         self.course_code = course_code

@@ -3,9 +3,7 @@ from ..database import db
 from datetime import date, datetime, time
 
 
-def create_exam(
-    course_code: str, start_date: date, start_time: time, end_time: time, clash: bool
-) -> Exam:
+def create_exam(course_code: str, start_date, start_time, end_time, clash: bool) -> Exam:
     exam_exist: Exam = Exam.query.filter_by(
         course_code=course_code,
         start_date=start_date,

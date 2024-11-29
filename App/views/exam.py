@@ -13,6 +13,7 @@ from ..controllers import (
     delete_exam,
     update_exam,
     get_registered_courses,
+    get_staff_courses,
     get_staff,
 )
 from App.controllers.clash import detect_exam_clash
@@ -30,13 +31,12 @@ def get_current_staff() -> Staff:
 @jwt_required(Staff)
 def get_exams_page() -> str:
     staff: Staff | None = get_current_staff()
-    registered_courses: list[Course] = get_registered_courses(staff.id)
+    staff_courses: list[dict] = get_staff_courses(staff.id)
     exams: list[dict] = [
         exam.to_json()
-        for course in registered_courses
-        for exam in get_exams_by_course(course.course_code)
+        for course in staff_courses
+        for exam in get_exams_by_course(course["course_code"])
     ]
-    staff_courses: list[dict] = [course.to_json() for course in registered_courses]
     return render_template("assessments.html", courses=staff_courses, exams=exams)
 
 
@@ -52,27 +52,23 @@ def get_modify_exam_page(id) -> str:
 def get_add_exams_page() -> str:
     staff: Staff | None = get_current_staff()
     registered_courses: list[Course] = get_registered_courses(staff.id)
-    registered_course_codes: list[str] = [
-        course.course_code for course in registered_courses
-    ]
     return render_template(
         "addAssessment.html",
-        courses=registered_course_codes,
+        courses=registered_courses,
     )
 
 
 @exam_views.route("/addAssessment", methods=["POST"])
 @jwt_required(Staff)
 def add_exam_action() -> Response | str:
-    course_code: str | None = request.form.get("course")
-    start_date: date = parse_date(request.form.get("startDate"))
-    start_time: time = parse_time(request.form.get("startTime"))
-    end_time: time = parse_time(request.form.get("endTime"))
-    if course_code is None:
-        flash("Course is required to schedule an exam")
-        return get_exams_page()
-    exam: Exam = create_exam(course_code, start_date, start_time, end_time, False)
-    flash(f"Exam for {course_code} created !")
+    data: dict[str, str] = request.form
+    exam: Exam = create_exam(
+        data["course"],
+        parse_date(data["startDate"]),
+        parse_time(data["startTime"]),
+        parse_time(data["endTime"]),
+        False,
+    )
     clash: bool = detect_exam_clash(
         exam, request.form.get("rule1"), request.form.get("rule2")
     )
@@ -85,10 +81,10 @@ def add_exam_action() -> Response | str:
 @exam_views.route("/modifyAssessment/<int:id>", methods=["POST"])
 @jwt_required(Staff)
 def modify_exam_action(id) -> Response:
-    start_date: date = parse_date(request.form.get("startDate"))
-    start_time: time = parse_time(request.form.get("startTime"))
-    end_time: time = parse_time(request.form.get("endTime"))
-    exam: None | Exam = update_exam(id, start_date, start_time, end_time)
+    data: dict[str, str] = request.form
+    exam: None | Exam = update_exam(
+        id, data["startDate"], data["startTime"], data["endTime"]
+    )
     if exam:
         flash(f"Exam Details Updated !")
         clash: bool = detect_exam_clash(
