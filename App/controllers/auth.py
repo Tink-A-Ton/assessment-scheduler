@@ -4,8 +4,8 @@ from ..models import User
 from .user import get_user
 
 
-def login_user(id: int, password: str) -> str | None:
-    user: User | None = get_user(id)
+def login_user(email: str, password: str) -> str | None:
+    user: User | None = User.query.filter_by(email=email).first()
     if user and user.check_password(password):
         return create_access_token(identity=user.id)
     return None

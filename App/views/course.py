@@ -5,5 +5,5 @@ course_views = Blueprint('course_views', __name__, template_folder='../templates
 
 # Gets Course Page
 @course_views.route('/courses', methods=['GET'])
-def index():
+def index() -> str:
     return render_template('courses.html')

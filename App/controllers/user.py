@@ -20,6 +20,10 @@ def is_admin(id: int) -> bool:
     return Admin.query.get(id)
 
 
+def is_admin_account(email: str) -> bool:
+    return Admin.query.filter_by(email=email).first()
+
+
 def create_admin(id, email, password) -> Admin:
     admin: Admin = Admin(id, email, password)
     db.session.add(admin)
