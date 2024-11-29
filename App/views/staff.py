@@ -58,13 +58,13 @@ def get_calendar_page():
     ]
     staff_courses: list[dict] = [course.to_json() for course in registered_courses]
     staff_exams: list[dict] = [
-        format_assessment(assessment)
+        assessment.to_json()
         for course in registered_courses
         for assessment in get_exams_by_course(course.course_code)
     ]
 
     other_exams: list[dict] = [
-        format_assessment(assessment) for assessment in get_exams()
+        assessment.to_json() for assessment in get_exams()
     ]
     semester: Semester = Semester.query.order_by(Semester.id.desc()).first()
     semester_details: dict[str, str] = {
@@ -176,7 +176,7 @@ def get_exams_page():
         return render_template("login.html")
     registered_courses: list[Course] = get_registered_courses(staff.id)
     exams: list[dict] = [
-        format_assessment(assessment)
+        assessment.to_json()
         for course in registered_courses
         for assessment in get_exams_by_course(course.course_code)
     ]
@@ -186,108 +186,6 @@ def get_exams_page():
     return render_template(
         "assessments.html", courses=registered_course_codes, exams=exams
     )
-
-
-# Gets add assessment page
-@staff_views.route("/addAssessment", methods=["GET"])
-@jwt_required()
-def get_add_exams_page():
-    staff: Staff | None = get_staff(get_jwt_identity())
-    if staff is None:
-        return render_template("login.html")
-    registered_courses: list[Course] = get_registered_courses(staff.id)
-    registered_course_codes: list[str] = [
-        course.course_code for course in registered_courses
-    ]
-    return render_template(
-        "addAssessment.html",
-        courses=registered_course_codes,
-    )
-
-
-# Retrieves assessment info and creates new assessment for course
-@staff_views.route("/addAssessment", methods=["POST"])
-@jwt_required()
-def add_exams_action():
-    course: str | None = request.form.get("myCourses")
-    type: str | None = request.form.get("AssessmentType")
-    startDate: date = parse_date(request.form.get("startDate"))
-    endDate: date = parse_date(request.form.get("endDate"))
-    startTime = parse_time(request.form.get("startTime"))
-    endTime = parse_time(request.form.get("endTime"))
-    startTime = parse_time(request.form.get("startTime"))
-    endTime = parse_time(request.form.get("endTime"))
-    rule1 = request.form.get("rule1")
-    rule2 = request.form.get("rule2")
-
-    if course is None:
-        return
-
-    assessment: Exam = create_exam(course, startDate, startTime, endTime, False)
-    flash("AssessmentType created !")
-    if not startDate:
-        return redirect(url_for("staff_views.get_exams_page"))
-
-    context = ClashContext()
-    if rule1:
-        context.add_rule("rule1")
-    if rule2:
-        context.add_rule("rule2")
-
-    clash: bool = context.detect_clash(assessment)
-    if clash:
-        flash(
-            "Clash detected! The maximum amount of exams for this level has been exceeded."
-        )
-        time.sleep(1)
-    return redirect(url_for("staff_views.get_exams_page"))
-
-
-# Modify selected assessment
-@staff_views.route("/modifyAssessment/<string:id>", methods=["GET"])
-def get_modify_exams_page(id):
-    assessment: Exam | None = get_exam(id)
-    return render_template("modifyAssessment.html", ca=assessment)
-
-
-@staff_views.route("/modifyAssessment/<string:id>", methods=["POST"])
-def modify_assessment(id):
-    start_date: date = parse_date(request.form.get("startDate"))
-    end_date: date = parse_date(request.form.get("endDate"))
-    start_time = parse_time(request.form.get("startTime"))
-    end_time = parse_time(request.form.get("endTime"))
-    rule1 = request.form.get("rule1")
-    rule2 = request.form.get("rule2")
-    assessment: Exam | None = get_exam(id)
-
-    if assessment:
-        assessment.start_date = start_date
-        assessment.start_time = start_time
-        assessment.end_time = end_time
-        db.session.commit()
-        context = ClashContext()
-        if rule1:
-            context.add_rule("rule1")
-        if rule2:
-            context.add_rule("rule2")
-        clash: bool = context.detect_clash(assessment)
-        print(clash)
-        if clash:
-            flash(
-                "Clash detected! The maximum amount of exams for this level has been exceeded."
-            )
-    return redirect(url_for("staff_views.get_exams_page"))
-
-
-# Delete selected assessment
-@staff_views.route("/deleteAssessment/<int:assessment_id>", methods=["GET"])
-def delete_assessment(assessment_id) -> Response:
-    if delete_exam(assessment_id):
-        print("Assessment ", assessment_id, " deleted")
-    else:
-        flash("Unable to delete Assessment ", assessment_id)
-    return redirect(url_for("staff_views.get_exams_page"))
-
 
 # Get settings page
 @staff_views.route("/settings", methods=["GET"])
@@ -305,8 +203,3 @@ def changePassword():
     staff.set_password(newPassword)
     db.session.commit()
     return render_template("settings.html")
-
-
-def format_assessment(assessment: Exam) -> dict:
-    assessment_json: dict = assessment.to_json()
-    return assessment_json

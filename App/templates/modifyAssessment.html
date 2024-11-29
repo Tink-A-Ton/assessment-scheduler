@@ -8,7 +8,7 @@
 
 {% block content %}
 <div class="formContainer">
-    <form id="modifyAssessmentForm" action="/modifyAssessment/{{ca.id}}" method="POST">
+    <form id="modifyAssessmentForm" action="/modifyAssessment/{{course_assessment.id}}" method="POST">
         <div class="formTitle">
             <h2>Modify Assessment</h2>
         </div>
@@ -16,18 +16,18 @@
             <div class="formInputContainer">
                 <!-- Show current course being modified -->
                 <label for="myCourses">Course</label>
-                <input type="text" value="{{ca.course_code}}" readonly>
+                <input type="text" value="{{course_assessment.course_code}}" readonly>
             </div>
         </div>
         <div class="bottomForm">
             <div class="formSection2">
                 <div class="formInputContainer">
                     <label for="startDate">Assessment Start Date</label>
-                    <input type="date" id="startDate" name="startDate" value="{{ca.start_date}}">
+                    <input type="date" id="startDate" name="startDate" value="{{course_assessment.start_date}}">
                 </div>
                 <div class="formInputContainer">
                     <label for="startTime">Assessment Start Time</label>
-                    <input type="time" id="startTime" name="startTime" value="{{ca.start_time}}">
+                    <input type="time" id="startTime" name="startTime" value="{{course_assessment.start_time}}">
                 </div>
             </div>
 
@@ -35,24 +35,24 @@
             <div class="formSection3" id="sectionToHide">
                 <div class="formInputContainer">
                     <label for="endDate">Assessment End Date</label>
-                    <input type="date" id="endDate" name="endDate" value="{{ca.end_date}}">
+                    <input type="date" id="endDate" name="endDate" value="{{course_assessment.end_date}}">
                 </div>
                 <div class="formInputContainer">
                     <label for="endTime">Assessment End Time</label>
-                    <input type="time" id="endTime" name="endTime" value="{{ca.end_time}}">
+                    <input type="time" id="endTime" name="endTime" value="{{course_assessment.end_time}}">
                 </div>
             </div>
 
             <!-- Rule 1 Toggle -->
             <div class="formInputContainer">
                 <label for="rule1Toggle">Enable Rule 1</label>
-                <input type="checkbox" id="rule1Toggle" name="rule1" {% if ca.rule1 %}checked{% endif %}>
+                <input type="checkbox" id="rule1Toggle" name="rule1" {% if course_assessment.rule1 %}checked{% endif %}>
             </div>
 
             <!-- Rule 2 Toggle -->
             <div class="formInputContainer">
                 <label for="rule2Toggle">Enable Rule 2</label>
-                <input type="checkbox" id="rule2Toggle" name="rule2" {% if ca.rule2 %}checked{% endif %}>
+                <input type="checkbox" id="rule2Toggle" name="rule2" {% if course_assessment.rule2 %}checked{% endif %}>
             </div>
 
         </div>
