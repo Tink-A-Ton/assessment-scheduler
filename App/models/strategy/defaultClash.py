@@ -13,7 +13,7 @@ class DefaultClash(ClashDetection):
         semester: Semester = Semester.query.order_by(Semester.id.desc()).first()
         max_exams: int = semester.max_exams
         course_prefix: str = new_exam.course_code.replace(" ", "")[4]
-        sunday, saturday = get_week_range(new_exam.end_date.isoformat())
+        sunday, saturday = get_week_range(new_exam.start_date.isoformat())
 
         relevant_exams: list[Exam] = [
             exam

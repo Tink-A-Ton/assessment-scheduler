@@ -17,7 +17,7 @@ def get_course(course_code: str) -> Course | None:
     return Course.query.get(course_code)
 
 def edit_course(course_code: str, semester_id: int, course_title: str, level: int) -> Course | None:
-    existing_course: Course | None = Course.query.get(course_code)
+    existing_course: Course | None = get_course(course_code)
     if existing_course:
         existing_course.semester_id = semester_id
         existing_course.course_title = course_title
@@ -27,7 +27,7 @@ def edit_course(course_code: str, semester_id: int, course_title: str, level: in
     return None    
 
 def get_course_level(course_code: str) -> int | None:
-    course: Course | None = Course.query.get(course_code)
+    course: Course | None = get_course(course_code)
     if course:
         return course.level
     return None
@@ -37,7 +37,7 @@ def get_courses_by_level(level: int) -> list[Course] | None:
 
 
 def delete_course(course_code: str) -> bool:
-    course_to_delete: Course | None = Course.query.get(course_code)
+    course_to_delete: Course | None = get_course(course_code)
     if course_to_delete:
         db.session.delete(course_to_delete)
         db.session.commit()
