@@ -1,13 +1,15 @@
 import click, sys, csv
 from flask import Flask
 from flask.cli import with_appcontext, AppGroup
+from flask_migrate import Migrate
 from App.database import db, get_migrate
 from App.main import create_app
 from App.models import Staff, Course, Programme, Admin
 from App.controllers.initialize import initialize
 
 # This commands file allow you to create convenient CLI commands for testing controllers!!
-app = create_app()
+app: Flask = create_app()
+migrate: Migrate = get_migrate(app)
 
 
 # This command creates and initializes the database

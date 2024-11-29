@@ -1,22 +1,24 @@
-from App.models import Staff, Course
-from App.database import db
+from .course import get_course
+from ..models import Staff, Course, Instructor
+from ..database import db
 from sqlalchemy.exc import SQLAlchemyError
-from ..models import Instructor
 
 
-def create_staff(id, email, password, first_name, last_name, position) -> Staff | None:
+def create_staff(
+    id: int, email: str, password: str, first_name: str, last_name: str, position: str
+) -> bool:
     try:
         staff: Staff = Staff(id, email, password, first_name, last_name, position)
         db.session.add(staff)
         db.session.commit()
-        return staff
+        return True
     except SQLAlchemyError as e:
         db.session.rollback()
         print(f"Error creating staff: {e}")
-        return None
+        return False
 
 
-def add_course_instructor(staff_id, course_code) -> Instructor:
+def add_instructor(staff_id: int, course_code: str) -> Instructor:
     instructor: Instructor | None = Instructor.query.filter_by(
         staff_id=staff_id, course_code=course_code
     ).first()
@@ -28,9 +30,13 @@ def add_course_instructor(staff_id, course_code) -> Instructor:
     return instructor
 
 
+def get_staff(id: int) -> Staff:
+    return Staff.query.get(id)
+
+
+def get_instructors(staff_id: int) -> list[Instructor]:
+    return Instructor.query.filter_by(staff_id=staff_id).all()
+
+
 def get_registered_courses(staff_id) -> list[Course]:
-    course_listing: list[Instructor] = Instructor.query.filter_by(staff_id=staff_id).all()
-    instructor_courses: list[Course] = []
-    for listing in course_listing:
-        instructor_courses.append(Course.query.get(listing.course_code))
-    return instructor_courses
+    return [get_course(staff.course_code) for staff in get_instructors(staff_id)]
