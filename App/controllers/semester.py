@@ -1,9 +1,12 @@
+from datetime import date
 from App.models import Semester
 from App.database import db
 from App.models import Course
 
 
-def add_semester(start_date, end_date, semester_number, max_exams) -> Semester:
+def add_semester(
+    start_date: str, end_date: str, semester_number: int, max_exams: int
+) -> Semester:
     semester = Semester(start_date, end_date, semester_number, max_exams)
     db.session.add(semester)
     db.session.commit()
