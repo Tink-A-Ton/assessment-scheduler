@@ -167,26 +167,6 @@ def get_selected_courses():
         return redirect(url_for("staff_views.get_account_page"))
 
 
-# Gets exams page
-@staff_views.route("/assessments", methods=["GET"])
-@jwt_required()
-def get_exams_page():
-    staff: Staff | None = get_staff(get_jwt_identity())
-    if staff is None:
-        return render_template("login.html")
-    registered_courses: list[Course] = get_registered_courses(staff.id)
-    exams: list[dict] = [
-        assessment.to_json()
-        for course in registered_courses
-        for assessment in get_exams_by_course(course.course_code)
-    ]
-    registered_course_codes: list[str] = [
-        course.course_code for course in registered_courses
-    ]
-    return render_template(
-        "assessments.html", courses=registered_course_codes, exams=exams
-    )
-
 # Get settings page
 @staff_views.route("/settings", methods=["GET"])
 @jwt_required()
