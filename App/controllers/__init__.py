@@ -1,4 +1,5 @@
 from .staff import *
+from .clash import *
 from .auth import *
 from .admin import *
 from .user import *

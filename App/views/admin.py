@@ -3,8 +3,8 @@ from flask_jwt_extended import jwt_required
 from werkzeug import Response
 from ..models import Admin, Exam
 from ..controllers import create_course, delete_course, edit_course, process_file
-from ..controllers import get_all_courses, get_course, get_search_results, get_clashes
-from ..controllers import deny_override, allow_override, add_semester
+from ..controllers import get_courses, get_course, get_search_results, get_clashes
+from ..controllers import deny_override, allow_override, create_semester
 
 
 admin_views = Blueprint("admin_views", __name__, template_folder="../templates")
@@ -37,7 +37,7 @@ def index() -> str:
 @admin_views.route("/get_courses", methods=["GET"])
 @jwt_required(Admin)
 def get_courses() -> str:
-    return render_template("courses.html", courses=get_all_courses())
+    return render_template("courses.html", courses=get_courses())
 
 
 @admin_views.route("/newCourse", methods=["GET"])
@@ -49,7 +49,7 @@ def get_new_course() -> str:
 @admin_views.route("/newSemester", methods=["POST"])
 @jwt_required(Admin)
 def new_semester_action() -> str:
-    add_semester(
+    create_semester(
         request.form["teachingBegins"],
         request.form["teachingEnds"],
         int(request.form["semester"]),
@@ -77,7 +77,7 @@ def update_course_page() -> str:
 @admin_views.route("/clashes", methods=["GET"])
 @jwt_required(Admin)
 def get_clashes_page() -> str:
-    search_results: list[Exam] = get_search_results(request.args["start_date"])
+    search_results: list[Exam] = get_search_results(request.args.get("start_date"))
     return render_template("clashes.html", exams=get_clashes(), results=search_results)
 
 

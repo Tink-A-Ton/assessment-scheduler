@@ -1,7 +1,6 @@
-from ..models import Course, Exam
+from ..models import Exam
 from ..database import db
-from datetime import date, time
-from .course import get_course
+from datetime import date, datetime, time
 
 
 def create_exam(
@@ -17,13 +16,6 @@ def create_exam(
     db.session.add(exam)
     db.session.commit()
     return exam
-
-
-def get_exam_by_course(id: int) -> Course | None:
-    exam: Exam | None = get_exam(id)
-    if exam is None:
-        return None
-    return get_course(exam.course_code)
 
 
 def get_exams_by_course(course_code: str) -> list[Exam]:
@@ -51,12 +43,16 @@ def get_exam(id: int) -> Exam | None:
     return Exam.query.get(id)
 
 
-def edit_exam(id: int, start_date, start_time, end_time) -> None | Exam:
+def get_exams_json() -> list[dict[str, str]]:
+    return [exam.to_json() for exam in get_exams()]
+
+
+def update_exam(id: int, start_date, start_time, end_time) -> Exam | None:
     exam: Exam | None = get_exam(id)
     if exam is None:
         return None
-    exam.start_date = start_date
-    exam.start_time = start_time
-    exam.end_time = end_time
+    exam.start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+    exam.start_time = datetime.strptime(start_time[:5], "%H:%M").time()
+    exam.end_time = datetime.strptime(end_time[:5], "%H:%M").time()
     db.session.commit()
     return exam

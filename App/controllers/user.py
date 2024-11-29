@@ -24,8 +24,7 @@ def is_admin_account(email: str) -> bool:
     return Admin.query.filter_by(email=email).first()
 
 
-def create_admin(id, email, password) -> Admin:
-    admin: Admin = Admin(id, email, password)
-    db.session.add(admin)
+def update_password(id: int, password: str) -> None:
+    user: User = User.query.get(id)
+    user.set_password(password)
     db.session.commit()
-    return admin

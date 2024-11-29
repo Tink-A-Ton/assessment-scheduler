@@ -1,7 +1,6 @@
 from .ruleSet import PREDEFINED_RULES
 from .clashDetection import ClashDetection
 from ..domain.exam import Exam
-from App.database import db
 
 
 class ClashContext:
@@ -16,12 +15,6 @@ class ClashContext:
         else:
             raise ValueError(f"Unknown rule: {rule_name}")
 
-    def detect_clash(self, assessment: Exam) -> bool:
-        for strategy in self.selected_strategies:
-            if strategy.detect_clash(assessment):
-                assessment.clash_detected = True
-                db.session.commit()
-                return True
-        assessment.clash_detected = False
-        db.session.commit()
-        return False
+    def detect_clash(self, exam: Exam) -> bool:
+        exam.clash_detected = any(s.detect_clash(exam) for s in self.selected_strategies)
+        return exam.clash_detected

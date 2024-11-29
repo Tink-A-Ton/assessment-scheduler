@@ -11,7 +11,7 @@ from ..controllers import (
     get_exams_by_course,
     create_exam,
     delete_exam,
-    edit_exam,
+    update_exam,
     get_registered_courses,
     get_staff,
 )
@@ -88,7 +88,7 @@ def modify_exam_action(id) -> Response:
     start_date: date = parse_date(request.form.get("startDate"))
     start_time: time = parse_time(request.form.get("startTime"))
     end_time: time = parse_time(request.form.get("endTime"))
-    exam: None | Exam = edit_exam(id, start_date, start_time, end_time)
+    exam: None | Exam = update_exam(id, start_date, start_time, end_time)
     if exam:
         flash(f"Exam Details Updated !")
         clash: bool = detect_exam_clash(
