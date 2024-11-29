@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, render_template, redirect, url_for, flash
 from flask_jwt_extended import jwt_required
 from werkzeug import Response
+from werkzeug.datastructures import FileStorage
 from App.models import Admin
 from App.database import db
 from werkzeug.utils import secure_filename
@@ -8,75 +9,66 @@ import os, csv
 from datetime import datetime
 from App.models import Course, Exam
 from App.controllers.course import (
-    add_course,
+    create_course,
     get_all_courses,
     get_course,
     delete_course,
-    edit_course,
+    update_course,
 )
 from App.controllers.semester import add_semester
 from ..controllers.exam import get_exam, get_clashes
-from flask_jwt_extended import get_jwt_identity
 
 
 admin_views = Blueprint("admin_views", __name__, template_folder="../templates")
 
 
-# Gets Semester Details Page
 @admin_views.route("/semester", methods=["GET"])
 @jwt_required(Admin)
-def get_upload_page():
+def get_upload_page() -> str:
     return render_template("semester.html")
 
 
 @admin_views.route("/uploadFiles", methods=["GET"])
 @jwt_required(Admin)
-def get_uploadFiles_page():
+def get_uploadFiles_page() -> str:
     return render_template("uploadFiles.html")
 
 
-# Gets Course Listings Page
 @admin_views.route("/coursesList", methods=["GET"])
 @jwt_required(Admin)
-def index():
+def index() -> str:
     return render_template("courses.html")
 
 
-# Retrieves semester details and stores it in global variables
 @admin_views.route("/newSemester", methods=["POST"])
 @jwt_required(Admin)
-def new_semester_action():
-    semBegins = request.form.get("teachingBegins")
-    semEnds = request.form.get("teachingEnds")
-    semChoice = request.form.get("semester")
-    maxAssessments = request.form.get("maxAssessments")
-    add_semester(semBegins, semEnds, semChoice, maxAssessments)
+def new_semester_action() -> str:
+    start_date: str = request.form["teachingBegins"]
+    end_date: str = request.form["teachingEnds"]
+    semester_number: int = int(request.form["semester"])
+    max_exams: int = int(request.form["maxAssessments"])
+    add_semester(start_date, end_date, semester_number, max_exams)
     return render_template("uploadFiles.html")
 
 
-# Gets csv file with course listings, parses it to store course data and stores it in application
 @admin_views.route("/uploadcourse", methods=["POST"])
 @jwt_required(Admin)
-def upload_course_file():
-    file = request.files["file"]
-
-    # Check if file is present
+def upload_course_file() -> str | Response:
+    file: FileStorage = request.files["file"]
     if file.filename == "":
-        message = "No file selected!"
-        return render_template("uploadFiles.html", message=message)
-    else:
-        filename = secure_filename(file.filename)
-        file.save(os.path.join("App/uploads", filename))
-        fpath = "App/uploads/" + filename
-        with open(fpath, "r") as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                add_course(
-                    course_code=row["Course Code"],
-                    course_title=row["Course Title"],
-                    level=int(row["Level"]),
-                    semester=int(row["Semester"]),
-                )
+        return render_template("uploadFiles.html", message="No file selected!")
+    filename = secure_filename(file.filename)
+    file.save(os.path.join("App/uploads", filename))
+    fpath = "App/uploads/" + filename
+    with open(fpath, "r") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            create_course(
+                row["Course Code"],
+                row["Course Title"],
+                int(row["Level"]),
+                int(row["Semester"]),
+            )
     return redirect(url_for("admin_views.get_courses"))
 
 
@@ -108,7 +100,7 @@ def add_course_action() -> Response:
 
     if course_code is None or title is None or level is None or semester is None:
         return redirect(url_for("admin_views.get_courses"))
-    course_added: bool = add_course(course_code, title, int(level), int(semester))
+    course_added: bool = create_course(course_code, title, int(level), int(semester))
     return redirect(url_for("admin_views.get_courses"))
 
 
@@ -133,7 +125,7 @@ def update_course():
     # programme = request.form.get('programme')
 
     delete_course(course_code=course_code)
-    edit_course(
+    update_course(
         course_code=course_code, course_title=title, level=level, semester_id=semester
     )
     flash("Course Updated Successfully!")
@@ -218,7 +210,6 @@ def reject_override(assessment_id):
     if assessment:
         assessment.clash_detected = False
         assessment.start_date = None
-        assessment.end_date = None
         assessment.start_time = None
         assessment.end_time = None
         db.session.commit()

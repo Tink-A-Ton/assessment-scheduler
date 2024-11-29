@@ -1,9 +1,8 @@
-from flask import Blueprint, request, jsonify, render_template
-from App.controllers import Staff
+from flask import Blueprint, render_template
 
-course_views = Blueprint('course_views', __name__, template_folder='../templates')
+course_views = Blueprint("course_views", __name__, template_folder="../templates")
 
-# Gets Course Page
-@course_views.route('/courses', methods=['GET'])
-def index():
-    return render_template('courses.html')
+
+@course_views.route("/courses", methods=["GET"])
+def index() -> str:
+    return render_template("courses.html")
