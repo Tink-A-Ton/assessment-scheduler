@@ -20,7 +20,7 @@ def get_course(course_code: str) -> Course | None:
     return Course.query.get(course_code)
 
 
-def update_course(
+def edit_course(
     course_code: str, semester_id: int, course_title: str, level: int
 ) -> Course | None:
     course: Course | None = get_course(course_code)

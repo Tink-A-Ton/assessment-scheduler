@@ -20,8 +20,8 @@
         </form>
         <div class="search-results">
             {% for result in results %}
-            <p>{{ result.courseCode }}&emsp;&emsp;&emsp;&emsp;Start: {{ result.startDate }}&emsp;{{ result.startTime
-                }}&emsp;&emsp;&emsp;&emsp;End: {{ result.endDate }}&emsp;{{ result.endTime }}</p>
+            <p>{{ result.course_code }}&emsp;&emsp;&emsp;&emsp;Start: {{ result.start_date }}&emsp;{{ result.start_time
+                }}&emsp;&emsp;{{ result.end_time }}</p>
             {% endfor %}
 
         </div>
@@ -36,11 +36,11 @@
         </tr>
     </thead>
     <tbody>
-        {% for a in exams%}
+        {% for a in exams %}
         <tr>
             <td>{{a.id}}</td>
-            <td>{{a.courseCode}}</td>
-            <td>{{a.startDate}}</td>
+            <td>{{a.course_code}}</td>
+            <td>{{a.start_date}}</td>
             <td>
                 <form action="/acceptOverride/{{ a.id }}" method="POST" style="display: inline-block;">
                     <button type="submit" class="tableBtn">Accept</button>
