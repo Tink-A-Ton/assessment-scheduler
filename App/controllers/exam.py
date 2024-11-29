@@ -7,7 +7,6 @@ from datetime import date, time
 def add_exam(
     course_code: str,
     start_date: date,
-    end_date: date,
     start_time: time,
     end_time: time,
     clash_detected: bool,
@@ -20,7 +19,6 @@ def add_exam(
     exam = Exam(
         course_code=course_code,
         start_date=start_date,
-        end_date=end_date,
         start_time=start_time,
         end_time=end_time,
         clash_detected=clash_detected,
@@ -38,10 +36,10 @@ def get_exam(id: int) -> Exam | None:
     return Exam.query.get(id)
 
 
-def get_course(id: int) -> Course | None:
+def get_exam_course(id: int) -> Course | None:
     exam = Exam.query.get(id)
     if exam:
-        course: Course = Course.query.get(exam.course_code)
+        course: Course | None = Course.query.get(exam.course_code)
         if course:
             return course
     return None

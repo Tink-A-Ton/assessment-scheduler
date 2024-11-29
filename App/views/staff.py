@@ -25,13 +25,11 @@ from App.controllers.staff import (
     create_staff,
     add_course_instructor,
 )
-from App.controllers.course import get_all_courses, get_courses_by_level
-from App.controllers.user import get_user, get_user_by_email
+from App.controllers.course import get_all_courses
+from App.controllers.user import get_user_by_email
 from App.controllers.exam import (
     get_exam,
     get_exams_by_course,
-    get_exams_by_level,
-    get_course,
     add_exam,
     delete_exam_by_id,
     get_exams,
@@ -110,7 +108,6 @@ def update_calendar_page():
     assessment: Exam | None = get_exam(int(id))
     if assessment:
         assessment.start_date = startDate
-        assessment.end_date = endDate
         assessment.start_time = startTime
         assessment.end_time = endTime
         db.session.commit()
@@ -150,14 +147,7 @@ def register_staff_action():
     email: str | None = request.form.get("email")
     password: str | None = request.form.get("password")
 
-    create_staff(
-        first_name=firstname,
-        last_name=lastname,
-        id=staff_id,
-        position=position,
-        email=email,
-        password=password,
-    )
+    create_staff(staff_id, email, password, firstname, lastname, position)
     return render_template("login.html")
     # return redirect(url_for('staff_views.send_email'))
 
@@ -252,7 +242,7 @@ def add_exams_action():
         return
 
     assessment: Exam = add_exam(
-        course, startDate, endDate, startTime, endTime, clash_detected=False
+        course, startDate, startTime, endTime, clash_detected=False
     )
     flash("AssessmentType created !")
     if not startDate:
@@ -292,7 +282,6 @@ def modify_assessment(id):
 
     if assessment:
         assessment.start_date = start_date
-        assessment.end_date = end_date
         assessment.start_time = start_time
         assessment.end_time = end_time
         db.session.commit()
