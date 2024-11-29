@@ -134,22 +134,6 @@ def send_email():
     return render_template("login.html")
 
 
-# Retrieves staff info and stores it in database ie. register new staff
-@staff_views.route("/register", methods=["POST"])
-def register_staff_action() -> str:
-    data: dict[str, str] = request.form
-    staff_id: int = int(data["staffID"])
-    firstname: str = data["firstName"]
-    lastname: str = data["lastName"]
-    position: str = data["status"]
-    email: str = data["email"]
-    password: str = data["password"]
-    created: bool = create_staff(staff_id, email, password, firstname, lastname, position)
-    if not created:
-        return render_template("signup.html")
-    return render_template("login.html")
-
-
 # Gets account page
 @staff_views.route("/account", methods=["GET"])
 @jwt_required()
