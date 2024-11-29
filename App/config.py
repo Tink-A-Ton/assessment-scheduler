@@ -1,43 +1,39 @@
 import os
-import importlib
 from datetime import timedelta
-from typing import Any
+from flask import Flask
 
 
-# must be updated to inlude addtional secrets/ api keys & use a gitignored custom-config file instad
-def load_config() -> dict[str, Any]:
-    config: dict[str, Any] = {"ENV": os.environ.get("ENV", "DEVELOPMENT")}
-    delta = 7
-    if config["ENV"] == "DEVELOPMENT":
+def load_config(app: Flask, overrides) -> None:
+    config: dict = {"ENV": os.environ.get("ENV", "DEVELOPMENT")}
+    if app.config["ENV"] == "DEVELOPMENT":
         from .default_config import (
-            JWT_ACCESS_TOKEN_EXPIRES,
             SQLALCHEMY_DATABASE_URI,
             SECRET_KEY,
         )
 
-        config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
-        config["SECRET_KEY"] = SECRET_KEY
-        delta = JWT_ACCESS_TOKEN_EXPIRES
+        app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
+        app.config["SECRET_KEY"] = SECRET_KEY
     else:
-        config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("SQLALCHEMY_DATABASE_URI")
-        config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
-        config["DEBUG"] = config["ENV"].upper() != "PRODUCTION"
+        app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("SQLALCHEMY_DATABASE_URI")
+        app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+        app.config["DEBUG"] = app.config["ENV"].upper() != "PRODUCTION"
 
-        delta = int(os.environ.get("JWT_ACCESS_TOKEN_EXPIRES", 7))
-
-    config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=int(delta))
-    config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    config["TEMPLATES_AUTO_RELOAD"] = True
-    config["SEVER_NAME"] = "0.0.0.0"
-    config["PREFERRED_URL_SCHEME"] = "https"
-    config["UPLOADED_PHOTOS_DEST"] = "App/uploads"
-    config["JWT_TOKEN_LOCATION"] = ["headers"]
-    config["MAIL_SERVER"] = "smtp.gmail.com"
-    config["MAIL_PORT"] = 465
-    config["MAIL_USERNAME"] = "assessment.scheduler.emails@gmail.com"
-    config["MAIL_PASSWORD"] = "mygl qlni lqrz naxm"  # App Password used
-    config["MAIL_USE_TLS"] = True
-    return config
-
-
-config = load_config()
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=int(7))
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["TEMPLATES_AUTO_RELOAD"] = True
+    app.config["PREFERRED_URL_SCHEME"] = "https"
+    app.config["UPLOADED_PHOTOS_DEST"] = "App/uploads"
+    app.config["JWT_TOKEN_LOCATION"] = ["cookies", "headers"]
+    # app.config["JWT_TOKEN_LOCATION"] = ["headers"]
+    app.config["MAIL_SERVER"] = "smtp.gmail.com"
+    app.config["MAIL_PORT"] = 465
+    app.config["MAIL_USERNAME"] = "assessment.scheduler.emails@gmail.com"
+    app.config["MAIL_PASSWORD"] = "mygl qlni lqrz naxm"  # App Password used
+    app.config["MAIL_USE_TLS"] = True
+    app.config["MAIL_DEFAULT_SENDER"] = "assessment.scheduler.emails@gmail.com"
+    app.config["JWT_ACCESS_COOKIE_NAME"] = "access_token"
+    app.config["JWT_COOKIE_SECURE"] = True
+    app.config["JWT_COOKIE_CSRF_PROTECT"] = False
+    # app.config["DEBUG"] = True
+    for key in overrides:
+        app.config[key] = overrides[key]
