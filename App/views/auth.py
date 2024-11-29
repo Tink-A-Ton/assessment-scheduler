@@ -1,17 +1,9 @@
 from flask import Blueprint, redirect, request, render_template, url_for
-from flask_jwt_extended import (
-    create_access_token,
-    jwt_required,
-    unset_jwt_cookies,
-    set_access_cookies,
-)
+from flask_jwt_extended import jwt_required, unset_jwt_cookies, set_access_cookies
 from flask.wrappers import Response
 from werkzeug.datastructures import ImmutableMultiDict
 from werkzeug.wrappers.response import Response
-from App.models import User, Admin
-from App.controllers.staff import create_staff
-from App.controllers.auth import login_user
-from App.controllers.user import is_admin_account
+from ..controllers import create_staff, login_user, is_admin_account
 
 auth_views = Blueprint("auth_views", __name__, template_folder="../templates")
 
