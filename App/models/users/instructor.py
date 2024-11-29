@@ -1,7 +1,7 @@
 from App.database import db
 
 
-class CourseInstructor(db.Model):
+class Instructor(db.Model):
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
     staff_id: int = db.Column(db.Integer, db.ForeignKey("staff.id"))
     course_code: str = db.Column(db.String(120), db.ForeignKey("course.course_code"))

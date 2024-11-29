@@ -8,7 +8,8 @@ from flask_jwt_extended import (
     get_jwt_identity,
     verify_jwt_in_request,
 )
-from App.models import User, Admin, Staff, user
+from App.models import User, Admin, Staff
+from App.models.users import user
 
 
 # def authenticate(email, password):
@@ -66,7 +67,7 @@ def setup_flask_login(app):
     login_manager = flask_login.LoginManager()
     login_manager = flask_login.LoginManager()
     login_manager.init_app(app)
-    login_manager.login_view = "login"
+    login_manager.login_view = "login"  # pyright: ignore[reportAttributeAccessIssue]
 
     @login_manager.user_loader
     def load_user(user_id):

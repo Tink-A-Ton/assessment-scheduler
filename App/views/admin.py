@@ -6,7 +6,7 @@ from App.database import db
 from werkzeug.utils import secure_filename
 import os, csv
 from datetime import datetime
-from App.models.course import Course
+from App.models import Course, Exam
 from App.controllers.course import (
     add_course,
     get_all_courses,
@@ -15,10 +15,9 @@ from App.controllers.course import (
     edit_course,
 )
 from App.controllers.semester import add_semester
-from App.controllers.assessment import get_assessment, get_clashes
+from ..controllers.exam import get_exam, get_clashes
 from flask_jwt_extended import get_jwt_identity
 
-from App.models.courseAssessment import CourseAssessment
 
 admin_views = Blueprint("admin_views", __name__, template_folder="../templates")
 
@@ -159,7 +158,7 @@ def delete_course_action(course_code):
 # @jwt_required(Admin)
 # def get_clashes_page():
 #     # for search
-#     all_assessments = CourseAssessment.query.all()
+#     all_assessments = Exam.query.all()
 #     start_date = request.args.get("start_date")
 #     end_date = request.args.get("end_date")
 #     searchResults = []
@@ -183,7 +182,7 @@ def delete_course_action(course_code):
 @jwt_required(Admin)
 def get_clashes_page():
     # for search
-    all_assessments = CourseAssessment.query.all()
+    all_assessments = Exam.query.all()
     start_date = request.args.get("start_date")
     end_date = request.args.get("end_date")
     searchResults = []
@@ -204,7 +203,7 @@ def get_clashes_page():
 @admin_views.route("/acceptOverride/<int:assessment_id>", methods=["POST"])
 @jwt_required(Admin)
 def accept_override(assessment_id):
-    assessment: CourseAssessment | None = get_assessment(assessment_id)
+    assessment: Exam | None = get_exam(assessment_id)
     if assessment:
         assessment.clash_detected = False
         db.session.commit()
@@ -215,7 +214,7 @@ def accept_override(assessment_id):
 @admin_views.route("/rejectOverride/<int:assessment_id>", methods=["POST"])
 @jwt_required(Admin)
 def reject_override(assessment_id):
-    assessment: CourseAssessment | None = get_assessment(assessment_id)
+    assessment: Exam | None = get_exam(assessment_id)
     if assessment:
         assessment.clash_detected = False
         assessment.start_date = None

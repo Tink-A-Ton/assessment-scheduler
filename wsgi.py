@@ -25,42 +25,41 @@ def get_users():
         print(s.to_json())
     print("end of staff objects")
 
-    # This command creates all the Assessment objects
+    # This command creates all the Exam objects
     # @app.cli.command("asm")
     # def load_Asm():
     #   db.create_all()
-    #   asm1 = Assessment(category='EXAM')
+    #   asm1 = Exam(category='EXAM')
     #   db.session.add(asm1)
     #   db.session.commit()
 
-    #   asm2 = Assessment(category='ASSIGNMENT')
+    #   asm2 = Exam(category='ASSIGNMENT')
     #   db.session.add(asm2)
     #   db.session.commit()
 
-    #   asm3 = Assessment(category='QUIZ')
+    #   asm3 = Exam(category='QUIZ')
     #   db.session.add(asm3)
     #   db.session.commit()
 
-    #   asm4 = Assessment(category='PROJECT')
+    #   asm4 = Exam(category='PROJECT')
     #   db.session.add(asm4)
     #   db.session.commit()
 
-    #   asm5 = Assessment(category='DEBATE')
+    #   asm5 = Exam(category='DEBATE')
     #   db.session.add(asm5)
     #   db.session.commit()
 
-    #   asm6 = Assessment(category='PRESENTATION')
+    #   asm6 = Exam(category='PRESENTATION')
     #   db.session.add(asm6)
     #   db.session.commit()
 
-    #   asm7 = Assessment(category='ORALEXAM')
+    #   asm7 = Exam(category='ORALEXAM')
     #   db.session.add(asm7)
     #   db.session.commit()
 
-    #   asm8 = Assessment(category='PARTICIPATION')
+    #   asm8 = Exam(category='PARTICIPATION')
     #   db.session.add(asm8)
     #   db.session.commit()
-    #   print('All assessments added')
 
     # # This command creates all the Programme objects
     # @app.cli.command("pgr")

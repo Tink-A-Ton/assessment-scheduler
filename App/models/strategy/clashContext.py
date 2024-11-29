@@ -1,6 +1,6 @@
-from .utils import PREDEFINED_RULES
+from .ruleSet import PREDEFINED_RULES
 from .clashDetection import ClashDetection
-from ..courseAssessment import CourseAssessment
+from ..domain.exam import Exam
 from App.database import db
 
 
@@ -16,7 +16,7 @@ class ClashContext:
         else:
             raise ValueError(f"Unknown rule: {rule_name}")
 
-    def detect_clash(self, assessment: CourseAssessment) -> bool:
+    def detect_clash(self, assessment: Exam) -> bool:
         for strategy in self.selected_strategies:
             if strategy.detect_clash(assessment):
                 assessment.clash_detected = True

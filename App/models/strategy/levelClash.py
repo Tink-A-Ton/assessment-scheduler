@@ -1,5 +1,5 @@
-from ..course import Course
-from ..courseAssessment import CourseAssessment
+from ..domain.course import Course
+from ..domain.exam import Exam
 from .clashDetection import ClashDetection
 
 
@@ -9,18 +9,18 @@ class LevelClash(ClashDetection):
     cannot overlap in time.
     """
 
-    def detect_clash(self, new_assessment: CourseAssessment) -> bool:
-        course_level: int = Course.query.get(new_assessment.course_code).level
-        relevant_assessments: list[CourseAssessment] = CourseAssessment.query.filter(
-            CourseAssessment.start_date == new_assessment.start_date,
-            CourseAssessment.id != new_assessment.id,
+    def detect_clash(self, new_exam: Exam) -> bool:
+        course_level: int = Course.query.get(new_exam.course_code).level
+        relevant_exams: list[Exam] = Exam.query.filter(
+            Exam.start_date == new_exam.start_date,
+            Exam.id != new_exam.id,
         ).all()
 
         return any(
-            Course.query.get(assessment.course_code).level == course_level
+            Course.query.get(exam.course_code).level == course_level
             and (
-                new_assessment.start_time <= assessment.end_time
-                and new_assessment.end_time >= assessment.start_time
+                new_exam.start_time <= exam.end_time
+                and new_exam.end_time >= exam.start_time
             )
-            for assessment in relevant_assessments
+            for exam in relevant_exams
         )
