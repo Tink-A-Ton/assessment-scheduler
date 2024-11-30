@@ -24,7 +24,7 @@ def get_uploadFiles_page() -> str:
 
 @admin_views.route("/modifyCourse/<string:course_code>", methods=["GET"])
 @jwt_required(Admin)
-def get_update_course(course_code) -> str:
+def get_update_course_page(course_code) -> str:
     return render_template("updateCourse.html", course=get_course(course_code))
 
 
@@ -36,13 +36,13 @@ def index() -> str:
 
 @admin_views.route("/get_courses", methods=["GET"])
 @jwt_required(Admin)
-def get_courses() -> str:
+def get_courses_page() -> str:
     return render_template("courses.html", courses=get_courses())
 
 
 @admin_views.route("/newCourse", methods=["GET"])
 @jwt_required(Admin)
-def get_new_course() -> str:
+def get_add_course_page() -> str:
     return render_template("addCourse.html")
 
 
@@ -65,7 +65,7 @@ def upload_course_file() -> str | Response:
     if file.filename == "":
         return render_template("uploadFiles.html", message="No file selected!")
     process_file(file)
-    return redirect(url_for("admin_views.get_courses"))
+    return redirect(url_for("admin_views.get_courses_page"))
 
 
 @admin_views.route("/updateCourse", methods=["GET"])
@@ -88,7 +88,7 @@ def update_course() -> Response:
     # programme = request.form.get('programme')
     edit_course(data["code"], int(data["semester"]), data["title"], int(data["level"]))
     flash("Course Updated Successfully!")
-    return redirect(url_for("admin_views.get_courses"))
+    return redirect(url_for("admin_views.get_courses_page"))
 
 
 @admin_views.route("/addNewCourse", methods=["POST"])
@@ -98,7 +98,7 @@ def add_course_action() -> Response:
     create_course(
         data["course_code"], data["title"], int(data["level"]), int(data["semester"])
     )
-    return redirect(url_for("admin_views.get_courses"))
+    return redirect(url_for("admin_views.get_courses_page"))
 
 
 @admin_views.route("/deleteCourse/<string:course_code>", methods=["POST"])
@@ -106,7 +106,7 @@ def add_course_action() -> Response:
 def delete_course_action(course_code) -> Response:
     delete_course(course_code)
     flash("Course Deleted Successfully!")
-    return redirect(url_for("admin_views.get_courses"))
+    return redirect(url_for("admin_views.get_courses_page"))
 
 
 @admin_views.route("/acceptOverride/<int:assessment_id>", methods=["POST"])
