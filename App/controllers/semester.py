@@ -18,9 +18,6 @@ def get_courses_offered(semester_id: int) -> list[Course]:
     return semester.courses_offered
 
 
-def get_semester() -> dict[str, str]:
+def get_semester() -> dict[str, str | int]:
     semester: Semester = Semester.query.order_by(Semester.id.desc()).first()
-    return {
-        "start": semester.start_date,
-        "end": semester.end_date,
-    }
+    return semester.to_json()

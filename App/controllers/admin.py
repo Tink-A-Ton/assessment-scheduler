@@ -6,6 +6,7 @@ from .exam import get_exam, get_exams
 from ..models import Exam
 from .course import create_course
 from ..database import db
+from .semester import get_semester
 
 
 def allow_override(id: int) -> None:
@@ -26,6 +27,7 @@ def deny_override(id: int) -> None:
 
 
 def process_file(file) -> None:
+    semester: dict[str, str | int] = get_semester()
     filename: str = secure_filename(file.filename)
     file.save(os.path.join("App/uploads", filename))
     fpath: str = "App/uploads/" + filename
@@ -36,7 +38,7 @@ def process_file(file) -> None:
                 row["Course Code"],
                 row["Course Title"],
                 int(row["Level"]),
-                int(row["Semester"]),
+                int(semester["id"]),
             )
 
 

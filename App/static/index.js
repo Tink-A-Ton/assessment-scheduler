@@ -30,8 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
         duration: { weeks: 13 },
         buttonText: "Semester",
         visibleRange: {
-          start: semester.start,
-          end: semester.end,
+          start: semester.start_date,
+          end: semester.end_date,
         },
       },
     },
