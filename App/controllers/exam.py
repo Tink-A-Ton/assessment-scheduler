@@ -22,15 +22,6 @@ def get_exams_by_course(course_code: str) -> list[Exam]:
     return Exam.query.filter_by(course_code=course_code).all()
 
 
-def delete_exam(exam_id: int) -> bool:
-    exam: Exam | None = get_exam(exam_id)
-    if exam is None:
-        return False
-    db.session.delete(exam)
-    db.session.commit()
-    return True
-
-
 def get_clashes() -> list[Exam]:
     return Exam.query.filter_by(clash_detected=True).all()
 
@@ -56,3 +47,16 @@ def update_exam(id: int, start_date, start_time, end_time) -> Exam | None:
     exam.end_time = parse_time(end_time)
     db.session.commit()
     return exam
+
+
+def delete_exam(exam_id: int) -> bool:
+    exam: Exam | None = get_exam(exam_id)
+    if exam is None:
+        return False
+    db.session.delete(exam)
+    db.session.commit()
+    from .clash import recheck_nearby_clashes
+
+    print(exam.start_date)
+    recheck_nearby_clashes(exam.start_date)
+    return True
