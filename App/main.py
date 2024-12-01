@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from os import getenv
 import time
 from dotenv import load_dotenv
