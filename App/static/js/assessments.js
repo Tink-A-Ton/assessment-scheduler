@@ -1,10 +1,10 @@
 $(document).ready(function(){
-    console.log(assessments);
+    console.log(exams);
 })
 
 const cardContainer = document.getElementById('card_container');
 
-assessments.forEach(assessment => {
+exams.forEach(assessment => {
     const card = document.createElement('div');
     card.classList.add('card');
     card.setAttribute('data-course-code', assessment.course_code);

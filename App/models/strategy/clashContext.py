@@ -1,27 +1,20 @@
-from .utils import PREDEFINED_RULES
+from .ruleSet import PREDEFINED_RULES
 from .clashDetection import ClashDetection
-from ..courseAssessment import CourseAssessment
-from App.database import db
+from ..domain.exam import Exam
 
 
 class ClashContext:
     def __init__(self) -> None:
-        self.selected_strategies: list[ClashDetection] = []
-        self.selected_strategies.append(PREDEFINED_RULES["rule0"]())
+        self.strategies: dict[str, ClashDetection] = {
+            rule_name: rule() for rule_name, rule in PREDEFINED_RULES.items()
+        }
 
-    def add_rule(self, rule_name: str) -> None:
-        if rule_name in PREDEFINED_RULES:
-            strategy_class = PREDEFINED_RULES[rule_name]
-            self.selected_strategies.append(strategy_class())
+    def remove_rule(self, rule_name: str) -> None:
+        if rule_name in self.strategies:
+            del self.strategies[rule_name]
         else:
-            raise ValueError(f"Unknown rule: {rule_name}")
+            raise ValueError(f"Rule '{rule_name}' does not exist or is not enabled.")
 
-    def detect_clash(self, assessment: CourseAssessment) -> bool:
-        for strategy in self.selected_strategies:
-            if strategy.detect_clash(assessment):
-                assessment.clash_detected = True
-                db.session.commit()
-                return True
-        assessment.clash_detected = False
-        db.session.commit()
-        return False
+    def detect_clash(self, exam: Exam) -> bool:
+        exam.clash_detected = any(s.detect_clash(exam) for s in self.strategies.values())
+        return exam.clash_detected

@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   const calendarEvents = [];
-  renderCourses(myCourses, assessments);
+  renderCourses(myCourses, exams);
   const levelFilter = document.getElementById("level");
   const courseFilter = document.getElementById("courses");
 
@@ -30,8 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
         duration: { weeks: 13 },
         buttonText: "Semester",
         visibleRange: {
-          start: semester.start,
-          end: semester.end,
+          start: semester.start_date,
+          end: semester.end_date,
         },
       },
     },
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCalendarEvents(calendar, filteredEvents);
   });
 
-  function renderCourses(courses, assessments) {
+  function renderCourses(courses, exams) {
     const containerEl = document.getElementById("courses-list");
     courses.forEach((course) => {
       const courseCard = document.createElement("div");
@@ -70,11 +70,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const eventsContainer = document.createElement("div");
       eventsContainer.classList.add("course-events");
 
-      assessments
+      exams
         .filter((a) => a.course_code === course.course_code)
         .forEach((a) => {
           const eventEl = createEventElement(a, course.course_code, colors);
-          if (a.start_date && a.end_date) {
+          if (a.start_date) {
             console.log(a);
             const eventObj = createEventObject(a, colors);
             calendarEvents.push(eventObj);
@@ -96,9 +96,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function createEventElement(assessment, course_code, colors) {
-    const color = assessment.clash_detected ? colors.Pending : colors.Assignment;
-    console.log(color + " " + assessment.clash_detected);
+  function createEventElement(exams, course_code, colors) {
+    const color = exams.clash_detected ? colors.Pending : colors.Assignment;
+    console.log(color + " " + exams.clash_detected);
     const eventEl = document.createElement("div");
     eventEl.classList.add(
       "fc-event",
@@ -108,37 +108,37 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     eventEl.dataset.color = color;
     eventEl.style.backgroundColor = color;
-    eventEl.setAttribute("data-event-id", assessment.id);
+    eventEl.setAttribute("data-event-id", exams.id);
     eventEl.innerHTML = '<div class="fc-event-main">' + course_code + '</div>';
     return eventEl;
   }
 
-  function createEventObject(assessment, colors) {
+  function createEventObject(exams, colors) {
     const isFullDay =
-      assessment.start_time === "00:00" &&
-      (assessment.end_time === "23:59" || assessment.end_time === "00:00");
-    const color = assessment.clash_detected ? colors.Pending : colors.Assignment;
+      exams.start_time === "00:00" &&
+      (exams.end_time === "23:59" || exams.end_time === "00:00");
+    const color = exams.clash_detected ? colors.Pending : colors.Assignment;
 
     return {
-      id: assessment.id,
-      title: `${assessment.course_code}-Exam`,
+      id: exams.id,
+      title: `${exams.course_code}-Exam`,
       backgroundColor: color,
-      start: `${assessment.start_date}T${assessment.start_time}`,
-      end: `${assessment.end_date}T${assessment.end_time}`,
+      start: `${exams.start_date}T${exams.start_time}`,
+      end: `T${exams.end_time}`,
       allDay: isFullDay,
     };
   }
 
   function filterEventsByLevel(level) {
-    return level === "0" ? assessments : otherAssessments.filter((item) => item.course_code[4] === level);
+    return level === "0" ? exams : otherExams.filter((item) => item.course_code[4] === level);
   }
 
   function filterEventsByCourse(courseCode) {
     if (courseCode == "all")
-      return otherAssessments
+      return otherExams
     if (courseCode == "My Courses")
-      return assessments
-    return otherAssessments.filter((item) => item.course_code === courseCode);
+      return exams
+    return otherExams.filter((item) => item.course_code === courseCode);
   }
 
   function updateCalendarEvents(calendar, newEvents) {
@@ -186,15 +186,6 @@ document.addEventListener("DOMContentLoaded", function () {
       success: () => location.reload(),
       error: (xhr, status, error) => console.error("Error:", error),
     });
-  }
-
-  function getAssessmentType(typeId) {
-    switch (typeId) {
-      case 1:
-        return "Exam";
-      default:
-        return "Exam";
-    }
   }
 
   function formatDate(dateObj) {

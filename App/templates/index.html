@@ -3,49 +3,47 @@
 {% block title %}Calendar{% endblock %}
 
 {% block head %}
-  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-  <link rel="stylesheet" href="../static/css/style.css">  
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+<link rel="stylesheet" href="../static/css/style.css">
 {% endblock %}
 
 {% block content %}
 <div id="container">
   <div id="filters">
-      <select id="level">
-        <option value="0" class="list-item">Level</option>
-        <option value="1" class="list-item">1</option>
-        <option value="2" class="list-item">2</option>
-        <option value="3" class="list-item">3</option>
-      </select>
-      
-      <select id="courses">
-        <option value="My Courses">My Courses</option>
-        <option value="all">ALL</option>
-        {% for course in courses %}
-          <option value="{{course.course_code}}">{{course.course_code}}</option>
-        {% endfor %}
-        </select>
-      
-    </div>
+    <select id="level">
+      <option value="0" class="list-item">Level</option>
+      <option value="1" class="list-item">1</option>
+      <option value="2" class="list-item">2</option>
+      <option value="3" class="list-item">3</option>
+    </select>
+
+    <select id="courses">
+      <option value="My Courses">My Courses</option>
+      <option value="all">ALL</option>
+      {% for course in courses %}
+      <option value="{{course.course_code}}">{{course.course_code}}</option>
+      {% endfor %}
+    </select>
+
+  </div>
   <div id="main">
-    
+
     <div id="calendar"></div>
     <div id="nav">
-        <div id="courses-list"></div>                
-        <div id="remove-event"></div>
+      <div id="courses-list"></div>
+      <div id="remove-event"></div>
     </div>
   </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
 <script>
-  var assessments={{ staff_assessments | tojson }};
-  var myCourses={{ staff_courses | tojson }};  
-  var semester={{ semester | tojson }};
-  var otherAssessments={{ other_assessments | tojson }};
+  var exams = {{ staff_exams | tojson }};
+  var myCourses = {{ staff_courses | tojson }};
+  var semester = {{ semester | tojson }};
+  var otherExams = {{ other_exams | tojson }};
 </script>
 <script src="{{url_for('static', filename='index.js')}}"></script>
 <script src="{{url_for('static', filename='js/mobileMenu.js')}}"></script>
 
 {% endblock %}
-
-

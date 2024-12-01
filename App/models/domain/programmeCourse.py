@@ -1,9 +1,8 @@
-from App.database import db
+from ...database import db
 
 
-class CourseProgramme(db.Model):
-    __tablename__ = "courseProgramme"
-    id: int = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
+class ProgrammeCourse(db.Model):
+    id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
     course_code: str = db.Column(db.String(9), db.ForeignKey("course.course_code"))
     programme_id: int = db.Column(db.Integer, db.ForeignKey("programme.id"))
 

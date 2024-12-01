@@ -15,45 +15,45 @@
       <tbody id="courseTableBody">
         {% for course in courses %}
         <tr class="course-row" data="{{ course.course_code }}">
-          <td>{{course.course_code}}</td> 
-          <td>{{course.course_title}}</td> 
+          <td>{{course.course_code}}</td>
+          <td>{{course.course_title}}</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
   <div id="buttons_container">
-      <a href="/newCourse" class="formBtn">Add Course</a>
-      <a href="#" class="modify-course-link formBtn">Update Course</a>
-      <form action="/deleteCourse/{{ courseCode }}" method="POST">
-        <button type="submit" class="delete-course-link formBtn">Delete Course</button>
-      </form>
+    <a href="/newCourse" class="formBtn">Add Course</a>
+    <a href="/updateCourse" class="modify-course-link formBtn">Update Course</a>
+    <form action="/deleteCourse/{{ courseCode }}" method="POST">
+      <button type="submit" class="delete-course-link formBtn">Delete Course</button>
+    </form>
   </div>
-</div> 
+</div>
 
 <script>
   const courseRows = document.querySelectorAll('.course-row');
 
   courseRows.forEach(row => {
-  row.addEventListener('click', function handleClick() {
-    courseRows.forEach(row => row.classList.remove('selected'));
+    row.addEventListener('click', function handleClick() {
+      courseRows.forEach(row => row.classList.remove('selected'));
 
-    // Apply new styling to the clicked row
-    this.classList.add('selected');
+      // Apply new styling to the clicked row
+      this.classList.add('selected');
 
-    // Access the course code from the data attribute:
-    const courseCode = this.querySelector('td').textContent
-    console.log('Clicked course code:', courseCode); 
+      // Access the course code from the data attribute:
+      const courseCode = this.querySelector('td').textContent
+      console.log('Clicked course code:', courseCode);
 
-    const modifyCourseLink = document.querySelector('.modify-course-link');
-    modifyCourseLink.href = `/modifyCourse/${courseCode}`;
+      const modifyCourseLink = document.querySelector('.modify-course-link');
+      modifyCourseLink.href = `/modifyCourse/${courseCode}`;
 
-    const deleteCourseForm = document.querySelector('form'); // Assuming form exists
-    deleteCourseForm.action = `/deleteCourse/${courseCode}`;
+      const deleteCourseForm = document.querySelector('form'); // Assuming form exists
+      deleteCourseForm.action = `/deleteCourse/${courseCode}`;
+    });
   });
-  });
 
- 
+
 
 </script>
 {% endblock %}

@@ -1,6 +1,5 @@
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm.properties import MappedColumn
+from sqlalchemy.orm import mapped_column, MappedColumn
 from .user import User
 
 

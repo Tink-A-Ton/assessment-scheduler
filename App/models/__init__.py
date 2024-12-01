@@ -1,10 +1,3 @@
-from .user import User
-from .admin import Admin
-from .staff import Staff
-from .course import Course
-from .programme import Programme
-from .courseInstructor import CourseInstructor
-from .courseProgramme import CourseProgramme
-from .semester import Semester
-from .courseAssessment import CourseAssessment
+from .users import User, Admin, Staff, Instructor
+from .domain import Course, ProgrammeCourse, Semester, Programme, Exam
 from .strategy import ClashContext

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column
 from werkzeug.security import check_password_hash, generate_password_hash
-from App.database import db
+from ...database import db
 
 
 class User(db.Model):
@@ -20,4 +20,4 @@ class User(db.Model):
         return check_password_hash(self.password, password)
 
     def to_json(self) -> dict[str, str | int]:
-        return {"id": self.id, "password": self.password, "email": self.email}
+        return {"id": self.id, "email": self.email}

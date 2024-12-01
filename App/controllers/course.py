@@ -1,45 +1,46 @@
-from App.models import Course
-from App.database import db
+from ..models import Course
+from ..database import db
 
-def add_course(course_code: str, course_title: str, level: int, semester: int) -> bool:
-    existing_course = Course.query.filter_by(course_code=course_code).first()
-    if existing_course is not None:
+
+def create_course(course_code: str, course_title: str, level: int, semester: int) -> bool:
+    course_exist: Course | None = Course.query.get(course_code)
+    if course_exist:
         return False
-    new_course = Course(course_code=course_code, semester_id=semester, course_title=course_title, level=level)
-    db.session.add(new_course)
+    course = Course(course_code, semester, course_title, level)
+    db.session.add(course)
     db.session.commit()
     return True
 
-def get_all_courses() -> list[Course]:
-    return Course.query.all() 
+
+def get_courses() -> list[Course]:
+    return Course.query.all()
+
 
 def get_course(course_code: str) -> Course | None:
-    return Course.query.filter_by(course_code=course_code).first()
+    return Course.query.get(course_code)
 
-def edit_course(course_code: str, semester_id: int, course_title: str, level: int) -> Course | None:
-    existing_course = Course.query.filter_by(course_code=course_code).first()
-    if existing_course:
-        existing_course.semester_id = semester_id
-        existing_course.course_title = course_title
-        existing_course.level = level
-        db.session.commit()
-        return existing_course
-    return None    
 
-def get_course_level(course_code: str) -> int | None:
-    course = Course.query.filter_by(course_code=course_code).first()
-    if course:
-        return course.level
-    return None
-
-def get_courses_by_level(level: int) -> list[Course] | None:
-    return Course.query.filter_by(level = level).all()
+def edit_course(
+    course_code: str, semester_id: int, course_title: str, level: int
+) -> Course | None:
+    course: Course | None = get_course(course_code)
+    if course is None:
+        return None
+    course.semester_id = semester_id
+    course.course_title = course_title
+    course.level = level
+    db.session.commit()
+    return course
 
 
 def delete_course(course_code: str) -> bool:
-    course_to_delete = Course.query.get(course_code)
-    if course_to_delete:
-        db.session.delete(course_to_delete)
-        db.session.commit()
-        return True
-    return False
+    course: Course | None = get_course(course_code)
+    if course:
+        return False
+    db.session.delete(course)
+    db.session.commit()
+    return True
+
+
+def get_available_courses(staff_courses) -> list[Course]:
+    return [c for c in get_courses() if c not in staff_courses]
