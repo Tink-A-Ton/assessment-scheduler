@@ -6,10 +6,14 @@ from App.database import db, get_migrate
 from App.main import create_app
 from App.models import Staff, Course, Programme, Admin
 from App.controllers.initialize import initialize
+from App.controllers.course import create_course
+from rich.console import Console
+from rich.table import Table
 
 # This commands file allow you to create convenient CLI commands for testing controllers!!
 app: Flask = create_app()
 migrate: Migrate = get_migrate(app)
+console = Console()
 
 
 # This command creates and initializes the database
@@ -23,9 +27,14 @@ def init() -> None:
 @app.cli.command("get-users")
 def get_users():
     staff = Staff.query.all()
+    table = Table(title="Staff Members")
+    table.add_column("id", style="yellow")
+    table.add_column("First Name", style="cyan")
+    table.add_column("Last Name", style="cyan")
+    table.add_column("Position", style="cyan")
     for s in staff:
-        print(s.to_json())
-    print("end of staff objects")
+        table.add_row(str(s.id), s.first_name, s.last_name, s.position.value)
+    console.print(table)
 
     # This command creates all the Exam objects
     # @app.cli.command("asm")
@@ -96,19 +105,21 @@ def get_users():
 
 # This command assigns courses to staff
 @app.cli.command("add-course")
-@click.argument("staff_ID")
-def assign_course(staff_ID):
-    bob = Staff.query.filter_by(u_ID=staff_ID).first()
+@click.argument("course_code")
+@click.argument("course_title")
+@click.argument("level", default=1)
+@click.argument("semester", default=1)
+def assign_course(course_code, course_title, level, semester):
+    level = int(level)
+    semester = int(semester)
+    if create_course(course_code, course_title, level, semester):
+        console.print("[green]Course added successfully")
+    else:
+        console.print("[red]Failed to add Course")
 
-    if not bob:
-        print(f"Staff with ID: {staff_ID} not found!")
-        return
+    
 
-    bob.coursesAssigned = ["COMP1601", "COMP1602", "COMP1603"]
-    db.session.add(bob)
-    db.session.commit()
-    print(bob)
-    print("courses added")
+    
 
 
 # load course data from csv file

@@ -5,7 +5,7 @@ from flask import Flask
 
 def load_config(app: Flask, overrides) -> None:
     config: dict = {"ENV": os.environ.get("ENV", "DEVELOPMENT")}
-    if app.config["ENV"] == "DEVELOPMENT":
+    if config["ENV"] == "DEVELOPMENT":
         from .default_config import (
             SQLALCHEMY_DATABASE_URI,
             SECRET_KEY,
