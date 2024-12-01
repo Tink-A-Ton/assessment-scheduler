@@ -5,11 +5,11 @@ from .programme_unit_test import *
 from .instructor_unit_test import *
 from .exam_unit_test import *
 from .course_unit_test import *
-from .defaultclash_unit_test import *
-from .levelclash_unit_test import *
-from .programmelevelclash_unit_test import *
-from .clashcontext_unit_test import *
-from .user_integration_test import *
+from .integration.defaultclash_unit_test import *
+from .integration.levelclash_unit_test import *
+from .integration.programmelevelclash_unit_test import *
+from .integration.clashcontext_unit_test import *
+from .integration.user_integration_test import *
 # from .semester_integration_test import *
 # from .programme_integration_test import *
 # from .course_integration_test import *

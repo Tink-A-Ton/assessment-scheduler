@@ -6,7 +6,6 @@ LOGGER: logging.Logger = logging.getLogger(__name__)
 class CourseUnitTests(unittest.TestCase):
     def test_new_course(self) -> None:
         new_course: Course = Course("COMP3602", 1, "Theory of Computation", 3)
-        self.assertIsInstance(new_course, Course, "new_course should be an instance of Course")
         self.assertEqual(new_course.course_code, "COMP3602", "Course Code Mismatch")
         self.assertEqual(new_course.semester_id, 1, "Semester ID Mismatch")
         self.assertEqual(new_course.course_title, "Theory of Computation", "Course Title Mismatch")

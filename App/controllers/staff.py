@@ -49,6 +49,5 @@ def get_staff_exams(staff_id) -> list[dict]:
         for assessment in get_exams_by_course(course.course_code)
     ]
 
-
 def get_staff_courses(staff_id: int) -> list[dict]:
     return [course.to_json() for course in get_registered_courses(staff_id)]
