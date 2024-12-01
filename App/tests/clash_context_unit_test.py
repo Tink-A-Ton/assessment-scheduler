@@ -7,7 +7,7 @@ class ClashContextUnitTests(unittest.TestCase):
     def test_new_clash_context(self) -> None:
         new_clash_context = ClashContext()  
         self.assertIsInstance(new_clash_context, ClashContext, "new_clash_context should be an instance of ClashContext")
-        length = len(new_clash_context.strategies)
+        length: int = len(new_clash_context.strategies)
         self.assertGreater(length, 0, "strategies should have at least one rule")
 
     def test_remove_rule(self) -> None:
