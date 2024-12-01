@@ -1,4 +1,6 @@
+from datetime import datetime, timedelta
 from os import getenv
+import time
 from dotenv import load_dotenv
 from flask import Flask, redirect, url_for
 from flask_cors import CORS
@@ -40,7 +42,9 @@ def load_config(app: Flask) -> None:
     app.config["SQLALCHEMY_DATABASE_URI"] = getenv("SQLALCHEMY_DATABASE_URI")
     app.config["SECRET_KEY"] = getenv("SECRET_KEY")
     app.config["DEBUG"] = app.config["ENV"].upper() != "PRODUCTION"
-    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = getenv("JWT_ACCESS_TOKEN_EXPIRES")
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(
+        hours=int(getenv("JWT_ACCESS_TOKEN_EXPIRES", default=15))
+    )
     app.config["MAIL_DEFAULT_SENDER"] = getenv("MAIL_DEFAULT_SENDER")
     app.config["JWT_ACCESS_COOKIE_NAME"] = getenv("JWT_ACCESS_COOKIE_NAME")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
