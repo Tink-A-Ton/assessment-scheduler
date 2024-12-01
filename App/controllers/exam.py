@@ -57,6 +57,5 @@ def delete_exam(exam_id: int) -> bool:
     db.session.commit()
     from .clash import recheck_nearby_clashes
 
-    print(exam.start_date)
     recheck_nearby_clashes(exam.start_date)
     return True
