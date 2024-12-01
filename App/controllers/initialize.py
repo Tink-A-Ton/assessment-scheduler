@@ -1,5 +1,5 @@
-from App.database import db
-from App.models import (
+from ..database import db
+from ..models import (
     Course,
     Staff,
     Admin,
@@ -97,73 +97,63 @@ def initialize() -> None:
 
     ca1 = Exam(
         course_code="COMP1700",
-        start_date=parse_date("2024-11-08"),
+        start_date=parse_date("2024-12-08"),
         start_time=parse_time("08:00"),
         end_time=parse_time("10:00"),
-        clash_detected=False,
     )
     ca2 = Exam(
         course_code="COMP1700",
-        start_date=parse_date("2024-11-09"),
+        start_date=parse_date("2024-12-09"),
         start_time=parse_time("00:00"),
         end_time=parse_time("23:59"),
-        clash_detected=False,
     )
     ca3 = Exam(
         course_code="COMP1700",
-        start_date=parse_date("2024-11-10"),
+        start_date=parse_date("2024-12-10"),
         start_time=parse_time("09:00"),
         end_time=parse_time("12:00"),
-        clash_detected=False,
     )
     ca4 = Exam(
         course_code="COMP2700",
-        start_date=parse_date("2024-11-15"),
+        start_date=parse_date("2024-12-15"),
         start_time=parse_time("08:00"),
         end_time=parse_time("10:00"),
-        clash_detected=False,
     )
     ca5 = Exam(
         course_code="COMP2700",
-        start_date=parse_date("2024-11-16"),
+        start_date=parse_date("2024-12-16"),
         start_time=parse_time("00:00"),
         end_time=parse_time("23:59"),
-        clash_detected=False,
     )
     ca6 = Exam(
         course_code="COMP2700",
-        start_date=parse_date("2024-11-17"),
+        start_date=parse_date("2024-12-17"),
         start_time=parse_time("09:00"),
         end_time=parse_time("12:00"),
-        clash_detected=False,
     )
     ca7 = Exam(
         course_code="COMP3700",
-        start_date=parse_date("2024-11-22"),
+        start_date=parse_date("2024-12-22"),
         start_time=parse_time("08:00"),
         end_time=parse_time("10:00"),
-        clash_detected=False,
     )
     ca8 = Exam(
         course_code="COMP3700",
-        start_date=parse_date("2024-11-23"),
+        start_date=parse_date("2024-12-23"),
         start_time=parse_time("00:00"),
         end_time=parse_time("23:59"),
-        clash_detected=False,
     )
     ca9 = Exam(
         course_code="COMP3700",
-        start_date=parse_date("2024-11-24"),
+        start_date=parse_date("2024-12-24"),
         start_time=parse_time("09:00"),
         end_time=parse_time("12:00"),
-        clash_detected=False,
     )
     ca10 = Exam(
         course_code="COMP1701",
-        start_date=parse_date("2024-11-25"),
+        start_date=parse_date("2024-12-25"),
         start_time=parse_time("08:00"),
         end_time=parse_time("09:00"),
-        clash_detected=False,
     )
 
     db.session.add(ca1)
@@ -202,14 +192,14 @@ def initialize() -> None:
 
 
 # Helper function to parse date and time strings
-def parse_date(date_str):
+def parse_date(date_str) -> None | date:
     if date_str == "":
-        return datetime.now().date()
+        return None
     return datetime.strptime(date_str, "%Y-%m-%d").date()
 
 
-def parse_time(time_str):
+def parse_time(time_str) -> None | time:
     if time_str == "":
-        return datetime.now().time()
+        return None
     time_str = time_str[:5]
     return datetime.strptime(time_str, "%H:%M").time()

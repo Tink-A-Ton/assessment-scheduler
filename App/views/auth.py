@@ -59,7 +59,7 @@ def register_staff() -> Response | str:
     return response
 
 
-@auth_views.route("/logout", methods=["GET"])
+@auth_views.route("/logout", methods=["POST"])
 @jwt_required()
 def logout() -> Response:
     response: Response = redirect(url_for("auth_views.get_login_page"))

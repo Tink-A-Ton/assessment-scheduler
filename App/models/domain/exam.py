@@ -1,22 +1,21 @@
-from App.database import db
-from datetime import date, time
+from ...database import db
 
 
 class Exam(db.Model):
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
     course_code: str = db.Column(db.String(9), db.ForeignKey("course.course_code"))
-    start_date: date = db.Column(db.Date, nullable=True)
-    start_time: time = db.Column(db.Time, nullable=True)
-    end_time: time = db.Column(db.Time, nullable=True)
+    start_date = db.Column(db.Date, nullable=True)
+    start_time = db.Column(db.Time, nullable=True)
+    end_time = db.Column(db.Time, nullable=True)
     clash_detected: bool = db.Column(db.Boolean, default=False)
 
     def __init__(
         self,
         course_code: str,
-        start_date: date,
-        start_time: time,
-        end_time: time,
-        clash_detected: bool,
+        start_date,
+        start_time,
+        end_time,
+        clash_detected: bool = False,
     ) -> None:
         self.course_code = course_code
         self.start_date = start_date

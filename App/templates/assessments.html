@@ -18,7 +18,7 @@
         <select id="filterDropdownAssessments">
           <option value="all">All</option>
           {% for course in courses %}
-          <option value="{{course}}">{{course}}</option>
+          <option value="{{course.course_code}}">{{course.course_code}}</option>
           {% endfor %}
         </select>
       </div>

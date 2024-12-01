@@ -12,7 +12,7 @@ def create_course(course_code: str, course_title: str, level: int, semester: int
     return True
 
 
-def get_all_courses() -> list[Course]:
+def get_courses() -> list[Course]:
     return Course.query.all()
 
 
@@ -20,7 +20,7 @@ def get_course(course_code: str) -> Course | None:
     return Course.query.get(course_code)
 
 
-def update_course(
+def edit_course(
     course_code: str, semester_id: int, course_title: str, level: int
 ) -> Course | None:
     course: Course | None = get_course(course_code)
@@ -33,10 +33,6 @@ def update_course(
     return course
 
 
-def get_courses_by_level(level: int) -> list[Course] | None:
-    return Course.query.filter_by(level=level).all()
-
-
 def delete_course(course_code: str) -> bool:
     course: Course | None = get_course(course_code)
     if course:
@@ -44,3 +40,7 @@ def delete_course(course_code: str) -> bool:
     db.session.delete(course)
     db.session.commit()
     return True
+
+
+def get_available_courses(staff_courses) -> list[Course]:
+    return [c for c in get_courses() if c not in staff_courses]

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.orm.relationships import Relationship
-from App.database import db
+from ...database import db
 from .instructor import Instructor
 from ..utils import Position
 from .user import User
