@@ -17,8 +17,8 @@ def send_mail() -> None:
     receiver_email = "vanessa.aubin@hotmail.com"
 
     msg = Message()
-    msg.subject = "Test Email!"
-    msg.body = "Successful Registration"
-    msg.recipients = ["vanessa.aubin@hotmail.com"]
+    msg.subject = "Test Email!"  # pyright: ignore
+    msg.body = "Successful Registration"  # pyright: ignore
+    msg.recipients = ["vanessa.aubin@hotmail.com"]  # pyright: ignore
     mail.send(msg)
     return print("Success")

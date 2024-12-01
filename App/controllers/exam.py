@@ -1,6 +1,6 @@
+from .initialize import parse_date, parse_time
 from ..models import Exam
 from ..database import db
-from datetime import date, datetime, time
 
 
 def create_exam(
@@ -51,8 +51,8 @@ def update_exam(id: int, start_date, start_time, end_time) -> Exam | None:
     exam: Exam | None = get_exam(id)
     if exam is None:
         return None
-    exam.start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
-    exam.start_time = datetime.strptime(start_time[:5], "%H:%M").time()
-    exam.end_time = datetime.strptime(end_time[:5], "%H:%M").time()
+    exam.start_date = parse_date(start_date)
+    exam.start_time = parse_time(start_time)
+    exam.end_time = parse_time(end_time)
     db.session.commit()
     return exam

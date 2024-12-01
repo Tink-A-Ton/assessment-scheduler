@@ -1,4 +1,4 @@
-from ..controllers.exam import get_exams_by_course
+from .exam import get_exams_by_course
 from .course import get_course
 from ..models import Staff, Course, Instructor
 from ..database import db

@@ -1,7 +1,5 @@
-from datetime import date
-from App.models import Semester
-from App.database import db
-from App.models import Course
+from ..models import Semester
+from ..database import db
 
 
 def create_semester(
@@ -11,11 +9,6 @@ def create_semester(
     db.session.add(semester)
     db.session.commit()
     return semester
-
-
-def get_courses_offered(semester_id: int) -> list[Course]:
-    semester: Semester = Semester.query.get(semester_id)
-    return semester.courses_offered
 
 
 def get_semester() -> dict[str, str | int]:

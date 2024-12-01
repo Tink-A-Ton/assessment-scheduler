@@ -2,19 +2,10 @@ from flask import Blueprint, request, render_template, redirect, url_for, flash
 from werkzeug import Response
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from ..models import Course, Exam, Staff
-from ..controllers import (
-    get_exam,
-    get_exams_by_course,
-    create_exam,
-    delete_exam,
-    update_exam,
-    get_registered_courses,
-    get_staff_courses,
-    get_staff,
-)
-from App.controllers.clash import detect_exam_clash
-from App.controllers.initialize import parse_date, parse_time
-from App.models import Staff
+from ..controllers import get_exam, get_exams_by_course, create_exam, delete_exam
+from ..controllers import update_exam, get_registered_courses, get_staff_courses
+from ..controllers import detect_exam_clash, parse_date, parse_time
+
 
 exam_views = Blueprint("exam_views", __name__, template_folder="../templates")
 

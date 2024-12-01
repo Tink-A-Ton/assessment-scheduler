@@ -1,5 +1,5 @@
-from App.database import db
-from App.models import (
+from ..database import db
+from ..models import (
     Course,
     Staff,
     Admin,

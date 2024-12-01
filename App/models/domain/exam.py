@@ -1,5 +1,4 @@
-from App.database import db
-from datetime import date, time
+from ...database import db
 
 
 class Exam(db.Model):

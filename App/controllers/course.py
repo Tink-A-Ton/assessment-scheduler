@@ -33,10 +33,6 @@ def edit_course(
     return course
 
 
-def get_courses_by_level(level: int) -> list[Course] | None:
-    return Course.query.filter_by(level=level).all()
-
-
 def delete_course(course_code: str) -> bool:
     course: Course | None = get_course(course_code)
     if course:

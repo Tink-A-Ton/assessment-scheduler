@@ -1,27 +1,25 @@
-from ..utils import get_week_range
-from ...controllers.exam import get_exams
-from ..domain.exam import Exam
-from ..domain.semester import Semester
+from ..domain import Exam, Course
 from .clashDetection import ClashDetection
 
 
 class DefaultClash(ClashDetection):
+    """
+    Detects clashes where exams for courses of the same academic level
+    cannot overlap in time.
+    """
+
     def detect_clash(self, new_exam: Exam) -> bool:
-        if not new_exam.start_date:
-            return False
+        course_level: int = Course.query.get(new_exam.course_code).level
+        relevant_exams: list[Exam] = Exam.query.filter(
+            Exam.start_date == new_exam.start_date,
+            Exam.id != new_exam.id,
+        ).all()
 
-        semester: Semester = Semester.query.order_by(Semester.id.desc()).first()
-        max_exams: int = semester.max_exams
-        course_prefix: str = new_exam.course_code.replace(" ", "")[4]
-        sunday, saturday = get_week_range(new_exam.start_date.isoformat())
-
-        relevant_exams: list[Exam] = [
-            exam
-            for exam in get_exams()
-            if exam.course_code.replace(" ", "")[4] == course_prefix
-            and exam.id != new_exam.id
-            and exam.start_date
-        ]
-
-        clashes: int = sum(sunday <= a.start_date <= saturday for a in relevant_exams)
-        return clashes >= max_exams
+        return any(
+            Course.query.get(exam.course_code).level == course_level
+            and (
+                new_exam.start_time <= exam.end_time
+                and new_exam.end_time >= exam.start_time
+            )
+            for exam in relevant_exams
+        )

@@ -8,10 +8,10 @@ def detect_exam_clash(
     from ..models import ClashContext
 
     context = ClashContext()
-    if rule1:
-        context.add_rule("rule1")
-    if rule2:
-        context.add_rule("rule2")
+    if rule1 is None:
+        context.remove_rule("rule1")
+    if rule2 is None:
+        context.remove_rule("rule2")
     clash: bool = context.detect_clash(exam)
     db.session.commit()
     return clash

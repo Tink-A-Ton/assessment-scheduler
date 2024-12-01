@@ -1,9 +1,8 @@
-from flask import Blueprint, request, render_template, redirect, url_for, flash
+from flask import Blueprint, request, render_template, redirect, url_for
 from flask_jwt_extended import jwt_required
 from werkzeug import Response
 from ..models import Admin, Exam
-from ..controllers import create_course, delete_course, edit_course, process_file
-from ..controllers import get_courses, get_course, get_search_results, get_clashes
+from ..controllers import process_file, get_search_results, get_clashes
 from ..controllers import deny_override, allow_override, create_semester
 
 
