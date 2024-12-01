@@ -48,14 +48,14 @@ def get_add_exams_page() -> str:
 @jwt_required(Staff)
 def add_exam_action() -> Response | str:
     data: dict[str, str] = request.form
+    print(parse_date(data["startDate"]))
     exam: Exam = create_exam(
         data["course"],
         parse_date(data["startDate"]),
         parse_time(data["startTime"]),
         parse_time(data["endTime"]),
-        False,
     )
-    clash: bool = detect_exam_clash(exam, data["rule1"], data["rule2"])
+    clash: bool = detect_exam_clash(exam, data.get("rule1"), data.get("rule2"))
     if clash:
         flash("Clash Detected! Reschedule exam or send to ADMIN for approval")
     return redirect(url_for("exam_views.get_exams_page"))
@@ -69,7 +69,7 @@ def modify_exam_action(id) -> Response:
         id, data["startDate"], data["startTime"], data["endTime"]
     )
     flash(f"Exam Details Updated !")
-    clash: bool = detect_exam_clash(exam, data["rule1"], data["rule2"])
+    clash: bool = detect_exam_clash(exam, data.get("rule1"), data.get("rule2"))
     if clash:
         flash("Clash Detected! Reschedule exam or send to ADMIN for approval")
     return redirect(url_for("exam_views.get_exams_page"))

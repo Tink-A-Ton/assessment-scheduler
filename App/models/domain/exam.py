@@ -16,7 +16,7 @@ class Exam(db.Model):
         start_date,
         start_time,
         end_time,
-        clash_detected: bool,
+        clash_detected: bool = False,
     ) -> None:
         self.course_code = course_code
         self.start_date = start_date
