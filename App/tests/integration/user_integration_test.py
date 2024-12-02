@@ -1,10 +1,11 @@
+from datetime import date, time
 import logging
 import unittest
 from typing import Any
-
-from ...controllers.staff import add_instructor, get_instructors
-from ...models.users.instructor import Instructor
+from ...controllers.exam import create_exam
+from ...controllers.staff import add_instructor
 from ...controllers import create_admin, login_user, create_staff, get_staff_exams, create_course
+from ...models.users.instructor import Instructor
 from ...models.users.staff import Staff
 from ...models.utils import Position
 from ...models import Admin
@@ -58,18 +59,21 @@ class UserIntegrationTests(unittest.TestCase):
         self.assertIsNotNone(staff)
         self.assertEqual(staff.email, self.email)
 
-    # def test_get_staff_exams(self) -> None: 
-    #     """Test staff exams retrieval functionality."""
-    #     create_staff(self.staff_id, self.email, self.password, "John", "Doe", Position.LECTURER.value)
-    #     exams: list[dict[str, Any]] = get_staff_exams(self.staff_id)
-    #     self.assertEqual(len(exams), 0)
-    #     create_course("COMP1601", "Introduction to Computer Programming I", 1, 1)
-    # TODO fix
+    def test_get_staff_exams(self) -> None: 
+        """Test staff exams retrieval functionality."""
+        create_staff(self.staff_id, self.email, self.password, "John", "Doe", Position.LECTURER.value)
+        create_course("COMP1601", "Introduction to Computer Programming I", 1, 1)
+        create_exam("COMP1601", date(2024, 2, 1), time(9, 0), time(11, 0))
+        add_instructor(self.staff_id, "COMP1601")
+        exams: list[dict[str, Any]] = get_staff_exams(self.staff_id)
+        self.assertEqual(len(exams), 1)
         
     def test_add_instructor(self) -> None: 
         """Test instructor addition functionality."""
         create_staff(self.staff_id, self.email, self.password, "John", "Doe", Position.LECTURER.value)
-        add_instructor(self.staff_id, "CS101")
-        instructors: list[Instructor] = get_instructors(self.staff_id)
-        self.assertEqual(len(instructors), 1)
+        create_course("COMP1601", "Introduction to Computer Programming I", 1, 1)
+        add_instructor(self.staff_id, "COMP1601")
+        instructor: Instructor = Instructor.query.filter_by(staff_id=self.staff_id, course_code="COMP1601").first()
+        self.assertIsNotNone(instructor, "Instructor should be added to the course")
 
+    
