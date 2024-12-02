@@ -7,18 +7,6 @@ from flask import current_app
 
 index_views = Blueprint("index_views", __name__, template_folder="../templates")
 
-
-@index_views.route("/", methods=["GET"])
-def index() -> str:
-    return render_template("login.html")
-
-
-@index_views.route("/init", methods=["GET"])
-def init() -> dict[str, str]:
-    initialize()
-    return {"message": "Objects created"}
-
-
 @index_views.route("/settings", methods=["GET"])
 @jwt_required()
 def get_settings_page() -> str:
