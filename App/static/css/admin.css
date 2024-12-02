@@ -1,0 +1,278 @@
+#semForm,
+#courseForm {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: -1;
+    transform: translate(-50%, -50%);
+    line-height: 2;
+    background: var(--secondary-color);
+    min-width: 30%;
+    margin: 0 auto;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+
+    box-shadow: 8px 10px 37px -12px rgba(0, 0, 0, 0.62);
+    -webkit-box-shadow: 8px 10px 37px -12px rgba(0, 0, 0, 0.62);
+    -moz-box-shadow: 8px 10px 37px -12px rgba(0, 0, 0, 0.62);
+}
+
+#courseForm {
+    min-width: 50%;
+}
+
+tr {
+    background-color: var(--secondary-color);
+    border: none;
+    cursor: pointer;
+}
+
+tr:hover {
+    background-color: var(--tertiary-color);
+}
+
+td {
+    margin-bottom: 200px;
+    padding: 10px;
+    text-align: left;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.level-row,
+.course-code-row {
+    text-align: center;
+}
+
+table {
+    border-spacing: 10px;
+    width: 100%;
+    overflow-y: auto;
+}
+
+#courseTableHead th {
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.selected {
+    background-color: var(--tertiary-color);
+}
+
+#coursesList {
+    height: 100%;
+}
+
+#table-container {
+    width: 80%;
+    height: 70vh;
+    overflow-y: scroll;
+}
+
+#buttons-container {
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+#buttons-container .formBtn {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.formBtn {
+    background: var(--tertiary-color);
+    color: white;
+    border: none;
+    padding: 1rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s ease-in;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+}
+
+.formBtn:hover {
+    background: #5d45bd;
+}
+
+#save-btn:hover {
+    background: #5d45bd;
+}
+
+h2 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+/* ============================================= */
+.field-containers input {
+    border: none;
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.input-label {
+    font-size: 18px;
+    font-weight: 500;
+
+}
+
+
+.semester-container,
+.level_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.semester-options {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.semester-container {
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.semester-container input[type="radio"],
+.level_container input[type="checkbox"] {
+    margin-left: 10px;
+}
+
+.semester-container input[type="radio"]:checked {
+    background-color: var(--tertiary-color);
+}
+
+.semester-container input label {
+    margin-left: 5px;
+}
+
+#semForm input {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#semForm {
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.field-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.field-row .field-containers {
+    width: 45%;
+}
+
+#save-btn {
+    background: var(--tertiary-color);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s ease-in;
+    font-size: 14px;
+    min-width: 180px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#courseForm {
+    margin-top: 20px;
+    overflow-y: auto;
+}
+
+#courseForm input {
+    background: var(--primary-color);
+    color: white;
+}
+
+#courseForm #save-btn {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.course-panel {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+@media screen and (max-width: 800px) {
+    #semForm {
+        width: 100%;
+    }
+
+    .field-row {
+        flex-direction: column;
+    }
+
+    .field-row .field-containers {
+        width: 100%;
+    }
+
+    .course-panel {
+        flex-direction: column-reverse;
+    }
+
+    #table-container {
+        width: 100%;
+    }
+}
+
+.tableBtn {
+    background: var(--tertiary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s ease-in;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+}
+
+.clashTable td {
+    text-align: center;
+}
+
+.clashTable tr:hover {
+    background-color: #626166;
+}
+
+.search-section,
+.clashTable {
+    padding: 2%;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--tertiary-color);
+    border-radius: 10px;
+}

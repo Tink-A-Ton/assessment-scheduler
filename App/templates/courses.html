@@ -3,30 +3,38 @@
 {% block title %}Courses{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="../static/css/admin1.css">
+<link rel="stylesheet" href="../static/css/admin.css">
 {% endblock %}
 
 {% block content %}
 <div id="coursesList">
 	<h2>List of Courses</h2>
-	<div id="table_container">
-		<table id="courseTable">
-			<tbody id="courseTableBody">
-				{% for course in courses %}
-				<tr class="course-row" data="{{ course.course_code }}">
-					<td>{{course.course_code}}</td>
-					<td>{{course.course_title}}</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
-	<div id="buttons_container">
-		<a href="/newCourse" class="formBtn">Add Course</a>
-		<a href="/updateCourse" class="modify-course-link formBtn">Update Course</a>
-		<form action="/deleteCourse/{{ courseCode }}" method="POST">
-			<button type="submit" class="delete-course-link formBtn">Delete Course</button>
-		</form>
+	<div class="course-panel">
+		<div id="table-container">
+			<table id="courseTable">
+				<thead id="courseTableHead">
+					<th>Course Code</th>
+					<th>Course Title</th>
+					<th>Level</th>
+				</thead>
+				<tbody id="courseTableBody">
+					{% for course in courses %}
+					<tr class="course-row" data="{{ course.course_code }}">
+						<td class="course-code-row">{{course.course_code}}</td>
+						<td>{{course.course_title}}</td>
+						<td class="level-row">{{course.level}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div id="buttons-container">
+			<a href="/newCourse" class="formBtn">Add Course</a>
+			<a href="/updateCourse" class="modify-course-link formBtn">Update Course</a>
+			<form action="/deleteCourse/{{ courseCode }}" method="POST">
+				<button type="submit" class="delete-course-link formBtn">Delete Course</button>
+			</form>
+		</div>
 	</div>
 </div>
 
