@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
       title: `${exams.course_code}-Exam`,
       backgroundColor: color,
       start: `${exams.start_date}T${exams.start_time}`,
-      end: `T${exams.end_time}`,
+      end: `${exams.start_date}T${exams.end_time}`,
       allDay: isFullDay,
     };
   }

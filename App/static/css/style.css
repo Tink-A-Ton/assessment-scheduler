@@ -78,7 +78,7 @@ select {
     border-radius: 5px;
     background-color: #674ecc44;
     display: grid;
-    font-size: 0.8em;
+    font-size: 0.75em;
     grid-template-columns: auto auto;
 }
 
@@ -105,8 +105,18 @@ select {
     background-color: #503b9a;
 }
 
-.fc-time-grid-event {
-    height: 10vh;
+.fc-timegrid-event {
+    padding: 10px 5px;
+}
+
+.fc-timegrid-event .fc-event-title {
+    font-size: 0.7em;
+}
+
+.fc-timegrid-event .fc-event-title {
+    font-size: 0.8em;
+    font-weight: bold;
+    text-align: right;
 }
 
 ::-webkit-scrollbar {
