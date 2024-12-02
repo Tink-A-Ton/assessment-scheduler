@@ -1,10 +1,10 @@
 import logging
 from typing import Any
 import unittest
-from App.main import create_app
-from App.database import db
-from App.controllers.semester import create_semester
-from App.models.domain.semester import Semester
+from ...main import create_app
+from ...database import db
+from ...controllers.semester import create_semester
+from ...models.domain.semester import Semester
 
 LOGGER: logging.Logger = logging.getLogger(__name__)
 

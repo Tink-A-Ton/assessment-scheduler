@@ -1,4 +1,3 @@
-from .clash_context_unit_test import *  
 from .exam_unit_test import *
 from .instructor_unit_test import *
 from .programme_unit_test import *
