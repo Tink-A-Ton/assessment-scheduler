@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Scheduler | Register</title>
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/register.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <form id="registrationForm" action="/register" method="POST">
+        <h1>Register</h1>
+        <div class="form-container">
+            <label for="firstName" class="input-label">First Name</label>
+            <input type="text" id="firstName" name="firstName" required>
+        </div>
+        <div class="form-container">
+            <label for="lastName" class="input-label">Last Name</label>
+            <input type="text" id="lastName" name="lastName" required>
+        </div>
+        <div class="form-container">
+            <label for="email" class="input-label">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-container">
+            <label for="password" class="input-label">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-container">
+            <label for="staffID" class="input-label">Staff ID</label>
+            <input type="number" id="staffID" name="staffID" required>
+        </div>
+
+        <div>
+            <label for="dropdown">Status</label>
+            <select id="dropdown" name="status">
+                <option value="Lecturer">Lecturer</option>
+                <option value="Part-Time Instructor">Part-Time Instructor</option>
+                <option value="Instructor">Instructor</option>
+                <option value="Teaching Assistant">Teaching Assistant</option>
+                <option value="Tutor">Tutor</option>
+                <option value="Part-Time Tutor">Part-Time Tutor</option>
+                <option value="Head of Department">Head of Department</option>
+            </select>
+        </div>
+
+
+        <button id="register_btn" type="submit">Register</button>
+        <p class="haveAnAccount">Already have an account? <a href="/login">Login</a></p>
+    </form>
+</body>
+
+</html>

@@ -1,6 +1,5 @@
 from datetime import timedelta
 from os import getenv
-import time
 from dotenv import load_dotenv
 from flask import Flask, redirect, url_for
 from flask_cors import CORS
@@ -30,6 +29,7 @@ def create_app() -> Flask:
 
     @jwt.invalid_token_loader
     @jwt.unauthorized_loader
+    @app.errorhandler(404)
     def custom_unauthorized_response(error) -> Response:
         return redirect(url_for("auth_views.get_login_page"))
 

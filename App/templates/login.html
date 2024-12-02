@@ -5,20 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assessment Scheduler | Login</title>
-
-
-    <!-- global css file -->
     <link rel="stylesheet" href="../static/css/main.css">
     <link rel="stylesheet" href="../static/css/login.css">
-
-
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-
 </head>
 
 <body>
-    <!-- div to separate both sides -->
     <div class="pageDiv">
         <div class="leftSide">
             <header>
@@ -33,20 +25,20 @@
                     <h2>Login</h2>
                     <div class="field_containers">
                         <label for="email">Email</label>
-                        <input type="text" id="email" name="email">
+                        <input type="email" id="email" name="email" required placeholder="Enter your email"
+                            aria-label="Email">
                     </div>
                     <div class="field_containers">
                         <label for="password">Password</label>
-                        <input type="password" id="password" , name="password">
+                        <input type="password" id="password" name="password" required placeholder="Enter your password"
+                            aria-label="Password">
                     </div>
                     <button id="login_btn">Login</button>
-                    <!-- <p class="forgotPassword">Forgot password? <a href="">Reset</a></p> -->
                 </form>
             </div>
         </div>
         <div class="rightSide"></div>
     </div>
-
 </body>
 
 </html>

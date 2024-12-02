@@ -15,7 +15,7 @@ def get_login_page() -> str:
 
 @auth_views.route("/register", methods=["GET"])
 def get_register_page() -> str:
-    return render_template("signup.html")
+    return render_template("register.html")
 
 
 @auth_views.route("/login", methods=["POST"])
