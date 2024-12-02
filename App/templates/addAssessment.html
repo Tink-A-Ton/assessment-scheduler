@@ -1,17 +1,16 @@
 {% extends "layout.html" %}
 
-{% block title %}Add Assessment{% endblock %}
+{% block title %}Add Exam{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="../static/css/addAssessment.css">
 {% endblock %}
 
 {% block content %}
-
 <div class="formContainer">
     <form id="addAssessmentForm" action="/addAssessment" method="POST">
         <div class="formTitle">
-            <h2>Add Assessment</h2>
+            <h2>Add Exam</h2>
         </div>
         <div class="formSection1">
             <div class="formInputContainer">
@@ -22,46 +21,43 @@
                     {% endfor %}
                 </select>
             </div>
+            <div class="formInputContainer">
+                <label for="startDate">Date</label>
+                <input type="date" id="startDate" name="startDate">
+            </div>
         </div>
-        <div class="bottomForm">
+        <div class=" bottomForm">
             <div class="formSection2">
                 <div class="formInputContainer">
-                    <label for="">Assessment Start Date</label>
-                    <input type="date" id="startDate" name="startDate">
-                </div>
-                <div class="formInputContainer">
-                    <label for="">Assessment Start Time</label>
+                    <label for="startTime">Start Time</label>
                     <input type="time" id="startTime" name="startTime">
                 </div>
-
-            </div>
-
-            <div class="formSection3" id="sectionToHide">
                 <div class="formInputContainer">
-                    <label for="">Assessment End Date</label>
-                    <input type="date" id="endDate" name="endDate">
-                </div>
-                <div class="formInputContainer">
-                    <label for="">Assessment End Time</label>
+                    <label for="endTime">End Time</label>
                     <input type="time" id="endTime" name="endTime">
                 </div>
             </div>
 
-            <!-- Rule 1 Toggle -->
-            <div class="formInputContainer">
-                <label for="rule1Toggle">Enable Rule 1</label>
-                <input type="checkbox" id="rule1Toggle" name="rule1" checked>
-            </div>
+            <div class="formSection3">
+                <div class="formInputGroup">
+                    <label for="rule1Toggle">Enable Rule 1</label>
+                    <label class="switch">
+                        <input type="checkbox" id="rule1Toggle" name="rule1" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
 
-            <!-- Rule 2 Toggle -->
-            <div class="formInputContainer">
-                <label for="rule2Toggle">Enable Rule 2</label>
-                <input type="checkbox" id="rule2Toggle" name="rule2" checked>
+                <div class="formInputGroup">
+                    <label for="rule2Toggle">Enable Rule 2</label>
+                    <label class="switch">
+                        <input type="checkbox" id="rule2Toggle" name="rule2" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
 
         </div>
         <button id="addAssessmentBtn" type="submit">Save</button>
     </form>
 </div>
-
 {% endblock %}
