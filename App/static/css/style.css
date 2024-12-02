@@ -73,9 +73,25 @@ select {
 
 .fc-event {
     border-spacing: 2px;
-    padding: 5px;
+    padding: 10px;
     margin-bottom: 8px;
     border-radius: 5px;
+    background-color: #674ecc44;
+    display: grid;
+    font-size: 0.8em;
+    grid-template-columns: auto auto;
+}
+
+.fc-event .fc-event-time {
+    text-align: right;
+}
+
+.fc-event .fc-event-title {
+    grid-column: span 2;
+}
+
+.fc-event:hover {
+    background-color: #503b9a;
 }
 
 .fc .fc-button-group>.fc-button {
@@ -105,4 +121,8 @@ select {
 ::-webkit-scrollbar-thumb {
     background: var(--tertiary-color);
     border-radius: 10px;
+}
+
+thead .fc-scoller {
+    overflow: hidden !important;
 }
