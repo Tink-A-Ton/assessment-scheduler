@@ -94,6 +94,12 @@ select {
     background-color: #503b9a;
 }
 
+.fc-timegrid-event.fc-event-start {
+    font-size: 16px;
+    width: fit-content;
+    padding: 10px 5px;
+}
+
 .fc .fc-button-group>.fc-button {
     background-color: var(--tertiary-color);
     border-radius: 5px;

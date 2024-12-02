@@ -155,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function handleEventEdit(info) {
     const event = info.event;
     const data = extractEventDetails(event);
+    console.log(data);
     saveEvent(data);
   }
 
