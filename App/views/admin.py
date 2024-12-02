@@ -2,7 +2,7 @@ from flask import Blueprint, request, render_template, redirect, url_for
 from flask_jwt_extended import jwt_required
 from werkzeug import Response
 from ..models import Admin, Exam
-from ..controllers import process_file, get_search_results, get_clashes
+from ..controllers import process_file, get_clashes
 from ..controllers import deny_override, allow_override, create_semester
 
 
@@ -36,8 +36,7 @@ def new_semester_action() -> str:
 @admin_views.route("/clashes", methods=["GET"])
 @jwt_required(Admin)
 def get_clashes_page() -> str:
-    search_results: list[Exam] = get_search_results(request.args.get("start_date"))
-    return render_template("clashes.html", exams=get_clashes(), results=search_results)
+    return render_template("clashes.html", exams=get_clashes())
 
 
 @admin_views.route("/acceptOverride/<int:assessment_id>", methods=["POST"])
