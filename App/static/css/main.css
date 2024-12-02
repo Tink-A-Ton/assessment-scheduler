@@ -142,7 +142,6 @@ html {
 }
 
 @media screen and (min-width: 900px) {
-
     .links_container_mobile {
         display: none;
     }
@@ -159,8 +158,14 @@ html {
 
     #layout_nav_links {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         list-style: none;
+        padding: 0;
+        margin-right: 0;
+    }
+
+    #layout_nav_links li {
+        margin: 0 10px;
     }
 
     .nav_link {
@@ -192,8 +197,8 @@ html {
     .logout_nav_link:hover {
         background-color: #5c46b4;
     }
-
 }
+
 
 @media screen and (min-width: 1024px) {
     .links_container {
@@ -202,6 +207,8 @@ html {
 
     .logo_container {
         flex: 1.4;
+        margin-left: 0em;
+        margin-right: 25em;
     }
 
     .nav_link,
