@@ -5,5 +5,4 @@ __pycache__
 venv
 .env
 instance
-App/tests/integration/
 .pytest_cache

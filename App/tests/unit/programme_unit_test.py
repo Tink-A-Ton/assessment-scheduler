@@ -1,5 +1,5 @@
 import logging,unittest
-from App.models.domain.programme import Programme
+from ...models.domain.programme import Programme
 
 LOGGER: logging.Logger = logging.getLogger(__name__)
 

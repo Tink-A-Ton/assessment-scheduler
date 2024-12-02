@@ -7,7 +7,6 @@ class DefaultClash(ClashDetection):
     Detects clashes where exams for courses of the same academic level
     cannot overlap in time.
     """
-
     def detect_clash(self, new_exam: Exam) -> bool:
         course_level: int = Course.query.get(new_exam.course_code).level
         relevant_exams: list[Exam] = Exam.query.filter(

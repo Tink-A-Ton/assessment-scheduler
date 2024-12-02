@@ -1,6 +1,6 @@
 import logging,unittest
-from App.models.utils import Position
-from App.models.users import User, Admin, Staff
+from ...models.utils import Position
+from ...models.users import User, Admin, Staff
 
 LOGGER: logging.Logger = logging.getLogger(__name__)
 

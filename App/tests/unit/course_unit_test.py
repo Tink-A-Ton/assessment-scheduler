@@ -1,5 +1,5 @@
 import logging,unittest
-from ..models.domain.course import Course
+from ...models.domain.course import Course
 
 LOGGER: logging.Logger = logging.getLogger(__name__)
 
