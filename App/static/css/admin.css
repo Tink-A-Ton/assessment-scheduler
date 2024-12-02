@@ -116,8 +116,14 @@ h2 {
     justify-content: space-between;
 }
 
-.semester-container .semester-options {
-    width: 60%;
+.semester-options {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.semester-container {
+    width: 95%;
     display: flex;
     justify-content: space-between;
 }

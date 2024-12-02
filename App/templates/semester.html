@@ -9,16 +9,7 @@
 {% block content %}
 <form id="semForm" action="/newSemester" method="POST">
     <h2>Semester Details</h2>
-    <div class="field-row">
-        <div class="field-containers">
-            <label for="teachingBegins" class="input-label">Teaching Begins</label>
-            <input type="date" id="teachingBegins" name="teachingBegins">
-        </div>
-        <div class="field-containers">
-            <label for="teachingEnds" class="input-label">Teaching Ends</label>
-            <input type="date" id="teachingEnds" name="teachingEnds">
-        </div>
-    </div>
+
     <div class="semester-container">
         <label for="semester" class="input-label">Semester</label>
         <div class="semester-options">
@@ -29,7 +20,17 @@
             <input type="radio" id="radio_btns" name="semester" value="3">
             <label for="semester">3</label>
         </div>
-        
+    </div>
+    
+    <div class="field-row">
+        <div class="field-containers">
+            <label for="teachingBegins" class="input-label">Teaching Begins</label>
+            <input type="date" id="teachingBegins" name="teachingBegins">
+        </div>
+        <div class="field-containers">
+            <label for="teachingEnds" class="input-label">Teaching Ends</label>
+            <input type="date" id="teachingEnds" name="teachingEnds">
+        </div>
     </div>
     <div class="field-containers">
         <label for="maxAssessments" class="input-label">Weekly Assessment Limit per Level</label>
