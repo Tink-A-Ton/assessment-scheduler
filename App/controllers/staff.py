@@ -30,9 +30,11 @@ def add_instructor(staff_id: int, course_code: str) -> None:
     db.session.commit()
 
 
-def get_staff(id: int) -> Staff:
+def get_staff(id: int) -> Staff|None:
     return Staff.query.get(id)
 
+def get_all_staff() -> list[Staff]:
+    return Staff.query.all()
 
 def get_instructors(staff_id: int) -> list[Instructor]:
     return Instructor.query.filter_by(staff_id=staff_id).all()
