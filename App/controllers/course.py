@@ -35,7 +35,7 @@ def edit_course(
 
 def delete_course(course_code: str) -> bool:
     course: Course | None = get_course(course_code)
-    if course:
+    if course is None:
         return False
     db.session.delete(course)
     db.session.commit()
