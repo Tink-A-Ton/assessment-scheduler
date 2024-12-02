@@ -94,8 +94,9 @@ select {
     background-color: #503b9a;
 }
 
-.fc-timegrid-event.fc-event-start {
-    font-size: 16px;
+.fc-timeGridDay-view .fc-timegrid-event.fc-event-start {
+    font-size: 0.8rem;
+    width: fit-content;
     padding: 10px 5px;
 }
 
@@ -119,7 +120,7 @@ select {
 }
 
 .fc-timegrid-event .fc-event-title {
-    font-size: 0.8em;
+    font-size: 1em;
     font-weight: bold;
     text-align: right;
 }
@@ -140,4 +141,13 @@ select {
 
 thead .fc-scroller {
     overflow: hidden !important;
+}
+
+.fc-timeGridWeek-view .fc-timegrid-event {
+    width: 50%;
+    float: left;
+}
+
+.fc-timegrid-slots tr {
+    height: 40px;
 }
