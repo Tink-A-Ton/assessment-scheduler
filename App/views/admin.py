@@ -61,4 +61,4 @@ def upload_course_file() -> str | Response:
     if file.filename == "":
         return render_template("uploadFiles.html", message="No file selected!")
     process_file(file)
-    return redirect(url_for("admin_views.get_courses_page"))
+    return redirect(url_for("course_views.get_courses_page"))

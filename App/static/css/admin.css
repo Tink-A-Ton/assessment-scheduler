@@ -1,6 +1,5 @@
 #semForm,
-#courseForm,
-#coursesList {
+#courseForm {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -18,20 +17,18 @@
     -moz-box-shadow: 8px 10px 37px -12px rgba(0, 0, 0, 0.62);
 }
 
-#courseForm,
-#coursesList {
+#courseForm {
     min-width: 50%;
-    max-height: 90%;
-    overflow-y: auto;
-}
-
-#coursesList {
-    overflow-y: none;
 }
 
 tr {
-    background-color: var(--primary-color);
+    background-color: var(--secondary-color);
     border: none;
+    cursor: pointer;
+}
+
+tr:hover {
+    background-color: var(--tertiary-color);
 }
 
 td {
@@ -43,22 +40,46 @@ td {
     font-size: 14px;
 }
 
+.level-row, .course-code-row {
+    text-align: center;
+}
+
 table {
     border-spacing: 10px;
     width: 100%;
     overflow-y: auto;
 }
 
-.selected {
-    background-color: #4a4f52;
+#courseTableHead th {
+    padding: 10px;
+    border-radius: 6px;
 }
 
-#buttons_container {
+.selected {
+    background-color: var(--tertiary-color);
+}
+
+#coursesList {
+    height: 100%;
+}
+
+#table-container {
+    width: 80%;
+    height: 70vh;
+    overflow-y: scroll;
+}
+
+#buttons-container {
     padding-left: 10px;
     padding-right: 10px;
-    margin-top: 30px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: start;
+}
+
+#buttons-container .formBtn {
+    width: 100%;
+    margin-bottom: 1rem;
 }
 
 .formBtn {
@@ -71,16 +92,12 @@ table {
     transition: background 0.15s ease-in;
     font-size: 14px;
     font-weight: 500;
+    text-align: center;
     text-decoration: none;
 }
 
 .formBtn:hover {
     background: #5d45bd;
-}
-
-.formBtn:nth-child(2) {
-    margin-left: 10px;
-    margin-right: 10px;
 }
 
 #save-btn:hover {
@@ -161,11 +178,6 @@ h2 {
     width: 45%;
 }
 
-#table_container {
-    overflow-x: auto;
-    height: 400px;
-}
-
 #save-btn {
     background: var(--tertiary-color);
     color: white;
@@ -193,7 +205,12 @@ h2 {
 #courseForm #save-btn {
     width: 100%;
     margin-top: 20px;
+}
 
+.course-panel {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
 }
 
 @media screen and (max-width: 800px) {
@@ -223,4 +240,18 @@ h2 {
 .search-section,
 .clashTable {
     padding: 2%;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--tertiary-color);
+    border-radius: 10px;
 }

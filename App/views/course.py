@@ -39,7 +39,7 @@ def update_course() -> Response:
     # programme = request.form.get('programme')
     edit_course(data["code"], int(data["semester"]), data["title"], int(data["level"]))
     flash("Course Updated Successfully!")
-    return redirect(url_for("admin_views.get_courses_page"))
+    return redirect(url_for("course_views.get_courses_page"))
 
 
 @course_views.route("/addNewCourse", methods=["POST"])
@@ -49,7 +49,7 @@ def add_course_action() -> Response:
     create_course(
         data["course_code"], data["title"], int(data["level"]), int(data["semester"])
     )
-    return redirect(url_for("admin_views.get_courses_page"))
+    return redirect(url_for("course_views.get_courses_page"))
 
 
 @course_views.route("/deleteCourse/<string:course_code>", methods=["POST"])
@@ -57,4 +57,4 @@ def add_course_action() -> Response:
 def delete_course_action(course_code) -> Response:
     delete_course(course_code)
     flash("Course Deleted Successfully!")
-    return redirect(url_for("admin_views.get_courses_page"))
+    return redirect(url_for("course_views.get_courses_page"))
