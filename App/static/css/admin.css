@@ -225,6 +225,14 @@ h2 {
     .field-row .field-containers {
         width: 100%;
     }
+
+    .course-panel {
+        flex-direction: column-reverse;
+    }
+
+    #table-container {
+        width: 100%;
+    }
 }
 
 .tableBtn {
