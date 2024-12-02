@@ -39,17 +39,17 @@ def get_clashes_page() -> str:
     return render_template("clashes.html", exams=get_clashes())
 
 
-@admin_views.route("/acceptOverride/<int:assessment_id>", methods=["POST"])
+@admin_views.route("/acceptOverride/<int:exam_id>", methods=["POST"])
 @jwt_required(Admin)
-def accept_override(id: int) -> Response:
-    allow_override(id)
+def accept_override(exam_id: int) -> Response:
+    allow_override(exam_id)
     return redirect(url_for("admin_views.get_clashes_page"))
 
 
-@admin_views.route("/rejectOverride/<int:assessment_id>", methods=["POST"])
+@admin_views.route("/rejectOverride/<int:exam_id>", methods=["POST"])
 @jwt_required(Admin)
-def reject_override(id: int) -> Response:
-    deny_override(id)
+def reject_override(exam_id: int) -> Response:
+    deny_override(exam_id)
     return redirect(url_for("admin_views.get_clashes_page"))
 
 

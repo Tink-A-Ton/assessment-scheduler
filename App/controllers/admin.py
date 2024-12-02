@@ -13,6 +13,7 @@ def allow_override(id: int) -> None:
     exam: Exam | None = get_exam(id)
     if exam:
         exam.clash_detected = False
+        db.session.commit()
 
 
 def deny_override(id: int) -> None:
