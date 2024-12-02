@@ -1,10 +1,10 @@
 from datetime import date, time
 import logging
 import unittest
-import pytest # type: ignore
+import pytest 
 from typing import Any, Generator
-from flask import Flask # type: ignore
-from flask.testing import FlaskClient # type: ignore
+from flask import Flask 
+from flask.testing import FlaskClient 
 
 from ...models.domain.exam import Exam
 from ...main import create_app
