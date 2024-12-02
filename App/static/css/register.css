@@ -78,33 +78,18 @@ form select {
     color: rgb(153, 151, 151);
 }
 
-
-
-@media screen and (min-width: 900px) {
-    form {
-        min-width: 450px;
-    }
-
-    #register_btn {
-        font-size: 16px;
-    }
+form h1 {
+    font-size: 28px;
 }
 
-@media screen and (min-width: 1024px) {
-    form h1 {
-        font-size: 28px;
-    }
-
-    .input-label {
-        font-size: 18px;
-    }
-
-    .haveAnAccount {
-        font-size: 14px;
-    }
+.haveAnAccount {
+    font-size: 14px;
 }
 
+#register_btn {
+    font-size: 16px;
+}
 
-.form-container label {
+label {
     font-size: 16px;
 }

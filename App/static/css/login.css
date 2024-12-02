@@ -123,21 +123,8 @@ label {
     background: #5d45bd;
 }
 
-.forgotPassword {
-    margin-top: 15px;
-    font-size: 12px;
-    color: rgb(129, 128, 128);
-}
 
-.forgotPassword a {
-    text-decoration: underline;
-    color: rgb(129, 128, 128);
-    transition: 0.25s color ease-in;
-}
 
-.forgotPassword a:hover {
-    color: rgb(153, 151, 151);
-}
 
 @media screen and (min-width: 480px) {
     form h2 {
@@ -146,7 +133,7 @@ label {
 
     .content h1 {
         font-size: 24px;
-        width: 90%;
+        width: 80%;
         margin-left: auto;
         margin-right: auto;
         max-width: 594px;
@@ -180,5 +167,14 @@ label {
 
     label {
         font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .rightSide {
+        background-image: radial-gradient(#473157 1.35px, #23272A 1.35px);
+        background-color: #23272A;
+        opacity: 0.8;
+        background-size: 27px 27px;
     }
 }
