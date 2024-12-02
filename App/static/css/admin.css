@@ -1,4 +1,6 @@
-#semForm, #courseForm, #coursesList{
+#semForm,
+#courseForm,
+#coursesList {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -11,27 +13,28 @@
     border-radius: 10px;
     padding: 1rem 1.5rem;
 
-    box-shadow: 8px 10px 37px -12px rgba(0,0,0,0.62);
-    -webkit-box-shadow: 8px 10px 37px -12px rgba(0,0,0,0.62);
-    -moz-box-shadow: 8px 10px 37px -12px rgba(0,0,0,0.62);
+    box-shadow: 8px 10px 37px -12px rgba(0, 0, 0, 0.62);
+    -webkit-box-shadow: 8px 10px 37px -12px rgba(0, 0, 0, 0.62);
+    -moz-box-shadow: 8px 10px 37px -12px rgba(0, 0, 0, 0.62);
 }
 
-#courseForm, #coursesList{
+#courseForm,
+#coursesList {
     min-width: 50%;
     max-height: 90%;
     overflow-y: auto;
 }
 
-#coursesList{
+#coursesList {
     overflow-y: none;
 }
 
-tr{
+tr {
     background-color: var(--primary-color);
     border: none;
 }
 
-td{
+td {
     margin-bottom: 200px;
     padding: 10px;
     text-align: left;
@@ -43,14 +46,14 @@ td{
 table {
     border-spacing: 10px;
     width: 100%;
-    overflow-y: auto; 
+    overflow-y: auto;
 }
 
-.selected{
+.selected {
     background-color: #4a4f52;
 }
 
-#buttons_container{
+#buttons_container {
     padding-left: 10px;
     padding-right: 10px;
     margin-top: 30px;
@@ -58,7 +61,7 @@ table {
     justify-content: space-between;
 }
 
-.formBtn{
+.formBtn {
     background: var(--tertiary-color);
     color: white;
     border: none;
@@ -71,117 +74,147 @@ table {
     text-decoration: none;
 }
 
-.formBtn:hover{
+.formBtn:hover {
     background: #5d45bd;
 }
 
-.formBtn:nth-child(2){
+.formBtn:nth-child(2) {
     margin-left: 10px;
     margin-right: 10px;
 }
 
-#save_btn:hover{
+#save-btn:hover {
     background: #5d45bd;
 }
 
-h2{
+h2 {
     text-align: center;
     font-size: 30px;
     margin-bottom: 10px;
 }
 
 /* ============================================= */
-.field_containers input{
+.field-containers input {
     border: none;
     padding: 0.5rem 0.8rem;
     border-radius: 6px;
     margin-bottom: 15px;
     width: 100%;
-}  
+}
 
-.input-label{
+.input-label {
     font-size: 18px;
     font-weight: 500;
-    
+
 }
 
 
-.sem_container, .level_container {
+.semester-container,
+.level_container {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
-.sem_container input[type="radio"], .level_container input[type="checkbox"] {
-    margin-right: 5px;
+.semester-container .semester-options {
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
 }
 
-.sem_container label[for="semester"], .level_container label[for="level"] {
-    margin-right: 20px; 
+.semester-container input[type="radio"],
+.level_container input[type="checkbox"] {
+    margin-left: 10px;
 }
 
-#semForm input{
+.semester-container input[type="radio"]:checked {
+    background-color: var(--tertiary-color);
+}
+
+.semester-container input label {
+    margin-left: 5px;
+}
+
+#semForm input {
     background-color: var(--primary-color);
     color: white;
 }
 
-#semForm{
-    max-width: 550px;
+#semForm {
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.field-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.field-row .field-containers {
+    width: 45%;
+}
+
+#table_container {
+    overflow-x: auto;
+    height: 400px;
+}
+
+#save-btn {
+    background: var(--tertiary-color);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s ease-in;
+    font-size: 14px;
+    min-width: 180px;
     margin-left: auto;
     margin-right: auto;
 }
 
-
-
-#table_container {
-    overflow-x: auto; 
-    height: 400px;
-}
-
-.saveSemesterBtn{
-    width: 100%;
-    margin-top: 20px;
-}
-
-#courseForm{
+#courseForm {
     margin-top: 20px;
     overflow-y: auto;
 }
 
-#courseForm input{
+#courseForm input {
     background: var(--primary-color);
     color: white;
 }
 
-#courseForm #save_btn{
+#courseForm #save-btn {
     width: 100%;
     margin-top: 20px;
 
 }
 
+@media screen and (max-width: 800px) {
+    #semForm {
+        width: 100%;
+    }
 
-  /* media queries */
-@media screen and (min-width: 480px){
-    h2{
-        font-size: 34px;
+    .field-row {
+        flex-direction: column;
+    }
+
+    .field-row .field-containers {
+        width: 100%;
     }
 }
 
-@media screen and (min-width: 900px){
-    .formBtn{
-        font-size: 18px;
-    }
-}
-
-.tableBtn{
+.tableBtn {
     background: var(--tertiary-color);
     color: white;
     padding: 10px;
 }
 
-.clashTable td{
+.clashTable td {
     text-align: center;
 }
 
-.search-section, .clashTable{
+.search-section,
+.clashTable {
     padding: 2%;
 }

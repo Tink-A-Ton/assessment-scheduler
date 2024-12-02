@@ -1,0 +1,37 @@
+{% block content %}
+<nav id="layout_nav">
+    <div class="main_nav_wrapper">
+        <div class="logo_container">
+            <a href="">FST Assessment Scheduler</a>
+        </div>
+        
+
+        <div class="links_container">
+            <ul id="layout_nav_links">
+                <li><a class="chat_nav_link nav_link" href="/get_courses">Courses</a></li>
+                <li><a class="clashes_nav_link nav_link" href="/clashes">Clashes</a></li>
+                <li><a class="myAssessments_nav_link nav_link" href="/uploadFiles">Upload Files</a></li>
+                <li><a class="calendar_nav_link nav_link" href="/semester">Semester</a></li>
+                <li><a class="logout_nav_link" href="/logout">Logout</a></li>
+            </ul>
+        </div>
+
+        <div class="links_container_mobile">
+            <ul id="layout_nav_links_mobile">
+                <li><a class="chat_nav_link mobile_links" href="/get_courses">Courses</a></li>
+                <li><a class="myAssessments_nav_link mobile_links" href="/uploadFiles">Upload Files</a></li>
+                <li><a class="calendar_nav_link mobile_links" href="/semester">Semester</a></li>
+                <li class="logout_mobile_container"><a class="logout_nav_link mobile_links" href="/logout">Logout</a></li>
+            </ul>
+            <div class="exit">
+                <img src="../static/images/exit-btn.svg" alt="">
+            </div>
+        </div>
+
+
+        <div class="burger">
+            <img src="../static/images/burgermenu.svg" alt="">
+        </div>
+    </div>
+</nav>
+{% endblock %}
