@@ -40,7 +40,8 @@ td {
     font-size: 14px;
 }
 
-.level-row, .course-code-row {
+.level-row,
+.course-code-row {
     text-align: center;
 }
 
@@ -238,11 +239,23 @@ h2 {
 .tableBtn {
     background: var(--tertiary-color);
     color: white;
-    padding: 10px;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s ease-in;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
 }
 
 .clashTable td {
     text-align: center;
+}
+
+.clashTable tr:hover {
+    background-color: #626166;
 }
 
 .search-section,

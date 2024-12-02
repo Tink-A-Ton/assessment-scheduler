@@ -22,7 +22,7 @@
             <td>{{exam.id}}</td>
             <td>{{exam.course_code}}</td>
             <td>{{exam.start_date}}</td>
-            <td>
+            <td class="clash-actions">
                 <form action="/acceptOverride/{{ exam.id }}" method="POST" style="display: inline-block;">
                     <button type="submit" class="tableBtn">Accept</button>
                 </form>
