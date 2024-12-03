@@ -1,10 +1,24 @@
-import sys
+# this is the root or the endpoint; the other files export an AppGroup
 import click
 from flask import Flask
 from flask.cli import AppGroup
-import pytest
 from rich.console import Console
 from rich.table import Table
+from .test import test
+from .exam import exam
+from .course import course
+from .staff import staff
+
+
+def create_cli_commands(app: Flask) -> None:
+    app.cli.add_command(test)
+    app.cli.add_command(exam)
+    app.cli.add_command(course)
+    app.cli.add_command(staff)
+
+    @app.cli.command("help", help="Displays all available commands and descriptions.")
+    def help_command_cli() -> None:
+        help_command(app, test)
 
 
 def help_command(app: Flask, test: AppGroup) -> None:
@@ -25,30 +39,3 @@ def help_command(app: Flask, test: AppGroup) -> None:
             )
     console = Console()
     console.print(table)
-
-
-def run_tests(test_type: str, unit_key: str, integration_key: str) -> None:
-    if test_type == "unit":
-        sys.exit(pytest.main(["-k", unit_key]))
-    elif test_type == "int":
-        sys.exit(pytest.main(["-k", integration_key]))
-    else:
-        unit_result: int | pytest.ExitCode = pytest.main(["-k", unit_key])
-        if unit_result == 0:
-            integration_result: int | pytest.ExitCode = pytest.main(
-                ["-k", integration_key]
-            )
-            sys.exit(integration_result)
-        else:
-            sys.exit(unit_result)
-
-
-def run_all_tests() -> None:
-    unit_result: int | pytest.ExitCode = pytest.main(["-k", "UnitTests"])
-    if unit_result == 0:
-        integration_result: int | pytest.ExitCode = pytest.main(
-            ["-k", "IntegrationTests"]
-        )
-        sys.exit(integration_result)
-    else:
-        sys.exit(unit_result)
