@@ -22,10 +22,6 @@
     -moz-box-shadow: 8px 10px 37px -12px rgba(0, 0, 0, 0.62);
 }
 
-#courseForm {
-    min-width: 50%;
-}
-
 tr {
     background-color: var(--secondary-color);
     border: none;
