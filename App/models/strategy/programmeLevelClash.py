@@ -10,6 +10,12 @@ class ProgrammeLevelClash(ClashDetection):
     """
 
     def detect_clash(self, new_exam: Exam) -> bool:
+        if (
+            new_exam.start_date is None
+            or new_exam.start_time is None
+            or new_exam.end_time is None
+        ):
+            return False
         programmes: list[ProgrammeCourse] = ProgrammeCourse.query.filter_by(
             course_code=new_exam.course_code
         ).all()

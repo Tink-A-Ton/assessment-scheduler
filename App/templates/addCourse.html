@@ -3,33 +3,31 @@
 {% block title %}Add Course{% endblock %}
 
 {% block head %}
+<link rel="stylesheet" href="../static/css/admin.css">
 <link rel="stylesheet" href="../static/css/addCourse.css">
 {% endblock %}
 
 {% block content %}
-<div class="formContainer">
-    <form action="/addNewCourse" id="addCourseForm" method="POST">
-        <h2>Add Course</h2>
-        <div class="formInputContainer normalLabel">
-            <label class="mainLabel" for="">Course Code</label>
-            <input type="text" name="course_code" id="course_code" required>
-        </div>
+<form id="courseForm" action="/addNewCourse" method="POST">
+    <h2>Add Course</h2>
+    <div class="formInputContainer normalLabel">
+        <label for="course_code" class="input-label">Course Code</label>
+        <input type="text" id="course_code" name="course_code" placeholder="Enter Course Code" required>
+    </div>
+    <div class="formInputContainer normalLabel">
+        <label for="title" class="input-label">Title</label>
+        <input type="text" id="title" name="title" placeholder="Enter Course Title" required>
+    </div>
+    <div class="formInputContainer levelContainer">
+        <label class="mainLabel" for="" level>Level</label>
 
-        <div class="formInputContainer normalLabel">
-            <label class="mainLabel" for="">Title</label>
-            <input type="text" name="title" id="title" required>
-        </div>
-        <div class="formInputContainer levelContainer">
-            <label class="mainLabel" for="" level>Level</label>
-
-            <input type="radio" id="radio_btns" name="level" value="1">
-            <label class="smallLabel" for="level">1</label>
-            <input type="radio" id="radio_btns" name="level" value="2">
-            <label class="smallLabel" for="level">2</label>
-            <input type="radio" id="radio_btns" name="level" value="3">
-            <label class="smallLabel" for="level">3</label>
-        </div>
-        <input type="submit" value="Add Course" id="submitBtn">
-    </form>
-</div>
+        <input type="radio" id="radio_btns" name="level" value="1" checked>
+        <label class="smallLabel" for="level">1</label>
+        <input type="radio" id="radio_btns" name="level" value="2">
+        <label class="smallLabel" for="level">2</label>
+        <input type="radio" id="radio_btns" name="level" value="3">
+        <label class="smallLabel" for="level">3</label>
+    </div>
+    <button id="submitBtn" class="formBtn" type="submit">Add Course</button>
+</form>
 {% endblock %}

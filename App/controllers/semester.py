@@ -11,6 +11,10 @@ def create_semester(
     return semester
 
 
-def get_semester() -> dict[str, str | int]:
-    semester: Semester = Semester.query.order_by(Semester.id.desc()).first()
+def get_semester() -> Semester:
+    return Semester.query.order_by(Semester.id.desc()).first()
+
+
+def get_semester_json() -> dict[str, str | int]:
+    semester: Semester = get_semester()
     return semester.to_json()

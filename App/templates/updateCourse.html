@@ -12,15 +12,20 @@
     <h2>Update Course</h2>
     <div class="formInputContainer normalLabel">
         <label for="code" class="input-label">Course Code</label>
-        <input type="text" id="code" name="code" value="{{ course.course_code }}" style="white-space: pre;" readonly>
+        <input type="text" id="code" name="code" value="{{ course.course_code }}" style="white-space: pre;" required>
     </div>
     <div class="formInputContainer normalLabel">
         <label for="title" class="input-label">Title</label>
-        <input type="text" id="title" name="title" value="{{ course.course_title }}" style="white-space: pre;" readonly>
+        <input type="text" id="title" name="title" value="{{ course.course_title }}" style="white-space: pre;" required>
     </div>
-    <div class="formInputContainer normalLabel">
-        <label for="level" class="input-label">Level</label>
-        <input type="text" name="level" id="level" value={{course.level}}>
+    <div class="formInputContainer levelContainer">
+        <label class="mainLabel" for="" level>Level</label>
+        <input type="radio" id="radio_btns" name="level" value="1" checked>
+        <label class="smallLabel" for="level">1</label>
+        <input type="radio" id="radio_btns" name="level" value="2">
+        <label class="smallLabel" for="level">2</label>
+        <input type="radio" id="radio_btns" name="level" value="3">
+        <label class="smallLabel" for="level">3</label>
     </div>
     <button id="save-btn" class="formBtn" type="submit">Save</button>
 </form>

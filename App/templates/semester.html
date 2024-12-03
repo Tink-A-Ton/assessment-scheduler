@@ -13,7 +13,7 @@
     <div class="semester-container">
         <label for="semester" class="input-label">Semester</label>
         <div class="semester-options">
-            <input type="radio" id="radio_btns" name="semester" value="1">
+            <input type="radio" id="radio_btns" name="semester" value="1" checked>
             <label for="semester">1</label>
             <input type="radio" id="radio_btns" name="semester" value="2">
             <label for="semester">2</label>
@@ -21,22 +21,23 @@
             <label for="semester">3</label>
         </div>
     </div>
-    
+
     <div class="field-row">
         <div class="field-containers">
             <label for="teachingBegins" class="input-label">Teaching Begins</label>
-            <input type="date" id="teachingBegins" name="teachingBegins">
+            <input type="date" id="teachingBegins" name="teachingBegins" required>
         </div>
         <div class="field-containers">
             <label for="teachingEnds" class="input-label">Teaching Ends</label>
-            <input type="date" id="teachingEnds" name="teachingEnds">
+            <input type="date" id="teachingEnds" name="teachingEnds" required>
         </div>
     </div>
+
     <div class="field-containers">
         <label for="maxAssessments" class="input-label">Weekly Assessment Limit per Level</label>
-        <input type="number" name="maxAssessments" id="maxAssessments">
+        <input type="number" name="maxAssessments" id="maxAssessments" required>
     </div>
-    <button id="save-btn" class="formBtn saveSemesterBtn" type="submit">Save</button>
 
+    <button id="save-btn" class="formBtn saveSemesterBtn" type="submit">Save</button>
 </form>
 {% endblock %}
