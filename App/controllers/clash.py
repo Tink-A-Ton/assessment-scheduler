@@ -1,7 +1,6 @@
 from datetime import date, timedelta
 from .exam import Exam
 from ..database import db
-from .initialize import parse_date
 
 
 def detect_exam_clash(
