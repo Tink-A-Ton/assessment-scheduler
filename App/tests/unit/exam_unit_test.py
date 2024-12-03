@@ -1,6 +1,6 @@
 from datetime import date, time
 import logging,unittest
-from App.models.domain.exam import Exam
+from ...models.domain.exam import Exam
 
 LOGGER: logging.Logger = logging.getLogger(__name__)
 

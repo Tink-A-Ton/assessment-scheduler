@@ -16,9 +16,9 @@ def add_views(app) -> None:
         app.register_blueprint(view)
 
 
-def create_app() -> Flask:
+def create_app(overrides={}) -> Flask:
     app = Flask(__name__, static_url_path="/static")
-    load_config(app)
+    load_config(app, overrides)
     CORS(app)
     add_views(app)
     init_db(app)
@@ -37,10 +37,12 @@ def create_app() -> Flask:
     return app
 
 
-def load_config(app: Flask) -> None:
+def load_config(app: Flask, overrides) -> None:
     load_dotenv()
-    app.config["SQLALCHEMY_DATABASE_URI"] = getenv("SQLALCHEMY_DATABASE_URI")
-    app.config["SECRET_KEY"] = getenv("SECRET_KEY")
+    app.config["SQLALCHEMY_DATABASE_URI"] = getenv(
+        "SQLALCHEMY_DATABASE_URI", default="sqlite:///:memory:"
+    )
+    app.config["SECRET_KEY"] = getenv("SECRET_KEY", default="secret")
     app.config["DEBUG"] = app.config["ENV"].upper() != "PRODUCTION"
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(
         hours=int(getenv("JWT_ACCESS_TOKEN_EXPIRES", default=15))
@@ -57,3 +59,5 @@ def load_config(app: Flask) -> None:
     app.config["MAIL_USE_TLS"] = True
     app.config["JWT_COOKIE_SECURE"] = True
     app.config["JWT_COOKIE_CSRF_PROTECT"] = False
+    for key in overrides:
+        app.config[key] = overrides[key]

@@ -7,7 +7,6 @@ class DefaultClash(ClashDetection):
     Detects clashes where exams for courses of the same academic level
     cannot overlap in time.
     """
-
     def detect_clash(self, new_exam: Exam) -> bool:
         if (
             new_exam.start_date is None

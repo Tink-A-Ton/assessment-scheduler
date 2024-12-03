@@ -1,5 +1,5 @@
 import logging,unittest
-from App.models.users.instructor import Instructor
+from ...models.users.instructor import Instructor
 
 LOGGER: logging.Logger = logging.getLogger(__name__)
 
