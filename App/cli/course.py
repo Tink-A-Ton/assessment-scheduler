@@ -17,8 +17,8 @@ def course_checker(ctx, param, value):
 
 
 @course.command("create", help="This command creates a course")
-@click.argument("course_code", callback=course_checker)
-@click.argument("course_title")
+@click.argument("course_code", default="COMP1605", callback=course_checker)
+@click.argument("course_title", default="Computer Fantasy")
 @click.argument("level", default=1)
 @click.argument("semester", default=1)
 def assign_course(course_code, course_title, level, semester):
@@ -26,7 +26,7 @@ def assign_course(course_code, course_title, level, semester):
     level = int(level)
     semester = int(semester)
     if create_course(course_code, course_title, level, semester):
-        console.print("[green]Course added successfully")
+        console.print(f"[green]Course with code {course_code} added successfully")
     else:
         console.print("[red]Failed to add Course")
     console.print("\n")

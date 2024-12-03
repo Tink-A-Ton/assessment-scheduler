@@ -100,10 +100,10 @@ def clashes(rule_setting):
     console.print("\n")
 
 @exam.command("schedule", help="Schedules an exam or shows if a clash exists with customisable rule setting")
-@click.argument("course", callback=course_checker)
-@click.argument("date", callback=date_checker)
-@click.argument("start_time", callback=time_checker)
-@click.argument("end_time", callback=time_checker)
+@click.argument("course", default="COMP1700", callback=course_checker)
+@click.argument("date", default="2024-12-06", callback=date_checker)
+@click.argument("start_time", default="08:00", callback=time_checker)
+@click.argument("end_time", default="10:00", callback=time_checker)
 @click.argument("rule_setting", default="all", callback=setting_checker, type=click.Choice(["1", "2", "all", "none"], case_sensitive=False))
 def schedule(course,date,start_time,end_time,rule_setting):
     console.print("\n")
