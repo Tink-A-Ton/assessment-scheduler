@@ -1,3 +1,8 @@
+.formBtn.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 #semForm,
 #courseForm {
     position: absolute;
@@ -15,10 +20,6 @@
     box-shadow: 8px 10px 37px -12px rgba(0, 0, 0, 0.62);
     -webkit-box-shadow: 8px 10px 37px -12px rgba(0, 0, 0, 0.62);
     -moz-box-shadow: 8px 10px 37px -12px rgba(0, 0, 0, 0.62);
-}
-
-#courseForm {
-    min-width: 50%;
 }
 
 tr {

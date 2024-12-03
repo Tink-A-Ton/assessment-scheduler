@@ -20,13 +20,10 @@ def get_course(course_code: str) -> Course | None:
     return Course.query.get(course_code)
 
 
-def edit_course(
-    course_code: str, semester_id: int, course_title: str, level: int
-) -> Course | None:
+def edit_course(course_code: str, course_title: str, level: int) -> Course | None:
     course: Course | None = get_course(course_code)
     if course is None:
         return None
-    course.semester_id = semester_id
     course.course_title = course_title
     course.level = level
     db.session.commit()
@@ -35,7 +32,7 @@ def edit_course(
 
 def delete_course(course_code: str) -> bool:
     course: Course | None = get_course(course_code)
-    if course:
+    if not course:
         return False
     db.session.delete(course)
     db.session.commit()

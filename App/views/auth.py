@@ -34,7 +34,7 @@ def login_action() -> Response | str:
         else "staff_views.get_calendar_page"
     )
     response: Response = redirect(url_for(redirect_url))
-    set_access_cookies(response, token)  # pyright: ignore[reportArgumentType]
+    set_access_cookies(response, token)  # pyright: ignore
     return response
 
 
@@ -55,7 +55,7 @@ def register_staff() -> Response | str:
     if not token:
         return get_login_page()
     response: Response = redirect(url_for("staff_views.get_calendar_page"))
-    set_access_cookies(response, token)  # pyright: ignore[reportArgumentType]
+    set_access_cookies(response, token)  # pyright: ignore
     return response
 
 
@@ -63,5 +63,5 @@ def register_staff() -> Response | str:
 @jwt_required()
 def logout() -> Response:
     response: Response = redirect(url_for("auth_views.get_login_page"))
-    unset_jwt_cookies(response)  # pyright: ignore[reportArgumentType]
+    unset_jwt_cookies(response)  # pyright: ignore
     return response
