@@ -39,7 +39,7 @@ def process_file(file) -> None:
                 row["Course Code"],
                 row["Course Title"],
                 int(row["Level"]),
-                int(semester["id"]),
+                semester.id,
             )
 
 
