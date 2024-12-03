@@ -30,9 +30,10 @@
 		</div>
 		<div id="buttons-container">
 			<a href="/newCourse" class="formBtn">Add Course</a>
-			<a href="/updateCourse" class="modify-course-link formBtn">Update Course</a>
-			<form action="/deleteCourse/{{ courseCode }}" method="POST">
-				<button type="submit" class="delete-course-link formBtn">Delete Course</button>
+			<a href="#" class="modify-course-link formBtn" id="updateButton" disabled>Update Course</a>
+			<form id="deleteForm" method="POST">
+				<button type="submit" class="delete-course-link formBtn" id="deleteButton" disabled>Delete
+					Course</button>
 			</form>
 		</div>
 	</div>
@@ -40,16 +41,23 @@
 
 <script>
 	const courseRows = document.querySelectorAll('.course-row');
+	const modifyCourseLink = document.querySelector('.modify-course-link');
+	const deleteCourseForm = document.getElementById('deleteForm');
+	const updateButton = document.getElementById('updateButton');
+	const deleteButton = document.getElementById('deleteButton');
+	updateButton.classList.add('disabled');
+	deleteButton.classList.add('disabled');
 	courseRows.forEach(row => {
 		row.addEventListener('click', function handleClick() {
 			courseRows.forEach(row => row.classList.remove('selected'));
 			this.classList.add('selected');
-			const courseCode = this.querySelector('td').textContent
-			console.log('Clicked course code:', courseCode);
-			const modifyCourseLink = document.querySelector('.modify-course-link');
+			const courseCode = this.querySelector('td').textContent;
 			modifyCourseLink.href = `/modifyCourse/${courseCode}`;
-			const deleteCourseForm = document.querySelector('form');
 			deleteCourseForm.action = `/deleteCourse/${courseCode}`;
+			updateButton.classList.remove('disabled');
+			updateButton.removeAttribute('disabled');
+			deleteButton.classList.remove('disabled');
+			deleteButton.removeAttribute('disabled');
 		});
 	});
 </script>
