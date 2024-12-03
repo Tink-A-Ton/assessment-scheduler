@@ -11,7 +11,11 @@ class LevelClash(ClashDetection):
     """
 
     def detect_clash(self, new_exam: Exam) -> bool:
-        if not new_exam.start_date:
+        if (
+            new_exam.start_date is None
+            or new_exam.start_time is None
+            or new_exam.end_time is None
+        ):
             return False
 
         semester: Semester = Semester.query.order_by(Semester.id.desc()).first()

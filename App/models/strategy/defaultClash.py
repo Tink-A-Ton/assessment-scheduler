@@ -9,6 +9,12 @@ class DefaultClash(ClashDetection):
     """
 
     def detect_clash(self, new_exam: Exam) -> bool:
+        if (
+            new_exam.start_date is None
+            or new_exam.start_time is None
+            or new_exam.end_time is None
+        ):
+            return False
         course_level: int = Course.query.get(new_exam.course_code).level
         relevant_exams: list[Exam] = Exam.query.filter(
             Exam.start_date == new_exam.start_date,
