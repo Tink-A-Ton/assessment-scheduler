@@ -1,39 +1,38 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
-from flask_jwt_extended import jwt_required
 from werkzeug import Response
-from ..models import Admin, Semester
+from ..models import Semester
 from ..controllers import create_course, delete_course, edit_course
-from ..controllers import get_courses, get_course, get_semester
+from ..controllers import get_courses, get_course, get_semester, role_required
 
 course_views = Blueprint("course_views", __name__, template_folder="../templates")
 
 
 @course_views.route("/modifyCourse/<string:course_code>", methods=["GET"])
-@jwt_required(Admin)
+@role_required("Staff")
 def get_update_course_page(course_code) -> str:
     return render_template("updateCourse.html", course=get_course(course_code))
 
 
 @course_views.route("/get_courses", methods=["GET"])
-@jwt_required(Admin)
+@role_required("Staff")
 def get_courses_page() -> str:
     return render_template("courses.html", courses=get_courses())
 
 
 @course_views.route("/newCourse", methods=["GET"])
-@jwt_required(Admin)
+@role_required("Staff")
 def get_add_course_page() -> str:
     return render_template("addCourse.html")
 
 
 @course_views.route("/updateCourse", methods=["GET"])
-@jwt_required(Admin)
+@role_required("Staff")
 def update_course_page() -> str:
     return render_template("updateCourse.html")
 
 
 @course_views.route("/updateCourse", methods=["POST"])
-@jwt_required(Admin)
+@role_required("Staff")
 def update_course() -> Response:
     data: dict[str, str] = request.form
     edit_course(data["code"], data["title"], int(data["level"]))
@@ -42,7 +41,7 @@ def update_course() -> Response:
 
 
 @course_views.route("/addNewCourse", methods=["POST"])
-@jwt_required(Admin)
+@role_required("Staff")
 def add_course_action() -> Response:
     data: dict[str, str] = request.form
     sem: Semester = get_semester()
@@ -51,7 +50,7 @@ def add_course_action() -> Response:
 
 
 @course_views.route("/deleteCourse/<string:course_code>", methods=["POST"])
-@jwt_required(Admin)
+@role_required("Staff")
 def delete_course_action(course_code) -> Response:
     delete_course(course_code)
     flash("Course Deleted Successfully!")

@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, request
 from flask_jwt_extended import jwt_required
-from ..controllers import initialize
 from flask_mail import Mail, Message
 from flask import current_app
 
 
 index_views = Blueprint("index_views", __name__, template_folder="../templates")
+
 
 @index_views.route("/settings", methods=["GET"])
 @jwt_required()

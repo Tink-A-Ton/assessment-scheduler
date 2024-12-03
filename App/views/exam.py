@@ -1,7 +1,8 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from werkzeug import Response
-from flask_jwt_extended import get_jwt_identity, jwt_required
-from ..models import Course, Exam, Staff
+from flask_jwt_extended import get_jwt_identity
+from ..controllers.auth import role_required
+from ..models import Course, Exam
 from ..controllers import get_exam, get_exams_by_course, create_exam, delete_exam
 from ..controllers import update_exam, get_registered_courses, get_staff_courses
 from ..controllers import detect_exam_clash, parse_date, parse_time
@@ -11,7 +12,7 @@ exam_views = Blueprint("exam_views", __name__, template_folder="../templates")
 
 
 @exam_views.route("/assessments", methods=["GET"])
-@jwt_required(Staff)
+@role_required("Staff")
 def get_exams_page() -> str:
     staff_courses: list[dict] = get_staff_courses(get_jwt_identity())
     exams: list[dict] = [
@@ -23,20 +24,20 @@ def get_exams_page() -> str:
 
 
 @exam_views.route("/modifyAssessment/<int:id>", methods=["GET"])
-@jwt_required(Staff)
+@role_required("Staff")
 def get_modify_exam_page(id) -> str:
     return render_template("modifyAssessment.html", course_assessment=get_exam(id))
 
 
 @exam_views.route("/addAssessment", methods=["GET"])
-@jwt_required(Staff)
+@role_required("Staff")
 def get_add_exams_page() -> str:
     courses: list[Course] = get_registered_courses(get_jwt_identity())
     return render_template("addAssessment.html", courses=courses)
 
 
 @exam_views.route("/addAssessment", methods=["POST"])
-@jwt_required(Staff)
+@role_required("Staff")
 def add_exam_action() -> Response | str:
     data: dict[str, str] = request.form
     print(parse_date(data["startDate"]))
@@ -53,7 +54,7 @@ def add_exam_action() -> Response | str:
 
 
 @exam_views.route("/modifyAssessment/<int:id>", methods=["POST"])
-@jwt_required(Staff)
+@role_required("Staff")
 def modify_exam_action(id) -> Response:
     data: dict[str, str] = request.form
     exam: Exam | None = update_exam(
@@ -67,7 +68,7 @@ def modify_exam_action(id) -> Response:
 
 
 @exam_views.route("/deleteAssessment/<int:exam_id>", methods=["GET"])
-@jwt_required(Staff)
+@role_required("Staff")
 def delete_exam_action(exam_id) -> Response:
     if delete_exam(exam_id):
         flash("Exam deleted")

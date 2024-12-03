@@ -3,9 +3,10 @@ from werkzeug import Response
 import json
 from ..models import Course, Exam
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from ..controllers import get_registered_courses, get_staff_courses, get_staff_exams
-from ..controllers import detect_exam_clash, update_password, add_instructor, update_exam
-from ..controllers import get_courses, get_semester, get_available_courses, get_exams_json
+from ..controllers import get_registered_courses, get_staff_courses
+from ..controllers import get_semester_json, get_courses, get_available_courses
+from ..controllers import detect_exam_clash, update_password, add_instructor
+from ..controllers import get_exams_json, get_staff_exams, update_exam
 
 staff_views = Blueprint("staff_views", __name__, template_folder="../templates")
 
@@ -33,7 +34,7 @@ def get_calendar_page() -> str:
         courses=get_available_courses(registered_courses),
         staff_courses=get_staff_courses(id),
         staff_exams=get_staff_exams(id),
-        semester=get_semester(),
+        semester=get_semester_json(),
         other_exams=get_exams_json(),
         messages=messages,
     )

@@ -1,13 +1,16 @@
 from flask import Flask
-from flask_jwt_extended import create_access_token, JWTManager
+from flask_jwt_extended import JWTManager, verify_jwt_in_request
+from flask_jwt_extended import create_access_token, get_jwt
 from ..models import User
-from .user import get_user
+from .user import get_user, is_admin
+from functools import wraps
 
 
 def login_user(email: str, password: str) -> str | None:
     user: User | None = User.query.filter_by(email=email).first()
     if user and user.check_password(password):
-        return create_access_token(identity=user.id)
+        role: str = "Admin" if is_admin(user.id) else "Staff"
+        return create_access_token(identity=user.id, additional_claims={"role": role})
     return None
 
 
@@ -26,3 +29,18 @@ def setup_jwt(app: Flask) -> JWTManager:
         return get_user(identity)
 
     return jwt
+
+
+def role_required(role):
+    def wrapper(fn):
+        @wraps(fn)
+        def decorator(*args, **kwargs):
+            verify_jwt_in_request()
+            claims = get_jwt()
+            if claims.get("role") != role:
+                return {"msg": "Unauthorized"}, 403
+            return fn(*args, **kwargs)
+
+        return decorator
+
+    return wrapper
