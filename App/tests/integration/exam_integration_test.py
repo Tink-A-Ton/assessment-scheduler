@@ -1,33 +1,22 @@
 from datetime import date, time
-import logging
 import unittest
-import pytest 
-from typing import Any, Generator
-from flask import Flask 
-from flask.testing import FlaskClient 
-
 from ...models.domain.exam import Exam
 from ...main import create_app
-from ...database import db,create_db
-from ...controllers.course import create_course
-from ...controllers.clash import detect_exam_clash
-from ...controllers.exam import create_exam, delete_exam, get_exam, update_exam, get_exams, get_exam, get_clashes
-LOGGER: logging.Logger = logging.getLogger(__name__)
-
-
-@pytest.fixture(autouse=True, scope="module")
-def empty_db() -> Generator[FlaskClient, logging.Logger, None]:
-    app: Flask = create_app(
-        {"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///test.db"}
-    )
-    create_db()
-    yield app.test_client()
-    db.drop_all()
+from ...database import db
+from ...controllers import create_course, create_exam, delete_exam, get_exam
+from ...controllers import detect_exam_clash, update_exam, get_exams, get_clashes
 
 
 class ExamIntegrationTests(unittest.TestCase):
     def setUp(self) -> None:
         """Set up test database and Flask application context."""
+        self.app = create_app()
+        self.app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+        self.app.config["TESTING"] = True
+        self.client = self.app.test_client()
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+        db.create_all()
         self.course_code: str = "COMP1601"
         self.level: int = 1
         self.start_date: date = date(2024, 2, 1)

@@ -39,8 +39,10 @@ def create_app(overrides={}) -> Flask:
 
 def load_config(app: Flask, overrides) -> None:
     load_dotenv()
-    app.config["SQLALCHEMY_DATABASE_URI"] = getenv("SQLALCHEMY_DATABASE_URI")
-    app.config["SECRET_KEY"] = getenv("SECRET_KEY")
+    app.config["SQLALCHEMY_DATABASE_URI"] = getenv(
+        "SQLALCHEMY_DATABASE_URI", default="sqlite:///:memory:"
+    )
+    app.config["SECRET_KEY"] = getenv("SECRET_KEY", default="secret")
     app.config["DEBUG"] = app.config["ENV"].upper() != "PRODUCTION"
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(
         hours=int(getenv("JWT_ACCESS_TOKEN_EXPIRES", default=15))
