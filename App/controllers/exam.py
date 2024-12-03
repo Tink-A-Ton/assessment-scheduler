@@ -1,4 +1,4 @@
-from .initialize import parse_date, parse_time
+from App.models.utils import parse_date, parse_time
 from ..models import Exam
 from ..database import db
 

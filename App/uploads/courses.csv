@@ -1,0 +1,48 @@
+course_code,title,level
+COMP1600,Introduction to Computing Concepts,1
+COMP1601,Computer Programming I,1
+COMP1602,Computer Programming II,1
+COMP1603,Computer Programming III,1
+COMP1604,Mathematics for Computing,1
+COMP2601,Computer Architecture,2
+COMP2602,Computer Networks,2
+COMP2603,Object-Oriented Programming I,2
+COMP2604,Operating Systems,2
+COMP2605,Enterprise Database Systems,2
+COMP2606,Software Engineering I,2
+COMP2611,Data Structures,2
+COMP3601,Design and Analysis of Algorithms,3
+COMP3602,Theory of Computing,3
+COMP3603,Human-Computer Interaction,3
+COMP3605,Introduction to Data Analytics,3
+COMP3606,Wireless and Mobile Programming,3
+COMP3607,Object-Oriented Programming II,3
+COMP3608,Intelligent Systems,3
+COMP3609,Game Programming,3
+COMP3610,Big Data Analytics,3
+COMP3611,Modelling and Simulation,3
+COMP3613,Software Engineering II,3
+INFO1600,Introduction to Information Technology Concepts,1
+INFO1601,Introduction to WWW Programming,1
+INFO2600,Information Systems Development,2
+INFO2601,Networking Technologies Fundamentals,2
+INFO2602,Web Programming and Technologies I,2
+INFO2603,Platform Technologies I,2
+INFO2604,Information Systems Security,2
+INFO2605,Professional Ethics and Law,2
+INFO3600,Business Information Systems,3
+INFO3601,Platform Technologies II,3
+INFO3602,Web Programming and Technologies II,3
+INFO3604,Project,3
+INFO3605,Fundamentals of LAN Technologies,3
+INFO3606,Cloud Computing,3
+INFO3607,Fundamentals of WAN Technologies,3
+INFO3608,E-Commerce,3
+INFO3609,Internship I,3
+INFO3610,Internship II,3
+INFO3611,Database Administration,3
+MATH1115,Fundamental Mathematics for General Studies,1
+MATH2250,Industrial Statistics,2
+MGMT2021,Business Law I,2
+ACCT1002,Introduction to Financial Accounting,1
+ACCT1003,Introduction to Cost and Managerial Accounting,1
