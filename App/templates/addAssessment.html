@@ -15,7 +15,7 @@
         <div class="formSection1">
             <div class="formInputContainer">
                 <label for="myCourses">My Courses</label>
-                <select id="dropdownCourses" name="course">
+                <select id="dropdownCourses" name="course" required>
                     {% for course in courses %}
                     <option value="{{course.course_code}}">{{course.course_code}}</option>
                     {% endfor %}
