@@ -1,7 +1,10 @@
 .formContainer {
-    margin-top: 30px;
-    margin-bottom: 20px;
     width: 500px;
+}
+
+#semForm,
+#courseForm {
+    margin-top: 0.3em;
 }
 
 form {
@@ -12,7 +15,6 @@ form {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-
     width: fit-content;
 
     box-shadow: 8px 10px 37px -12px rgba(0, 0, 0, 0.62);
@@ -62,7 +64,8 @@ form textarea {
     color: white;
     border: none;
     padding: 1rem 1.5rem;
-    margin-top: 30px;
+    margin-top: 0px;
+    margin-bottom: 1em;
     border-radius: 6px;
     cursor: pointer;
     transition: background 0.15s ease-in;
