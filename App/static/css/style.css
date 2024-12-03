@@ -125,16 +125,16 @@ select {
     text-align: right;
 }
 
-::-webkit-scrollbar {
+.fc-scrollgrid ::-webkit-scrollbar {
     width: 8px;
 }
 
-::-webkit-scrollbar-track {
+.fc-scrollgrid ::-webkit-scrollbar-track {
     background: #f0f0f0;
     border-radius: 10px;
 }
 
-::-webkit-scrollbar-thumb {
+.fc-scrollgrid ::-webkit-scrollbar-thumb {
     background: var(--tertiary-color);
     border-radius: 10px;
 }

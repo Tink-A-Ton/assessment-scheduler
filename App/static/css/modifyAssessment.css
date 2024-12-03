@@ -110,7 +110,7 @@ form textarea {
 }
 
 input:checked+.slider {
-    background-color: #4caf50;
+    background-color:  var(--tertiary-color);
 }
 
 input:checked+.slider:before {
