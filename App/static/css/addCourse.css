@@ -2,6 +2,23 @@
     width: 500px;
 }
 
+#courseForm #save-btn {
+    background: var(--tertiary-color);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s ease-in;
+    font-size: 14px;
+    min-width: 180px;
+    width: 85%;
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+
+
+
 #semForm,
 #courseForm {
     margin-top: 0.3em;
@@ -63,7 +80,7 @@ form textarea {
     background: var(--tertiary-color);
     color: white;
     border: none;
-    padding: 1rem 1.5rem;
+    padding: 0.7rem 0.8rem;
     margin-top: 0px;
     margin-bottom: 1em;
     border-radius: 6px;
@@ -71,7 +88,7 @@ form textarea {
     transition: background 0.15s ease-in;
     font-size: 16px;
     font-weight: 500;
-    width: 100%;
+    width: 85%;
 }
 
 #submitBtn:hover {
