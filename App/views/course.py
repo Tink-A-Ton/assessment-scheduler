@@ -1,9 +1,9 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask_jwt_extended import jwt_required
 from werkzeug import Response
-from ..models import Admin
+from ..models import Admin, Semester
 from ..controllers import create_course, delete_course, edit_course
-from ..controllers import get_courses, get_course
+from ..controllers import get_courses, get_course, get_semester
 
 course_views = Blueprint("course_views", __name__, template_folder="../templates")
 
@@ -36,8 +36,7 @@ def update_course_page() -> str:
 @jwt_required(Admin)
 def update_course() -> Response:
     data: dict[str, str] = request.form
-    # programme = request.form.get('programme')
-    edit_course(data["code"], int(data["semester"]), data["title"], int(data["level"]))
+    edit_course(data["code"], data["title"], int(data["level"]))
     flash("Course Updated Successfully!")
     return redirect(url_for("course_views.get_courses_page"))
 
@@ -46,9 +45,8 @@ def update_course() -> Response:
 @jwt_required(Admin)
 def add_course_action() -> Response:
     data: dict[str, str] = request.form
-    create_course(
-        data["course_code"], data["title"], int(data["level"]), int(data["semester"])
-    )
+    sem: Semester = get_semester()
+    create_course(data["course_code"], data["title"], int(data["level"]), sem.id)
     return redirect(url_for("course_views.get_courses_page"))
 
 
