@@ -6,12 +6,13 @@ from ..database import db
 def create_exam(
     course_code: str, start_date, start_time, end_time, clash: bool = False
 ) -> Exam:
-    exam_exist: Exam = Exam.query.filter_by(
-        course_code=course_code,
-        start_date=start_date,
-    ).first()
-    if exam_exist is not None:
-        return exam_exist
+    # exam_exist: Exam = Exam.query.filter_by(
+    #     course_code=course_code,
+    #     start_date=start_date,
+    # ).first()
+    # if exam_exist is not None:
+    #     return exam_exist
+    #the above code is commented because the default clash detector should detect this
     exam = Exam(course_code, start_date, start_time, end_time, clash)
     db.session.add(exam)
     db.session.commit()

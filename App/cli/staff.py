@@ -2,11 +2,27 @@ import click
 from flask.cli import AppGroup
 from rich.console import Console
 from rich.table import Table
-from traitlets import default
 from App.controllers import get_all_staff,get_staff,get_staff_courses,get_staff_exams
+from flask import current_app
 
 console = Console()
 staff = AppGroup("staff", help="Commands that relate to the management of staff members")
+
+
+def staff_id_array():
+    with current_app.app_context():
+        staff = get_all_staff()
+        return [str(staff_member.id) for staff_member in staff]
+
+def staff_id_checker(ctx, param, value):
+    with current_app.app_context():
+        try:
+            if not get_staff(int(value)):
+                raise click.BadParameter(f"invalid ID of '{value}'", param_hint="must be valid staff id")
+        except:
+            raise click.BadParameter(f"invalid ID of '{value}'", param_hint="must be valid staff id")
+        return value
+
 
 @staff.command("ls", help="This command shows the list of all existing courses")
 def ls():
@@ -21,7 +37,7 @@ def ls():
     console.print(table)
 
 @staff.command("lookup", help="Displays the staff member with the selected id")
-@click.argument("id", default="11111111")
+@click.argument("id", default="11111111", callback=staff_id_checker)
 def lookup(id):
     console.print("\n")
     staff_member = get_staff(int(id))
@@ -35,7 +51,7 @@ def lookup(id):
     console.print("\n")
 
 @staff.command("courses", help="Shows the list of courses that a staff member of the specified id is responsible for")
-@click.argument("id", default="11111111")
+@click.argument("id", default="11111111", callback=staff_id_checker)
 def courses(id):
     console.print("\n")
     staff_member = get_staff(int(id))
@@ -55,7 +71,7 @@ def courses(id):
 
 
 @staff.command("exams", help="Shows the list of exams that a staff member of the specified id is responsible for")
-@click.argument("id", default="11111111")
+@click.argument("id", default="11111111", callback=staff_id_checker)
 def exams(id):
     console.print("\n")
     staff_member = get_staff(int(id))
@@ -75,7 +91,7 @@ def exams(id):
     console.print("\n")
 
 @staff.command("clashes", help="Shows the list of CLASHING exams that a staff member of the specified id is responsible for")
-@click.argument("id", default="11111111")
+@click.argument("id", default="11111111", callback=staff_id_checker)
 def clashes(id):
     console.print("\n")
     staff_member = get_staff(int(id))

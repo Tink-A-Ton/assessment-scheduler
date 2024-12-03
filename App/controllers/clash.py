@@ -7,8 +7,7 @@ from .initialize import parse_date
 def detect_exam_clash(
     exam: Exam, rule1: str | None = None, rule2: str | None = None
 ) -> bool:
-    from ..models import ClashContext
-
+    from ..models import ClashContext #an import inside a function? prevents circular import lol
     context = ClashContext()
     if rule1 is None:
         context.remove_rule("rule1")

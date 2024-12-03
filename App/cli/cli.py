@@ -18,12 +18,12 @@ def create_cli_commands(app: Flask) -> None:
 
     @app.cli.command("help", help="Displays all available commands and descriptions.")
     def help_command_cli() -> None:
-        help_command(app, test)
+        help_command(app)
 
 
-def help_command(app: Flask, test: AppGroup) -> None:
+def help_command(app: Flask) -> None:
     ctx = click.Context(app.cli)
-    groups: dict[str, AppGroup] = {"test": test}
+    groups: dict[str, AppGroup] = {"test": test, "exam": exam, "course": course, "staff": staff}
     table = Table(title="Available Commands")
     table.add_column("Command", justify="left", style="cyan", no_wrap=True)
     table.add_column("Description", justify="left", style="magenta")

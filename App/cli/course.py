@@ -2,13 +2,22 @@ import click
 from flask.cli import AppGroup
 from rich.console import Console
 from rich.table import Table
-from App.controllers import get_courses,create_course
+from App.controllers import get_courses,create_course,get_course
+from flask import current_app
 
 console = Console()
 course = AppGroup("course", help="Commands that relate to the management of courses")
 
+
+def course_checker(ctx, param, value):
+    with current_app.app_context():
+        if get_course(value):
+            raise click.BadParameter(f"Course already EXISTS", param_hint="use a course that does not exist")
+        return value
+
+
 @course.command("create", help="This command creates a course")
-@click.argument("course_code")
+@click.argument("course_code", callback=course_checker)
 @click.argument("course_title")
 @click.argument("level", default=1)
 @click.argument("semester", default=1)
