@@ -28,7 +28,10 @@
 
 
   <div id="card_container"></div>
+  {% include '_flash_messages.html' %}
+
 </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
   var exams = {{ exams | tojson }};
