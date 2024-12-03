@@ -1,52 +1,64 @@
-#main_container{
+#main_container {
     background-color: var(--secondary-color);
-    margin-top: 30px;
-    padding: 1rem 1.5rem;
+    margin-top: 12.5vh;
+    padding: 1rem 1rem;
     border-radius: 10px;
-
-    width: 50%;
+    width: 40%;
     margin-left: auto;
     margin-right: auto;
     display: flex;
     flex-direction: column;
 }
 
-h1{
+h1 {
     text-align: center;
 }
 
 .course_selection {
     display: grid;
-    grid-template-columns: 1fr 1fr; 
-    gap: 10px; 
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
     padding: 30px;
     padding-left: 50px;
 }
-  
+
 .search-container {
     display: grid;
-    grid-template-rows: auto auto; 
-}
-  
-.search-container form,
-.search-container #search-dropdown {
-    grid-column: 1; 
-}
-  
-.course_selection h3,
-.course_selection #selected_courses {
-    grid-column: 2; 
+    grid-template-rows: auto;
+    position: relative;
 }
 
-#table_container, #courseTable, #courseTableBody{
+.search-container form,
+.search-container #search-dropdown {
+    grid-column: 1;
+}
+
+#search-dropdown {
+    position: absolute;
+    margin-top: 5px;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--secondary-color);
+    border-radius: 6px;
+}
+
+.course_selection h3,
+.course_selection #selected_courses {
+    grid-column: 2;
+}
+
+#table_container,
+#courseTable,
+#courseTableBody {
     max-width: 100%;
 }
 
-#search-dropdown:hover{
+#search-dropdown:hover {
     cursor: pointer;
 }
 
-input{
+input {
     width: 70%;
     background: var(--primary-color);
     border: none;
@@ -55,21 +67,21 @@ input{
     border-radius: 6px;
 }
 
-#save_btn{
+#save_btn {
     background: var(--tertiary-color);
     color: white;
     border: none;
-    padding: 0.7rem 1.5rem;
-    margin-top: 50px;
+    padding: 0.7rem 1rem;
+    margin-top: 20px;
+    margin-right: 15px;
+    margin-bottom: 10px;
     border-radius: 6px;
     cursor: pointer;
     transition: background 0.15s ease-in;
     font-size: 14px;
-    min-width: 180px;
-    float: right;    
-    /* margin-right: auto; */
+    float: right;
 }
 
-#save_btn:hover{
+#save_btn:hover {
     background: #5d45bd;
 }

@@ -35,6 +35,9 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       },
     },
+    allDaySlot: false,
+    slotMinTime: "08:00:00",
+    slotMaxTime: "20:00:00",
     editable: true,
     selectable: true,
     droppable: true,
@@ -124,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
       title: `${exams.course_code}-Exam`,
       backgroundColor: color,
       start: `${exams.start_date}T${exams.start_time}`,
-      end: `T${exams.end_time}`,
+      end: `${exams.start_date}T${exams.end_time}`,
       allDay: isFullDay,
     };
   }
@@ -152,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function handleEventEdit(info) {
     const event = info.event;
     const data = extractEventDetails(event);
+    console.log(data);
     saveEvent(data);
   }
 

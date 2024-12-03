@@ -1,29 +1,28 @@
-.mainSettingsContainer{
+.mainSettingsContainer {
     background-color: var(--secondary-color);
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
-
-    margin-top: 30px;
+    margin-top: 17vh;
     padding: 1rem 1.5rem;
     border-radius: 10px;
 }
 
 
-#changePasswordForm h1{
+#changePasswordForm h1 {
     text-align: center;
     margin-bottom: 25px;
     font-size: 30px;
 }
 
 
-#changePasswordForm{
+#changePasswordForm {
     display: flex;
     flex-direction: column;
 }
 
 
-#changePasswordForm input{
+#changePasswordForm input {
     width: 100%;
     background: var(--primary-color);
     border: none;
@@ -31,14 +30,15 @@
     color: white;
     border-radius: 6px;
 }
-#changePasswordForm label{
+
+#changePasswordForm label {
     margin-bottom: 5px;
     font-size: 18px;
     font-weight: 500;
 }
 
 
-#resetPasswordBtn{
+#resetPasswordBtn {
     background: var(--tertiary-color);
     color: white;
     border: none;
@@ -53,33 +53,30 @@
 }
 
 
-#resetPasswordBtn:hover{
+#resetPasswordBtn:hover {
     background: #5d45bd;
 }
 
 
-@media screen and (min-width: 480px){
-    #changePasswordForm h1{
+@media screen and (min-width: 480px) {
+    #changePasswordForm h1 {
         font-size: 34px;
     }
 }
 
-@media screen and (min-width: 900px){
-    .mainSettingsContainer{
-        margin-top: 50px;
-    }
+@media screen and (min-width: 900px) {
 
-    #resetPasswordBtn{
+    #resetPasswordBtn {
         font-size: 18px;
     }
 
-    .mainSettingsContainer{
+    .mainSettingsContainer {
         min-width: 400px;
     }
 }
 
-@media screen and (min-width: 900px){
-    #resetPassword{
+@media screen and (min-width: 900px) {
+    #resetPassword {
         margin-top: 100px;
     }
 }
