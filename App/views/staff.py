@@ -56,7 +56,7 @@ def update_calendar_page() -> str:
 @staff_views.route("/account", methods=["POST"])
 @jwt_required()
 def get_selected_courses() -> Response | None:
-    course_codes: list[str] = json.loads(request.form["courseCodes"])
+    course_codes: list[str] = json.loads(request.form.get("courseCodes", "[]"))
     for course_code in course_codes:
         add_instructor(get_jwt_identity(), course_code)
     return redirect(url_for("staff_views.get_account_page"))
