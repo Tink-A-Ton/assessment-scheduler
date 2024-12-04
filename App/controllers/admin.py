@@ -1,5 +1,6 @@
 import os, csv
 from datetime import date, datetime
+from typing import Optional
 from werkzeug.utils import secure_filename
 from ..models import Admin
 from .exam import get_exam
@@ -10,14 +11,14 @@ from .semester import get_semester
 
 
 def allow_override(id: int) -> None:
-    exam: Exam | None = get_exam(id)
+    exam: Optional[Exam] = get_exam(id)
     if exam:
         exam.clash_detected = False
         db.session.commit()
 
 
 def deny_override(id: int) -> None:
-    exam: Exam | None = get_exam(id)
+    exam: Optional[Exam] = get_exam(id)
     if not exam:
         return
     exam.clash_detected = False

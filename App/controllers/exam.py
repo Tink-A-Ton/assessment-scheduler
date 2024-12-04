@@ -1,3 +1,4 @@
+from typing import Optional
 from App.models.utils import parse_date, parse_time
 from ..models import Exam
 from ..database import db
@@ -30,7 +31,7 @@ def get_exams() -> list[Exam]:
     return Exam.query.all()
 
 
-def get_exam(id: int) -> Exam | None:
+def get_exam(id: int) -> Optional[Exam]:
     return Exam.query.get(id)
 
 
@@ -38,8 +39,8 @@ def get_exams_json() -> list[dict[str, str]]:
     return [exam.to_json() for exam in get_exams()]
 
 
-def update_exam(id: int, start_date, start_time, end_time) -> Exam | None:
-    exam: Exam | None = get_exam(id)
+def update_exam(id: int, start_date, start_time, end_time) -> Optional[Exam]:
+    exam: Optional[Exam] = get_exam(id)
     if exam is None:
         return None
     exam.start_date = parse_date(start_date)
@@ -50,7 +51,7 @@ def update_exam(id: int, start_date, start_time, end_time) -> Exam | None:
 
 
 def delete_exam(exam_id: int) -> bool:
-    exam: Exam | None = get_exam(exam_id)
+    exam: Optional[Exam] = get_exam(exam_id)
     if exam is None:
         return False
     db.session.delete(exam)

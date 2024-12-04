@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Generator
+from typing import Generator, Optional
 import unittest
 
 from flask import Flask
@@ -67,7 +67,7 @@ class CourseIntegrationTests(unittest.TestCase):
 
     def test_delete_course(self) -> None:
         """Test course deletion functionality."""
-        course: Course | None = Course.query.get(self.course_code)
+        course: Optional[Course] = Course.query.get(self.course_code)
         self.assertIsNotNone(course, "Course COMP1601 should exist")
         self.assertTrue(
             delete_course(self.course_code), "Course COMP1601 should be deleted"

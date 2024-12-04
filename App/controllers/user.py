@@ -1,16 +1,17 @@
+from typing import Optional
 from ..models import User, Admin
 from ..database import db
 
 
-def get_user(id: int) -> User | None:
-    user: User | None = User.query.get(id)
+def get_user(id: int) -> Optional[User]:
+    user: Optional[User] = User.query.get(id)
     if user is None:
         return None
     return user
 
 
-def get_user_by_email(email: str) -> User | None:
-    user: User | None = User.query.filter_by(email=email).first()
+def get_user_by_email(email: str) -> Optional[User]:
+    user: Optional[User] = User.query.filter_by(email=email).first()
     if user is None:
         return None
     return user

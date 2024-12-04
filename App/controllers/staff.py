@@ -1,3 +1,4 @@
+from typing import Optional
 from .exam import get_exams_by_course
 from .course import get_course
 from ..models import Staff, Course, Instructor
@@ -20,7 +21,7 @@ def create_staff(
 
 
 def add_instructor(staff_id: int, course_code: str) -> None:
-    instructor: Instructor | None = Instructor.query.filter_by(
+    instructor: Optional[Instructor] = Instructor.query.filter_by(
         staff_id=staff_id, course_code=course_code
     ).first()
     if instructor is not None:

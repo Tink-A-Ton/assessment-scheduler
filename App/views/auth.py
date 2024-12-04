@@ -1,3 +1,4 @@
+from typing import Optional
 from flask import Blueprint, redirect, request, render_template, url_for
 from flask_jwt_extended import jwt_required, unset_jwt_cookies, set_access_cookies
 from flask.wrappers import Response
@@ -21,11 +22,11 @@ def get_register_page() -> str:
 @auth_views.route("/login", methods=["POST"])
 def login_action() -> Response | str:
     data: ImmutableMultiDict[str, str] = request.form
-    email: str | None = data.get("email")
-    password: str | None = data.get("password")
+    email: Optional[str] = data.get("email")
+    password: Optional[str] = data.get("password")
     if not email or not password:
         return get_login_page()
-    token: str | None = login_user(email, password)
+    token: Optional[str] = login_user(email, password)
     if not token:
         return get_login_page()
     redirect_url: str = (
@@ -51,7 +52,7 @@ def register_staff() -> Response | str:
     )
     if not created:
         return get_register_page()
-    token: str | None = login_user(data["email"], data["password"])
+    token: Optional[str] = login_user(data["email"], data["password"])
     if not token:
         return get_login_page()
     response: Response = redirect(url_for("staff_views.get_calendar_page"))

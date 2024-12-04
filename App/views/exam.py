@@ -1,3 +1,4 @@
+from typing import Optional
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from werkzeug import Response
 from flask_jwt_extended import get_jwt_identity
@@ -57,7 +58,7 @@ def add_exam_action() -> Response | str:
 @role_required("Staff")
 def modify_exam_action(id) -> Response:
     data: dict[str, str] = request.form
-    exam: Exam | None = update_exam(
+    exam: Optional[Exam] = update_exam(
         id, data["startDate"], data["startTime"], data["endTime"]
     )
     flash(f"Exam Details Updated !")

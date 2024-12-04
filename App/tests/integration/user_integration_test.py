@@ -1,6 +1,6 @@
 from datetime import date, time
 import logging
-from typing import Generator
+from typing import Generator, Optional
 import unittest
 
 from flask import Flask
@@ -48,7 +48,7 @@ class UserIntegrationTests(unittest.TestCase):
             "Doe",
             Position.LECTURER.value,
         )
-        token: str | None = login_user(self.email, self.password)
+        token: Optional[str] = login_user(self.email, self.password)
         self.assertIsNotNone(
             token, "Expected a token to be returned upon successful login"
         )

@@ -1,6 +1,6 @@
 from datetime import date, time
 from logging import Logger
-from typing import Generator
+from typing import Generator, Optional
 import unittest
 from flask import Flask
 from flask.testing import FlaskClient
@@ -48,7 +48,7 @@ class ExamIntegrationTests(unittest.TestCase):
         exam: Exam = create_exam(
             self.course_code, self.start_date, self.start_time, self.end_time
         )
-        updated_exam: Exam | None = update_exam(
+        updated_exam: Optional[Exam] = update_exam(
             exam.id, date.today().isoformat(), "10:00:00", "12:00:00"
         )
         assert updated_exam is not None, "Expected exam to be updated"
@@ -70,7 +70,7 @@ class ExamIntegrationTests(unittest.TestCase):
         )
         self.assertIsNotNone(exam, "Expected exam to be created")
         exam_id: int = exam.id
-        fetched_exam: Exam | None = get_exam(exam_id)
+        fetched_exam: Optional[Exam] = get_exam(exam_id)
         self.assertIsNotNone(fetched_exam, "Expected exam to exist")
         delete_exam(exam_id)
         fetched_exam = get_exam(exam_id)
