@@ -4,65 +4,19 @@ from rich.console import Console
 from rich.table import Table
 from App.controllers import get_exams,detect_exam_clash,create_exam,parse_date,parse_time,get_course,get_courses
 from flask import current_app
+from .utils import date_checker,time_checker,course_checker,setting_checker,rule_set_handler,rule_set
 
-rule_set: list[str|None] = ["rule1","rule2"] #all rules enabled by default
 console = Console()
 exam = AppGroup("exam", help="Commands that relate to the management of examinations with all commands having a customisable rule setting")
 
 
-def date_checker(ctx, param, value):
-    try:
-        parse_date(value)
-    except:
-        raise click.BadParameter(f"Date {value} is invalid format for 'YYYY-MM-DD'", param_hint="use correct format")
-    return value
-
-def time_checker(ctx, param, value):
-    try:
-        parse_time(value)
-    except:
-        raise click.BadParameter(f"Time {value} is invalid format for 'HH:MM'", param_hint="use correct format")
-    return value
-
-def course_checker(ctx, param, value):
-    with current_app.app_context():
-        if not get_course(value):
-            raise click.BadParameter(f"Invalid Course given", param_hint="use an existing course")
-    return value
-
-def setting_checker(ctx, param, value):
-    if value != "1" and value != "2" and value != "all" and value != "none":
-        raise click.BadParameter(f"The setting for the ruleset must either be '1', '2', 'all' or 'none'")
-    return value
-
-def course_list():
-    with current_app.app_context():
-        courses = get_courses()
-        return [str(course) for course in courses]
-    
-def rule_set_handler(setting):
-    console.print("\n")
-    if setting == "1":
-        rule_set[0] = "rule1"
-        rule_set[0] = None
-    elif setting == "2":
-        rule_set[0] = None
-        rule_set[1] = "rule2"
-    elif setting == "all":
-        rule_set[0] = "rule1"
-        rule_set[1] = "rule2"
-    else: #none
-        rule_set[0] = None
-        rule_set[1] = None
-    console.print(f"[magenta]Rule 1 Enabled: {bool(rule_set[0])}\nRule 2 Enabled: {bool(rule_set[1])}")
-    console.print("[cyan]Use the rule_setting for this command (default='all' [1|2|all|none]) to customise which rules are enabled above :D")
-    console.print("\n")
-
-
+# @exam.command("ls", help="[RULE_SETTING] #list existing exams")
+# @click.argument("rule_setting", default="all", callback=setting_checker, type=click.Choice(["1", "2", "all", "none"], case_sensitive=False))
+# def ls(rule_setting):
 @exam.command("ls", help="[RULE_SETTING] #list existing exams")
-@click.argument("rule_setting", default="all", callback=setting_checker, type=click.Choice(["1", "2", "all", "none"], case_sensitive=False))
-def ls(rule_setting):
+def ls():
     console.print("\n")
+    rule_setting = setting_checker(None,None,click.prompt("rule_setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
     results = get_exams()
 
     rule_set_handler(rule_setting)
@@ -79,10 +33,13 @@ def ls(rule_setting):
     console.print(table)
     console.print("\n")
 
+# @exam.command("clashes", help="[RULE_SETTING] #list clashes")
+# @click.argument("rule_setting", default="all", callback=setting_checker, type=click.Choice(["1", "2", "all", "none"], case_sensitive=False))
+# def clashes(rule_setting):
 @exam.command("clashes", help="[RULE_SETTING] #list clashes")
-@click.argument("rule_setting", default="all", callback=setting_checker, type=click.Choice(["1", "2", "all", "none"], case_sensitive=False))
-def clashes(rule_setting):
+def clashes():
     console.print("\n")
+    rule_setting = setting_checker(None,None,click.prompt("rule_setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
     results = get_exams()
     
     rule_set_handler(rule_setting)
@@ -99,14 +56,21 @@ def clashes(rule_setting):
     console.print(table)
     console.print("\n")
 
+# @exam.command("schedule", help="[COURSE_CODE] [DATE] [START_TIME] [END_TIME] [RULE_SETTING] #schedule an exam")
+# @click.argument("course_code", default="COMP1700", callback=course_checker)
+# @click.argument("date", default="2024-12-06", callback=date_checker)
+# @click.argument("start_time", default="08:00", callback=time_checker)
+# @click.argument("end_time", default="10:00", callback=time_checker)
+# @click.argument("rule_setting", default="all", callback=setting_checker, type=click.Choice(["1", "2", "all", "none"], case_sensitive=False))
+# def schedule(course_code,date,start_time,end_time,rule_setting):
 @exam.command("schedule", help="[COURSE_CODE] [DATE] [START_TIME] [END_TIME] [RULE_SETTING] #schedule an exam")
-@click.argument("course_code", default="COMP1700", callback=course_checker)
-@click.argument("date", default="2024-12-06", callback=date_checker)
-@click.argument("start_time", default="08:00", callback=time_checker)
-@click.argument("end_time", default="10:00", callback=time_checker)
-@click.argument("rule_setting", default="all", callback=setting_checker, type=click.Choice(["1", "2", "all", "none"], case_sensitive=False))
-def schedule(course_code,date,start_time,end_time,rule_setting):
+def schedule():
     console.print("\n")
+    course_code = course_checker(None,None,click.prompt("course_code", default="COMP1700", show_default=True))
+    date = date_checker(None,None,click.prompt("date", default="2024-12-06", show_default=True))
+    start_time = time_checker(None,None,click.prompt("start_time", default="08:00", show_default=True))
+    end_time = time_checker(None,None,click.prompt("end_time", default="10:00", show_default=True))
+    rule_setting = setting_checker(None,None,click.prompt("rule_setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
 
     rule_set_handler(rule_setting)
 

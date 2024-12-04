@@ -4,25 +4,25 @@ from rich.console import Console
 from rich.table import Table
 from App.controllers import get_courses,create_course,get_course
 from flask import current_app
+from .utils import course_checker
 
 console = Console()
 course = AppGroup("course", help="Commands that relate to the management of courses")
 
 
-def course_checker(ctx, param, value):
-    with current_app.app_context():
-        if get_course(value):
-            raise click.BadParameter(f"Course already EXISTS", param_hint="use a course that does not exist")
-        return value
-
-
+# @course.command("create", help="[COURSE_CODE] [COURSE_TITLE] [LEVEL] [SEMESTER] #creates a course")
+# @click.argument("course_code", default="COMP1605", callback=course_checker)
+# @click.argument("course_title", default="Computer Fantasy")
+# @click.argument("level", default=1)
+# @click.argument("semester", default=1)
+# def assign_course(course_code, course_title, level, semester):
 @course.command("create", help="[COURSE_CODE] [COURSE_TITLE] [LEVEL] [SEMESTER] #creates a course")
-@click.argument("course_code", default="COMP1605", callback=course_checker)
-@click.argument("course_title", default="Computer Fantasy")
-@click.argument("level", default=1)
-@click.argument("semester", default=1)
-def assign_course(course_code, course_title, level, semester):
+def assign_course():
     console.print("\n")
+    course_code = course_checker(None,None,click.prompt("course_code", default="COMP1605", show_default=True))
+    course_title = click.prompt("course_title", default="Computer Fantasy", show_default=True)
+    level = click.prompt("level", default=1, show_default=True)
+    semester = click.prompt("semester", default=1, show_default=True)
     level = int(level)
     semester = int(semester)
     if create_course(course_code, course_title, level, semester):
