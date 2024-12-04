@@ -10,13 +10,10 @@ console = Console()
 exam = AppGroup("exam", help="Commands that relate to the management of examinations with all commands having a customisable rule setting")
 
 
-# @exam.command("ls", help="[RULE_SETTING] #list existing exams")
-# @click.argument("rule_setting", default="all", callback=setting_checker, type=click.Choice(["1", "2", "all", "none"], case_sensitive=False))
-# def ls(rule_setting):
-@exam.command("ls", help="[RULE_SETTING] #list existing exams")
+@exam.command("list", help="[RULE_SETTING] #list existing exams")
 def ls():
     console.print("\n")
-    rule_setting = setting_checker(None,None,click.prompt("rule_setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
+    rule_setting = setting_checker(None,None,click.prompt("Rule Setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
     results = get_exams()
 
     rule_set_handler(rule_setting)
@@ -33,13 +30,10 @@ def ls():
     console.print(table)
     console.print("\n")
 
-# @exam.command("clashes", help="[RULE_SETTING] #list clashes")
-# @click.argument("rule_setting", default="all", callback=setting_checker, type=click.Choice(["1", "2", "all", "none"], case_sensitive=False))
-# def clashes(rule_setting):
 @exam.command("clashes", help="[RULE_SETTING] #list clashes")
 def clashes():
     console.print("\n")
-    rule_setting = setting_checker(None,None,click.prompt("rule_setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
+    rule_setting = setting_checker(None,None,click.prompt("Rule Setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
     results = get_exams()
     
     rule_set_handler(rule_setting)
@@ -56,21 +50,14 @@ def clashes():
     console.print(table)
     console.print("\n")
 
-# @exam.command("schedule", help="[COURSE_CODE] [DATE] [START_TIME] [END_TIME] [RULE_SETTING] #schedule an exam")
-# @click.argument("course_code", default="COMP1700", callback=course_checker)
-# @click.argument("date", default="2024-12-06", callback=date_checker)
-# @click.argument("start_time", default="08:00", callback=time_checker)
-# @click.argument("end_time", default="10:00", callback=time_checker)
-# @click.argument("rule_setting", default="all", callback=setting_checker, type=click.Choice(["1", "2", "all", "none"], case_sensitive=False))
-# def schedule(course_code,date,start_time,end_time,rule_setting):
 @exam.command("schedule", help="[COURSE_CODE] [DATE] [START_TIME] [END_TIME] [RULE_SETTING] #schedule an exam")
 def schedule():
     console.print("\n")
-    course_code = course_checker(None,None,click.prompt("course_code", default="COMP1700", show_default=True))
-    date = date_checker(None,None,click.prompt("date", default="2024-12-06", show_default=True))
-    start_time = time_checker(None,None,click.prompt("start_time", default="08:00", show_default=True))
-    end_time = time_checker(None,None,click.prompt("end_time", default="10:00", show_default=True))
-    rule_setting = setting_checker(None,None,click.prompt("rule_setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
+    course_code = course_checker(None,None,click.prompt("Course Code", default="COMP1700", show_default=True))
+    date = date_checker(None,None,click.prompt("Exam Date", default="2024-12-06", show_default=True))
+    start_time = time_checker(None,None,click.prompt("Exam Start Time", default="08:00", show_default=True))
+    end_time = time_checker(None,None,click.prompt("Exam End Time", default="10:00", show_default=True))
+    rule_setting = setting_checker(None,None,click.prompt("Rule Setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
 
     rule_set_handler(rule_setting)
 

@@ -11,7 +11,7 @@ console = Console()
 staff = AppGroup("staff", help="Commands that relate to the management of staff members")
 
 
-@staff.command("ls", help="This command shows the list of all existing courses")
+@staff.command("list", help="This command shows the list of all existing courses")
 def ls():
     staff = get_all_staff()
     table = Table(title="Staff Members")
@@ -23,13 +23,10 @@ def ls():
         table.add_row(str(s.id), s.first_name, s.last_name, s.position.value)
     console.print(table)
 
-# @staff.command("lookup", help="[ID] #display specified staff member")
-# @click.argument("id", default="11111111", callback=staff_id_checker)
-# def lookup(id):
 @staff.command("lookup", help="[ID] #display specified staff member")
 def lookup():
     console.print("\n")
-    id = staff_id_checker(None,None,click.prompt("id", default="11111111", show_default=True))
+    id = staff_id_checker(None,None,click.prompt("Staff ID", default="11111111", show_default=True))
     staff_member = get_staff(int(id))
     if not staff_member:
         console.print("Staff member with the id "+str(id)+" does not exist")
@@ -40,13 +37,10 @@ def lookup():
         console.print(f"[yellow]Position: [cyan]{staff_member.position.value}")
     console.print("\n")
 
-# @staff.command("courses", help="[ID] #shows courses a staff member is responsible for")
-# @click.argument("id", default="11111111", callback=staff_id_checker)
-# def courses(id):
 @staff.command("courses", help="[ID] #shows courses a staff member is responsible for")
 def courses():
     console.print("\n")
-    id = staff_id_checker(None,None,click.prompt("id", default="11111111", show_default=True))
+    id = staff_id_checker(None,None,click.prompt("Staff ID", default="11111111", show_default=True))
     staff_member = get_staff(int(id))
     if staff_member:
         results = get_staff_courses(int(id))
@@ -63,14 +57,10 @@ def courses():
     console.print("\n")
 
 
-# @staff.command("exams", help="[ID] #shows exams from specified staff member")
-# @click.argument("id", default="11111111", callback=staff_id_checker)
-# @click.argument("rule_setting", default="all", callback=setting_checker, type=click.Choice(["1", "2", "all", "none"], case_sensitive=False))
-# def exams(id):
 @staff.command("exams", help="[ID] #shows exams from specified staff member")
 def exams():
     console.print("\n")
-    id = staff_id_checker(None,None,click.prompt("id", default="11111111", show_default=True))
+    id = staff_id_checker(None,None,click.prompt("Staff ID", default="11111111", show_default=True))
     rule_setting = setting_checker(None,None,click.prompt("rule_setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
     staff_member = get_staff(int(id))
 

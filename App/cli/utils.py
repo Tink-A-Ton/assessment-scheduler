@@ -12,20 +12,26 @@ def date_checker(ctx, param, value):
     try:
         parse_date(value)
     except:
-        raise click.BadParameter(f"Date {value} is invalid format for 'YYYY-MM-DD'", param_hint="use correct format")
+        raise click.BadParameter(f"Date {value} is invalid format for 'YYYY-MM-DD'", param_hint="date in correct format")
     return value
 
 def time_checker(ctx, param, value):
     try:
         parse_time(value)
     except:
-        raise click.BadParameter(f"Time {value} is invalid format for 'HH:MM'", param_hint="use correct format")
+        raise click.BadParameter(f"Time {value} is invalid format for 'HH:MM'", param_hint="time in correct format")
     return value
 
 def course_checker(ctx, param, value):
     with current_app.app_context():
         if not get_course(value):
-            raise click.BadParameter(f"Invalid Course given", param_hint="use an existing course")
+            raise click.BadParameter(f"Course does NOT Exist", param_hint="existing course code")
+    return value
+
+def course_not_exist_checker(ctx, param, value):
+    with current_app.app_context():
+        if get_course(value):
+            raise click.BadParameter(f"Course Already Exists", param_hint="non existing course code")
     return value
 
 def setting_checker(ctx, param, value):
@@ -67,6 +73,8 @@ def rule_set_handler(setting):
     else: #none
         rule_set[0] = None
         rule_set[1] = None
+    console.print("[yellow]Rule 1: Prevents too many exams of the same level in the same week")
+    console.print("[yellow]Rule 2: Prevents exam clashes within the same programme for courses on the same day.")
     console.print(f"[magenta]Rule 1 Enabled: {bool(rule_set[0])}\nRule 2 Enabled: {bool(rule_set[1])}")
     console.print("[cyan]Use the rule_setting for this command (default='all' [1|2|all|none]) to customise which rules are enabled above :D")
     console.print("\n")
