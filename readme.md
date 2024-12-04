@@ -7,7 +7,7 @@ A platform for staff to coordinate assessment scheduling, minimising student ove
 
 ## App Availability
 
-You can view and test the web site at [Site Link](https://assessment-scheduler-0z5v.onrender.com)
+You can view and test the web site at [Site Link](https://assessment-scheduler-0z5v.onrender.com). For login credentials, please refer to the documentation under the **Deliverable Links** section.
 
 ## Features
 
@@ -91,7 +91,3 @@ The diagram models an academic system denoting `User`, `Programme`, `Course`, `S
 | `flask test all`     | Runs all tests sequentially.                  | `flask test all`                     |
 | `flask test int`     | Runs all Integration tests.                   | `flask test int`                     |
 | `flask test unit`    | Runs all Unit tests.                          | `flask test unit`                    |
-
-
-
-
