@@ -59,7 +59,7 @@ def rule_set_handler(setting):
     console.print("\n")
 
 
-@exam.command("ls", help="This command shows the list of all existing exams based on the customisable rule setting")
+@exam.command("ls", help="[RULE_SETTING] #list existing exams")
 @click.argument("rule_setting", default="all", callback=setting_checker, type=click.Choice(["1", "2", "all", "none"], case_sensitive=False))
 def ls(rule_setting):
     console.print("\n")
@@ -79,7 +79,7 @@ def ls(rule_setting):
     console.print(table)
     console.print("\n")
 
-@exam.command("clashes", help="This command shows the list of all CLASHING exams with customisable rule setting")
+@exam.command("clashes", help="[RULE_SETTING] #list clashes")
 @click.argument("rule_setting", default="all", callback=setting_checker, type=click.Choice(["1", "2", "all", "none"], case_sensitive=False))
 def clashes(rule_setting):
     console.print("\n")
@@ -99,13 +99,13 @@ def clashes(rule_setting):
     console.print(table)
     console.print("\n")
 
-@exam.command("schedule", help="Schedules an exam or shows if a clash exists with customisable rule setting")
-@click.argument("course", default="COMP1700", callback=course_checker)
+@exam.command("schedule", help="[COURSE_CODE] [DATE] [START_TIME] [END_TIME] [RULE_SETTING] #schedule an exam")
+@click.argument("course_code", default="COMP1700", callback=course_checker)
 @click.argument("date", default="2024-12-06", callback=date_checker)
 @click.argument("start_time", default="08:00", callback=time_checker)
 @click.argument("end_time", default="10:00", callback=time_checker)
 @click.argument("rule_setting", default="all", callback=setting_checker, type=click.Choice(["1", "2", "all", "none"], case_sensitive=False))
-def schedule(course,date,start_time,end_time,rule_setting):
+def schedule(course_code,date,start_time,end_time,rule_setting):
     console.print("\n")
 
     rule_set_handler(rule_setting)
@@ -113,9 +113,9 @@ def schedule(course,date,start_time,end_time,rule_setting):
     date = parse_date(date)
     start_time = parse_time(start_time)
     end_time = parse_time(end_time)
-    exam = create_exam(course, date, start_time, end_time)
+    exam = create_exam(course_code, date, start_time, end_time)
     if detect_exam_clash(exam,rule_set[0],rule_set[1]):
         console.print("[red]ERROR! Clash Detected!")
     else:
-        console.print(f"[green]Exam for {course} scheduled on {date} from {start_time} to {end_time}")
+        console.print(f"[green]Exam for {course_code} scheduled on {date} from {start_time} to {end_time}")
     console.print("\n")

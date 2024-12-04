@@ -16,7 +16,7 @@ def course_checker(ctx, param, value):
         return value
 
 
-@course.command("create", help="This command creates a course")
+@course.command("create", help="[COURSE_CODE] [COURSE_TITLE] [LEVEL] [SEMESTER] #creates a course")
 @click.argument("course_code", default="COMP1605", callback=course_checker)
 @click.argument("course_title", default="Computer Fantasy")
 @click.argument("level", default=1)

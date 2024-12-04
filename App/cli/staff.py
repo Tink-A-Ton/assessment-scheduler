@@ -36,7 +36,7 @@ def ls():
         table.add_row(str(s.id), s.first_name, s.last_name, s.position.value)
     console.print(table)
 
-@staff.command("lookup", help="Displays the staff member with the selected id")
+@staff.command("lookup", help="[ID] #display specified staff member")
 @click.argument("id", default="11111111", callback=staff_id_checker)
 def lookup(id):
     console.print("\n")
@@ -50,7 +50,7 @@ def lookup(id):
         console.print(f"[yellow]Position: [cyan]{staff_member.position.value}")
     console.print("\n")
 
-@staff.command("courses", help="Shows the list of courses that a staff member of the specified id is responsible for")
+@staff.command("courses", help="[ID] #shows courses a staff member is responsible for")
 @click.argument("id", default="11111111", callback=staff_id_checker)
 def courses(id):
     console.print("\n")
@@ -70,7 +70,7 @@ def courses(id):
     console.print("\n")
 
 
-@staff.command("exams", help="Shows the list of exams that a staff member of the specified id is responsible for")
+@staff.command("exams", help="[ID] #shows exams from specified staff member")
 @click.argument("id", default="11111111", callback=staff_id_checker)
 def exams(id):
     console.print("\n")
@@ -90,7 +90,7 @@ def exams(id):
         console.print(f"[red]Staff member with id {id} does not exist")
     console.print("\n")
 
-@staff.command("clashes", help="Shows the list of CLASHING exams that a staff member of the specified id is responsible for")
+@staff.command("clashes", help="[ID] #shows clashes from specified staff member")
 @click.argument("id", default="11111111", callback=staff_id_checker)
 def clashes(id):
     console.print("\n")
