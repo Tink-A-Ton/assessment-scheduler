@@ -37,9 +37,9 @@ def process_file(file) -> None:
         reader = csv.DictReader(file)
         for row in reader:
             create_course(
-                row["Course Code"],
-                row["Course Title"],
-                int(row["Level"]),
+                row["course_code"],
+                row["title"],
+                int(row["level"]),
                 semester.id,
             )
 
