@@ -12,6 +12,7 @@ gunicorn==21.2.0
 iniconfig==2.0.0
 itsdangerous==2.1.2
 pluggy==1.4.0
+psycopg2-binary==2.9.3
 PyJWT==2.8.0
 pytest==7.0.1
 python-dotenv==0.21.1
