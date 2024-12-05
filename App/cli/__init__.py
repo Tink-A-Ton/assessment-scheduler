@@ -1,1 +1,1 @@
-from .test_commands import create_cli_commands
+from .cli import create_cli_commands
