@@ -16,7 +16,7 @@ from .utils import (
     rule_set_handler,
     staff_id_checker,
     rule_set,
-    rule_set_print_info,
+    rule_setting_prompt,
 )
 
 console = Console()
@@ -24,7 +24,7 @@ staff = AppGroup("staff", help="Commands that relate to the management of staff 
 
 
 @staff.command("list", help="Lists all existing staff members")
-def ls():
+def list_staff():
     staff = get_all_staff()
     table = Table(title="Staff Members")
     table.add_column("id", style="yellow")
@@ -92,22 +92,8 @@ def exams():
     id = staff_id_checker(
         None, None, click.prompt("Staff ID", default="900000003", show_default=True)
     )
-    rule_set_print_info()
-    rule_setting = setting_checker(
-        None,
-        None,
-        click.prompt(
-            "rule_setting",
-            default="all",
-            type=click.Choice(["1", "2", "all", "none"], case_sensitive=False),
-            show_default=True,
-            show_choices=True,
-        ),
-    )
+    rule_setting_prompt()
     staff_member = get_staff(int(id))
-
-    rule_set_handler(rule_setting)
-
     if staff_member:
         results = get_staff_exams(int(id))
         table = Table(
@@ -147,24 +133,10 @@ def clashes():
     id = staff_id_checker(
         None, None, click.prompt("id", default="900000003", show_default=True)
     )
-    rule_set_print_info()
-    rule_setting = setting_checker(
-        None,
-        None,
-        click.prompt(
-            "rule_setting",
-            default="all",
-            type=click.Choice(["1", "2", "all", "none"], case_sensitive=False),
-            show_default=True,
-            show_choices=True,
-        ),
-    )
+    rule_setting_prompt()
     staff_member = get_staff(int(id))
-
-    rule_set_handler(rule_setting)
-
     if staff_member:
-        results = get_staff_exams(int(id))
+        exams = get_staff_exams(int(id))
         table = Table(
             title=f"Clashing Examinations of {staff_member.first_name} {staff_member.last_name}"
         )
@@ -173,19 +145,19 @@ def clashes():
         table.add_column("Start Time", style="magenta")
         table.add_column("End Time", style="magenta")
         table.add_column("Clash?", style="cyan")
-        for result in results:
-            temp = get_exam(int(result["id"]))  # will never return "None" we assume
+        for exam in exams:
+            temp = get_exam(int(exam["id"]))  # will never return "None" we assume
             detect_exam_clash(temp, rule_set[0], rule_set[1])
             if temp is None:
                 return
-            result = temp.to_json()  # type: ignore
-            if result.get("clash_detected"):
+            exam = temp.to_json()  # type: ignore
+            if exam.get("clash_detected"):
                 table.add_row(
-                    result.get("course_code"),
-                    str(result.get("start_date")),
-                    str(result.get("start_time")),
-                    str(result.get("end_time")),
-                    str(result.get("clash_detected")),
+                    exam.get("course_code"),
+                    str(exam.get("start_date")),
+                    str(exam.get("start_time")),
+                    str(exam.get("end_time")),
+                    str(exam.get("clash_detected")),
                 )
         console.print(table)
     else:
