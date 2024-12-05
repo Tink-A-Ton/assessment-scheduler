@@ -20,22 +20,18 @@ Run by executing
 ### CLI Commands
 | Command         | Description                                                                                                 |
 |-----------------|-------------------------------------------------------------------------------------------------------------|
-| course          | Commands that relate to the management of courses                                                           |
-| exam            | Commands that relate to the management of examinations with all commands having a customisable rule setting |
-| help            | Displays all available commands and descriptions.                                                           |
-| init            | Creates and initializes the database                                                                        |
-| staff           | Commands that relate to the management of staff members                                                     |
-| test            | Testing commands                                                                                            |
-| test all        | Runs all tests (Unit and Integration)                                                                       |
-| test int        | Runs all Integration tests                                                                                  |
-| test unit       | Runs all Unit tests                                                                                         |
-| exam clashes    | [RULE_SETTING] #list clashes                                                                                |
-| exam list       | [RULE_SETTING] #list existing exams                                                                         |
-| exam schedule   | [COURSE_CODE] [DATE] [START_TIME] [END_TIME] [RULE_SETTING] #schedule an exam                               |
-| course create   | [COURSE_CODE] [COURSE_TITLE] [LEVEL] [SEMESTER] #creates a course                                           |
-| course list     | This command shows the list of all existing courses                                                         |
-| staff clashes   | [ID] #shows clashes from specified staff member                                                             |
-| staff courses   | [ID] #shows courses a staff member is responsible for                                                       |
-| staff exams     | [ID] #shows exams from specified staff member                                                               |
-| staff list      | This command shows the list of all existing courses                                                         |
-| staff lookup    | [ID] #display specified staff member                                                                         |
+| flask help            | Displays all available commands and descriptions.                                                           |
+| flask init            | Creates and initializes the database                                                                        |
+| flask test all        | Runs all tests (Unit and Integration)                                                                       |
+| flask test int        | Runs all Integration tests                                                                                  |
+| flask test unit       | Runs all Unit tests                                                                                         |
+| flask exam clashes    | [RULE_SETTING] #list clashes                                                                                |
+| flask exam list       | [RULE_SETTING] #list existing exams                                                                         |
+| flask exam schedule   | [COURSE_CODE] [DATE] [START_TIME] [END_TIME] [RULE_SETTING] #schedule an exam                               |
+| flask course create   | [COURSE_CODE] [COURSE_TITLE] [LEVEL] [SEMESTER] #creates a course                                           |
+| flask course list     | This command shows the list of all existing courses                                                         |
+| flask staff clashes   | [ID] #shows clashes from specified staff member                                                             |
+| flask staff courses   | [ID] #shows courses a staff member is responsible for                                                       |
+| flask staff exams     | [ID] #shows exams from specified staff member                                                               |
+| flask staff list      | This command shows the list of all existing courses                                                         |
+| flask staff lookup    | [ID] #display specified staff member                                                                         |
