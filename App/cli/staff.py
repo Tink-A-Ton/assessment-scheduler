@@ -2,7 +2,7 @@ import click
 from flask.cli import AppGroup
 from rich.console import Console
 from rich.table import Table
-from App.controllers import (
+from ..controllers import (
     get_all_staff,
     get_staff,
     get_staff_courses,
@@ -10,8 +10,7 @@ from App.controllers import (
     detect_exam_clash,
     get_exam,
 )
-from App.models import Exam
-from flask import current_app
+from ..models import Exam
 from .utils import (
     setting_checker,
     rule_set_handler,
