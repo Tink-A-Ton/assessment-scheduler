@@ -1,6 +1,7 @@
 import click
 from rich.console import Console
-from App.controllers import (
+from rich.table import Table
+from ..controllers import (
     get_staff,
     get_all_staff,
     parse_date,
@@ -9,7 +10,7 @@ from App.controllers import (
     get_courses,
 )
 from flask import current_app
-
+from ..models import Exam
 
 console = Console()
 
@@ -103,20 +104,46 @@ def rule_set_handler(setting):
     else:  # none
         rule_set[0] = None
         rule_set[1] = None
+    console.print(
+        f"[magenta]Rule 1 Enabled: {bool(rule_set[0])}\nRule 2 Enabled: {bool(rule_set[1])}"
+    )
 
 
-def rule_set_print_info():
-    console.print("\n")
+def rule_setting_prompt():
     console.print(
         "[yellow]Rule 1: Prevents too many exams of the same level in the same week"
     )
     console.print(
         "[yellow]Rule 2: Prevents exam clashes within the same programme for courses on the same day."
     )
-    console.print(
-        f"[magenta]Rule 1 Enabled: {bool(rule_set[0])}\nRule 2 Enabled: {bool(rule_set[1])}"
-    )
-    console.print(
-        "[cyan]Use the rule_setting for this command (default='all' [1|2|all|none]) to customise which rules are enabled above :D"
-    )
     console.print("\n")
+    rule_setting = setting_checker(
+        None,
+        None,
+        click.prompt(
+            "Select Clash Rules",
+            default="all",
+            type=click.Choice(["1", "2", "all", "none"], case_sensitive=False),
+            show_default=True,
+            show_choices=True,
+        ),
+    )
+    rule_set_handler(rule_setting)
+
+
+def print_exams_table(title: str, exams: list[Exam]) -> None:
+    table = Table(title=title)
+    table.add_column("Course Code", style="yellow")
+    table.add_column("Start Date", style="magenta")
+    table.add_column("Start Time", style="magenta")
+    table.add_column("End Time", style="magenta")
+    table.add_column("Clash?", style="cyan")
+    for exam in exams:
+        table.add_row(
+            exam.course_code,
+            str(exam.start_date),
+            str(exam.start_time),
+            str(exam.end_time),
+            str(exam.clash_detected),
+        )
+    console.print(table)
