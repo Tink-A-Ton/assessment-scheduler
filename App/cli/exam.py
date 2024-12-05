@@ -4,7 +4,7 @@ from rich.console import Console
 from rich.table import Table
 from App.controllers import get_exams,detect_exam_clash,create_exam,parse_date,parse_time,get_course,get_courses
 from flask import current_app
-from .utils import date_checker,time_checker,course_checker,setting_checker,rule_set_handler,rule_set
+from .utils import date_checker,time_checker,course_checker,setting_checker,rule_set_handler,rule_set,rule_set_print_info
 
 console = Console()
 exam = AppGroup("exam", help="Commands that relate to the management of examinations with all commands having a customisable rule setting")
@@ -13,6 +13,7 @@ exam = AppGroup("exam", help="Commands that relate to the management of examinat
 @exam.command("list", help="Lists all existing exams")
 def ls():
     console.print("\n")
+    rule_set_print_info()
     rule_setting = setting_checker(None,None,click.prompt("Rule Setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
     results = get_exams()
 
@@ -33,6 +34,7 @@ def ls():
 @exam.command("clashes", help="Lists all clashes (based on given rule setting)")
 def clashes():
     console.print("\n")
+    rule_set_print_info()
     rule_setting = setting_checker(None,None,click.prompt("Rule Setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
     results = get_exams()
     
@@ -57,6 +59,7 @@ def schedule():
     date = date_checker(None,None,click.prompt("Exam Date", default="2024-12-06", show_default=True))
     start_time = time_checker(None,None,click.prompt("Exam Start Time", default="08:00", show_default=True))
     end_time = time_checker(None,None,click.prompt("Exam End Time", default="10:00", show_default=True))
+    rule_set_print_info()
     rule_setting = setting_checker(None,None,click.prompt("Rule Setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
 
     rule_set_handler(rule_setting)

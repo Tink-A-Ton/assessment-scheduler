@@ -5,7 +5,7 @@ from rich.table import Table
 from App.controllers import get_all_staff,get_staff,get_staff_courses,get_staff_exams,detect_exam_clash,get_exam
 from App.models import Exam
 from flask import current_app
-from .utils import setting_checker,rule_set_handler,staff_id_checker,rule_set
+from .utils import setting_checker,rule_set_handler,staff_id_checker,rule_set,rule_set_print_info
 
 console = Console()
 staff = AppGroup("staff", help="Commands that relate to the management of staff members")
@@ -61,6 +61,7 @@ def courses():
 def exams():
     console.print("\n")
     id = staff_id_checker(None,None,click.prompt("Staff ID", default="11111111", show_default=True))
+    rule_set_print_info()
     rule_setting = setting_checker(None,None,click.prompt("rule_setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
     staff_member = get_staff(int(id))
 
@@ -88,6 +89,7 @@ def exams():
 def clashes():
     console.print("\n")
     id = staff_id_checker(None,None,click.prompt("id", default="11111111", show_default=True))
+    rule_set_print_info()
     rule_setting = setting_checker(None,None,click.prompt("rule_setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
     staff_member = get_staff(int(id))
 

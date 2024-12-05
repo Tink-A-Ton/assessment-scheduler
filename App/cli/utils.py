@@ -60,7 +60,6 @@ def staff_id_checker(ctx, param, value):
 
     
 def rule_set_handler(setting):
-    console.print("\n")
     if setting == "1":
         rule_set[0] = "rule1"
         rule_set[0] = None
@@ -73,6 +72,9 @@ def rule_set_handler(setting):
     else: #none
         rule_set[0] = None
         rule_set[1] = None
+
+def rule_set_print_info():
+    console.print("\n")
     console.print("[yellow]Rule 1: Prevents too many exams of the same level in the same week")
     console.print("[yellow]Rule 2: Prevents exam clashes within the same programme for courses on the same day.")
     console.print(f"[magenta]Rule 1 Enabled: {bool(rule_set[0])}\nRule 2 Enabled: {bool(rule_set[1])}")
