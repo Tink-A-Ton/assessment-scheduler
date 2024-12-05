@@ -2,7 +2,7 @@ import click
 from flask.cli import AppGroup
 from rich.console import Console
 from rich.table import Table
-from ..controllers import (
+from App.controllers import (
     get_all_staff,
     get_staff,
     get_staff_courses,
@@ -10,7 +10,8 @@ from ..controllers import (
     detect_exam_clash,
     get_exam,
 )
-from ..models import Exam
+from App.models import Exam
+from flask import current_app
 from .utils import (
     setting_checker,
     rule_set_handler,
@@ -105,13 +106,11 @@ def exams():
         table.add_column("End Time", style="magenta")
         table.add_column("Clash?", style="cyan")
         for result in results:
-            temp: Exam | None = get_exam(
-                int(result["id"])
-            )  # will never return "None" we assume
+            temp: Exam| None = get_exam(int(result["id"]))  # will never return "None" we assume
             if temp is None:
                 return
             detect_exam_clash(temp, rule_set[0], rule_set[1])
-            result = temp.to_json()
+            result = temp.to_json()  
             table.add_row(
                 result.get("course_code"),
                 str(result.get("start_date")),

@@ -7,7 +7,7 @@ from ..database import db
 def detect_exam_clash(
     exam: Exam, rule1: Optional[str] = None, rule2: Optional[str] = None
 ) -> bool:
-    from ..models import ClashContext #an import inside a function? prevents circular import lol
+    from ..models import ClashContext 
     context = ClashContext()
     if rule1 is None:
         context.remove_rule("rule1")
