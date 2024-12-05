@@ -10,7 +10,7 @@ console = Console()
 course = AppGroup("course", help="Commands that relate to the management of courses")
 
 
-@course.command("create", help="[COURSE_CODE] [COURSE_TITLE] [LEVEL] [SEMESTER] #creates a course")
+@course.command("create", help="Creates a new course")
 def assign_course():
     console.print("\n")
     course_code = course_not_exist_checker(None,None,click.prompt("Course Code", default="COMP1605", show_default=True))
@@ -25,7 +25,7 @@ def assign_course():
         console.print(f"[red]Failed to add Course with code {course_code}")
     console.print("\n")
 
-@course.command("list", help="This command shows the list of all existing courses")
+@course.command("list", help="Lists all existing courses")
 def ls():
     console.print("\n")
     courses = get_courses()

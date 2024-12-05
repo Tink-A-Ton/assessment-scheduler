@@ -11,7 +11,7 @@ console = Console()
 staff = AppGroup("staff", help="Commands that relate to the management of staff members")
 
 
-@staff.command("list", help="This command shows the list of all existing courses")
+@staff.command("list", help="Lists all existing staff members")
 def ls():
     staff = get_all_staff()
     table = Table(title="Staff Members")
@@ -23,7 +23,7 @@ def ls():
         table.add_row(str(s.id), s.first_name, s.last_name, s.position.value)
     console.print(table)
 
-@staff.command("lookup", help="[ID] #display specified staff member")
+@staff.command("lookup", help="Displays specified staff member")
 def lookup():
     console.print("\n")
     id = staff_id_checker(None,None,click.prompt("Staff ID", default="11111111", show_default=True))
@@ -37,7 +37,7 @@ def lookup():
         console.print(f"[yellow]Position: [cyan]{staff_member.position.value}")
     console.print("\n")
 
-@staff.command("courses", help="[ID] #shows courses a staff member is responsible for")
+@staff.command("courses", help="Shows courses that a specified staff member is responsible for")
 def courses():
     console.print("\n")
     id = staff_id_checker(None,None,click.prompt("Staff ID", default="11111111", show_default=True))
@@ -57,7 +57,7 @@ def courses():
     console.print("\n")
 
 
-@staff.command("exams", help="[ID] #shows exams from specified staff member")
+@staff.command("exams", help="Shows exams that a specified staff member is responsible for")
 def exams():
     console.print("\n")
     id = staff_id_checker(None,None,click.prompt("Staff ID", default="11111111", show_default=True))
@@ -84,11 +84,7 @@ def exams():
         console.print(f"[red]Staff member with id {id} does not exist")
     console.print("\n")
 
-# @staff.command("clashes", help="[ID] #shows clashes from specified staff member")
-# @click.argument("id", default="11111111", callback=staff_id_checker)
-# @click.argument("rule_setting", default="all", callback=setting_checker, type=click.Choice(["1", "2", "all", "none"], case_sensitive=False))
-# def clashes(id):
-@staff.command("clashes", help="[ID] #shows clashes from specified staff member")
+@staff.command("clashes", help="Shows clashes that a specified staff member is responsible for")
 def clashes():
     console.print("\n")
     id = staff_id_checker(None,None,click.prompt("id", default="11111111", show_default=True))

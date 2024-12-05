@@ -10,7 +10,7 @@ console = Console()
 exam = AppGroup("exam", help="Commands that relate to the management of examinations with all commands having a customisable rule setting")
 
 
-@exam.command("list", help="[RULE_SETTING] #list existing exams")
+@exam.command("list", help="Lists all existing exams")
 def ls():
     console.print("\n")
     rule_setting = setting_checker(None,None,click.prompt("Rule Setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
@@ -30,7 +30,7 @@ def ls():
     console.print(table)
     console.print("\n")
 
-@exam.command("clashes", help="[RULE_SETTING] #list clashes")
+@exam.command("clashes", help="Lists all clashes (based on given rule setting)")
 def clashes():
     console.print("\n")
     rule_setting = setting_checker(None,None,click.prompt("Rule Setting", default="all", type=click.Choice(["1", "2", "all", "none"], case_sensitive=False), show_default=True, show_choices=True))
@@ -50,7 +50,7 @@ def clashes():
     console.print(table)
     console.print("\n")
 
-@exam.command("schedule", help="[COURSE_CODE] [DATE] [START_TIME] [END_TIME] [RULE_SETTING] #schedule an exam")
+@exam.command("schedule", help="Schedules an exam")
 def schedule():
     console.print("\n")
     course_code = course_checker(None,None,click.prompt("Course Code", default="COMP1700", show_default=True))

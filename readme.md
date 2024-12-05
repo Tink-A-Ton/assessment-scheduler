@@ -18,20 +18,20 @@ Run by executing
 3. flask run
 
 ### CLI Commands
-| Command         | Description                                                                                                 |
-|-----------------|-------------------------------------------------------------------------------------------------------------|
-| flask help            | Displays all available commands and descriptions.                                                           |
-| flask init            | Creates and initializes the database                                                                        |
-| flask test all        | Runs all tests (Unit and Integration)                                                                       |
-| flask test int        | Runs all Integration tests                                                                                  |
-| flask test unit       | Runs all Unit tests                                                                                         |
-| flask exam clashes    | [RULE_SETTING] #list clashes                                                                                |
-| flask exam list       | [RULE_SETTING] #list existing exams                                                                         |
-| flask exam schedule   | [COURSE_CODE] [DATE] [START_TIME] [END_TIME] [RULE_SETTING] #schedule an exam                               |
-| flask course create   | [COURSE_CODE] [COURSE_TITLE] [LEVEL] [SEMESTER] #creates a course                                           |
-| flask course list     | This command shows the list of all existing courses                                                         |
-| flask staff clashes   | [ID] #shows clashes from specified staff member                                                             |
-| flask staff courses   | [ID] #shows courses a staff member is responsible for                                                       |
-| flask staff exams     | [ID] #shows exams from specified staff member                                                               |
-| flask staff list      | This command shows the list of all existing courses                                                         |
-| flask staff lookup    | [ID] #display specified staff member                                                                         |
+| Command               | Description                                                      |
+|-----------------------|------------------------------------------------------------------|
+| flask help            | Displays all available commands and descriptions.                |
+| flask init            | Creates and initializes the database                             |
+| flask test all        | Runs all tests (Unit and Integration)                            |
+| flask test int        | Runs all Integration tests                                       |
+| flask test unit       | Runs all Unit tests                                              |
+| flask exam clashes    | Lists all clashes (based on given rule setting)                  |
+| flask exam list       | Lists all existing exams                                         |
+| flask exam schedule   | Schedules an exam                                                |
+| flask course create   | Creates a new course                                             |
+| flask course list     | Lists all existing courses                                       |
+| flask staff clashes   | Shows clashes that a specified staff member is responsible for   |
+| flask staff courses   | Shows courses that a specified staff member is responsible for   |
+| flask staff exams     | Shows exams that a specified staff member is responsible for     |
+| flask staff list      | Lists all existing staff members                                 |
+| flask staff lookup    | Displays specified staff member                                  |
