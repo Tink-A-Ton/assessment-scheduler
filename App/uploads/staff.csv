@@ -1,0 +1,13 @@
+id,email,password,first_name,last_name,position
+900000001,alice.smith@mail.com,alicepass,Alice,Smith,Instructor
+900000002,john.doe@mail.com,johnpass,John,Doe,Head of Department
+900000003,jane.roe@mail.com,janepass,Jane,Roe,Lecturer
+900000004,bob.white@mail.com,bobpass,Bob,White,Teaching Assistant
+900000005,susan.black@mail.com,susanpass,Susan,Black,Part-Time Tutor
+900000006,mary.jones@mail.com,marypass,Mary,Jones,Instructor
+900000007,peter.brown@mail.com,peterpass,Peter,Brown,Lecturer
+900000008,emma.clark@mail.com,emmapass,Emma,Clark,Part-Time Instructor
+900000009,james.green@mail.com,jamespass,James,Green,Tutor
+900000010,linda.adams@mail.com,lindapass,Linda,Adams,Instructor
+900000011,robert.king@mail.com,robertpass,Robert,King,Head of Department
+900000012,patricia.hall@mail.com,patriciapass,Patricia,Hall,Lecturer

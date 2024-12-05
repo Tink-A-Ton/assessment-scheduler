@@ -1,3 +1,4 @@
+from typing import Optional
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from werkzeug import Response
 from flask_jwt_extended import get_jwt_identity
@@ -5,8 +6,8 @@ from ..controllers.auth import role_required
 from ..models import Course, Exam
 from ..controllers import get_exam, get_exams_by_course, create_exam, delete_exam
 from ..controllers import update_exam, get_registered_courses, get_staff_courses
-from ..controllers import detect_exam_clash, parse_date, parse_time
-
+from ..controllers import detect_exam_clash
+from App.models.utils import parse_date, parse_time
 
 exam_views = Blueprint("exam_views", __name__, template_folder="../templates")
 
@@ -57,7 +58,7 @@ def add_exam_action() -> Response | str:
 @role_required("Staff")
 def modify_exam_action(id) -> Response:
     data: dict[str, str] = request.form
-    exam: Exam | None = update_exam(
+    exam: Optional[Exam] = update_exam(
         id, data["startDate"], data["startTime"], data["endTime"]
     )
     flash(f"Exam Details Updated !")

@@ -1,11 +1,11 @@
 from datetime import date, timedelta
+from typing import Optional
 from .exam import Exam
 from ..database import db
-from .initialize import parse_date
 
 
 def detect_exam_clash(
-    exam: Exam, rule1: str | None = None, rule2: str | None = None
+    exam: Exam, rule1: Optional[str] = None, rule2: Optional[str] = None
 ) -> bool:
     from ..models import ClashContext #an import inside a function? prevents circular import lol
     context = ClashContext()
@@ -18,7 +18,7 @@ def detect_exam_clash(
     return clash
 
 
-def recheck_nearby_clashes(start_date: date | None) -> None:
+def recheck_nearby_clashes(start_date: Optional[date]) -> None:
     if start_date is None:
         return
     range_start: date = start_date - timedelta(weeks=1)

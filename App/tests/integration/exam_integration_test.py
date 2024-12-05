@@ -1,22 +1,30 @@
 from datetime import date, time
+from logging import Logger
+from typing import Generator, Optional
 import unittest
+from flask import Flask
+from flask.testing import FlaskClient
+import pytest
 from ...models.domain.exam import Exam
 from ...main import create_app
-from ...database import db
+from ...database import create_db, db
 from ...controllers import create_course, create_exam, delete_exam, get_exam
 from ...controllers import detect_exam_clash, update_exam, get_exams, get_clashes
+
+
+@pytest.fixture(autouse=True, scope="module")
+def empty_db() -> Generator[FlaskClient, Logger, None]:
+    app: Flask = create_app(
+        {"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///test.db"}
+    )
+    create_db()
+    yield app.test_client()
+    db.drop_all()
 
 
 class ExamIntegrationTests(unittest.TestCase):
     def setUp(self) -> None:
         """Set up test database and Flask application context."""
-        self.app = create_app()
-        self.app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
-        self.app.config["TESTING"] = True
-        self.client = self.app.test_client()
-        self.app_context = self.app.app_context()
-        self.app_context.push()
-        db.create_all()
         self.course_code: str = "COMP1601"
         self.level: int = 1
         self.start_date: date = date(2024, 2, 1)
@@ -40,7 +48,7 @@ class ExamIntegrationTests(unittest.TestCase):
         exam: Exam = create_exam(
             self.course_code, self.start_date, self.start_time, self.end_time
         )
-        updated_exam: Exam | None = update_exam(
+        updated_exam: Optional[Exam] = update_exam(
             exam.id, date.today().isoformat(), "10:00:00", "12:00:00"
         )
         assert updated_exam is not None, "Expected exam to be updated"
@@ -62,7 +70,7 @@ class ExamIntegrationTests(unittest.TestCase):
         )
         self.assertIsNotNone(exam, "Expected exam to be created")
         exam_id: int = exam.id
-        fetched_exam: Exam | None = get_exam(exam_id)
+        fetched_exam: Optional[Exam] = get_exam(exam_id)
         self.assertIsNotNone(fetched_exam, "Expected exam to exist")
         delete_exam(exam_id)
         fetched_exam = get_exam(exam_id)

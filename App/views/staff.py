@@ -1,3 +1,4 @@
+from typing import Optional
 from flask import Blueprint, request, render_template, redirect, url_for, session
 from werkzeug import Response
 import json
@@ -44,7 +45,7 @@ def get_calendar_page() -> str:
 @jwt_required()
 def update_calendar_page() -> str:
     data: dict[str, str] = request.form
-    exam: Exam | None = update_exam(
+    exam: Optional[Exam] = update_exam(
         int(data["id"]), data["startDate"], data["startTime"], data["endTime"]
     )
     if detect_exam_clash(exam):
@@ -56,7 +57,7 @@ def update_calendar_page() -> str:
 
 @staff_views.route("/account", methods=["POST"])
 @jwt_required()
-def get_selected_courses() -> Response | None:
+def get_selected_courses() -> Optional[Response]:
     course_codes: list[str] = json.loads(request.form.get("courseCodes", "[]"))
     for course_code in course_codes:
         add_instructor(get_jwt_identity(), course_code)
