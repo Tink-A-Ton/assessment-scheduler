@@ -91,3 +91,21 @@ The diagram models an academic system denoting `User`, `Programme`, `Course`, `S
 | `flask test all`     | Runs all tests sequentially.                  | `flask test all`                     |
 | `flask test int`     | Runs all Integration tests.                   | `flask test int`                     |
 | `flask test unit`    | Runs all Unit tests.                          | `flask test unit`                    |
+
+
+### Feature CLI Commands
+
+These are the commands available.
+
+| Command                 | Description                                                      |
+|-------------------------|------------------------------------------------------------------|
+| `flask exam clashes`    | Lists all clashes (based on given rule setting)                  |
+| `flask exam list`       | Lists all existing exams                                         |
+| `flask exam schedule`   | Schedules an exam                                                |
+| `flask course create`   | Creates a new course                                             |
+| `flask course list`     | Lists all existing courses                                       |
+| `flask staff clashes`   | Shows clashes that a specified staff member is responsible for   |
+| `flask staff courses`   | Shows courses that a specified staff member is responsible for   |
+| `flask staff exams`     | Shows exams that a specified staff member is responsible for     |
+| `flask staff list`      | Lists all existing staff members                                 |
+| `flask staff lookup`    | Displays specified staff member                                  |
